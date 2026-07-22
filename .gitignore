@@ -1,0 +1,42 @@
+# gradle
+
+.gradle/
+build/
+out/
+classes/
+checkouts/
+
+# eclipse
+
+*.launch
+
+# idea
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# macos
+
+*.DS_Store
+
+# fabric
+
+run/
+mappings
+.architectury-transformer
+
+# third-party dependencies & temp files
+
+MTR-*.jar
+mtr_extract/
+fix_*.ps1

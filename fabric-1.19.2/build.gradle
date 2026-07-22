@@ -1,0 +1,97 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+}
+
+// 1.19.2 Fabric 子项目：使用 architectury 代码转换，依赖 common-1.19.2
+version = "1.19.2-" + project.mod_version
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    mixin {
+        defaultRefmapName = "fabric-fabric-refmap.json"
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${project.subFabricLoaderVersion}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${project.subFabricApiVersion}"
+    modApi "${rootProject.architectury_id}:architectury-fabric:${project.subArchitecturyVersion}"
+    modApi("com.terraformersmc:modmenu:${project.subModMenuVersion}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.subClothConfigVersion}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation files(project.subMtrJar)
+
+    common(project(path: ":common-1.19.2", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common-1.19.2", configuration: "transformProductionFabric")) { transitive false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.mod_version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier = null
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+task copyMtrToRun() {
+    doLast {
+        copy {
+            from project.subMtrJar
+            into "run/mods"
+        }
+    }
+}
+
+task moveFabric1192Builds() {
+    doLast {
+        delete fileTree("../build").matching {
+            include "**/TianjinMetro-fabric-1.19.2*"
+        }
+        copy {
+            from "build/libs"
+            into "../build"
+            exclude "*dev-shadow.jar"
+            rename "(.+)-1\\.19\\.2-1\\.19\\.2-(.+)", "TianjinMetro-\$1-1.19.2-\$2"
+        }
+    }
+}
+
+afterEvaluate {
+    for (def task in it.tasks) {
+        if (task == tasks.build) {
+            task.finalizedBy tasks.moveFabric1192Builds
+        }
+    }
+}

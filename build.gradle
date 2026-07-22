@@ -1,0 +1,210 @@
+import groovy.json.JsonSlurper
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
+    id "de.undercouch.download" version "4.1.2"
+    id "com.github.johnrengelman.shadow" version "8.1.1" apply false
+}
+
+def default_minecraft_version = "1.20.1"
+def minecraft_version = project.properties.containsKey("buildVersion") ? project.getProperties().get("buildVersion") : default_minecraft_version
+def minecraft_main_version = minecraft_version.split("\\.")[1] as int
+
+// 1.19.2 子项目专用配置
+def minecraft_version_1192 = "1.19.2"
+def mtr_jar_1192 = "MTR-fabric-1.19.2-3.2.2-hotfix-1.jar"
+def mtr_forge_jar_1192 = "MTR-forge-1.19.2-3.2.2-hotfix-1.jar"
+def fabric_loader_version_1192 = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version_1192).toURL())[0]["loader"]["version"]
+def fabric_api_version_1192 = getModrinthVersion("fabric", minecraft_version_1192, "fabric-api")
+def mod_menu_version_1192 = getModrinthVersion("fabric", minecraft_version_1192, "modmenu")
+def cloth_config_fabric_version_1192 = "8.3.134"
+def forge_version_1192 = minecraft_version_1192 + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version_1192 + "-latest"]
+def cloth_config_forge_version_1192 = "8.3.134"
+def architectury_version_1192 = getModrinthVersion("forge", minecraft_version_1192, "architectury-api").split("\\+")[0]
+
+// 1.18.2 子项目专用配置
+def minecraft_version_1182 = "1.18.2"
+def mtr_jar_1182 = "MTR-fabric-1.18.2-3.2.2-hotfix-1.jar"
+def mtr_forge_jar_1182 = "MTR-forge-1.18.2-3.2.2-hotfix-1.jar"
+def fabric_loader_version_1182 = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version_1182).toURL())[0]["loader"]["version"]
+def fabric_api_version_1182 = getModrinthVersion("fabric", minecraft_version_1182, "fabric-api")
+def mod_menu_version_1182 = getModrinthVersion("fabric", minecraft_version_1182, "modmenu")
+def cloth_config_fabric_version_1182 = "5.0.36"
+def forge_version_1182 = minecraft_version_1182 + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version_1182 + "-latest"]
+def cloth_config_forge_version_1182 = "5.0.36"
+def architectury_version_1182 = getModrinthVersion("forge", minecraft_version_1182, "architectury-api").split("\\+")[0]
+
+rootProject.ext.fabric_loader_version = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version).toURL())[0]["loader"]["version"]
+rootProject.ext.forge_version = minecraft_version + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version + "-latest"]
+rootProject.ext.fabric_api_version = getModrinthVersion("fabric", minecraft_version, "fabric-api")
+rootProject.ext.mod_menu_version = getModrinthVersion("fabric", minecraft_version, "modmenu")
+rootProject.ext.cloth_config_fabric_version = "11.1.136"
+rootProject.ext.cloth_config_forge_version = "11.1.136"
+rootProject.ext.architectury_version = getModrinthVersion("forge", minecraft_version, "architectury-api").split("\\+")[0]
+rootProject.ext.architectury_id = minecraft_main_version == 16 ? "me.shedaniel" : "dev.architectury"
+
+architectury {
+    minecraft = minecraft_version
+}
+
+subprojects {
+    apply plugin: "dev.architectury.loom"
+
+    // 1.19.2 和 1.18.2 子项目使用独立版本配置
+    def isLegacy1192 = project.name == "fabric-1.19.2" || project.name == "forge-1.19.2" || project.name == "common-1.19.2"
+    def isLegacy1182 = project.name == "fabric-1.18.2" || project.name == "forge-1.18.2" || project.name == "common-1.18.2"
+    def isForge = project.name == "forge" || project.name == "forge-1.19.2" || project.name == "forge-1.18.2"
+    def isCommon = project.name == "common" || project.name == "common-1.19.2" || project.name == "common-1.18.2"
+    def subMcVersion = isLegacy1192 ? minecraft_version_1192 : (isLegacy1182 ? minecraft_version_1182 : minecraft_version)
+    // 根据平台和版本选择对应的 MTR jar
+    def subMtrJar
+    if (isForge) {
+        if (isLegacy1192) {
+            subMtrJar = "../${mtr_forge_jar_1192}"
+        } else if (isLegacy1182) {
+            subMtrJar = "../${mtr_forge_jar_1182}"
+        } else {
+            subMtrJar = "../MTR-forge-1.20.1-3.5.9.jar"
+        }
+    } else {
+        if (isLegacy1192) {
+            subMtrJar = "../${mtr_jar_1192}"
+        } else if (isLegacy1182) {
+            subMtrJar = "../${mtr_jar_1182}"
+        } else {
+            subMtrJar = "../MTR-fabric-1.20.1-3.5.8-hotfix-1.jar"
+        }
+    }
+    project.ext.subMinecraftVersion = subMcVersion
+    project.ext.subMtrJar = subMtrJar
+    project.ext.subFabricLoaderVersion = isLegacy1192 ? fabric_loader_version_1192 : (isLegacy1182 ? fabric_loader_version_1182 : rootProject.fabric_loader_version)
+    project.ext.subFabricApiVersion = isLegacy1192 ? fabric_api_version_1192 : (isLegacy1182 ? fabric_api_version_1182 : rootProject.fabric_api_version)
+    project.ext.subModMenuVersion = isLegacy1192 ? mod_menu_version_1192 : (isLegacy1182 ? mod_menu_version_1182 : rootProject.mod_menu_version)
+    project.ext.subClothConfigVersion = isLegacy1192 ? cloth_config_fabric_version_1192 : (isLegacy1182 ? cloth_config_fabric_version_1182 : rootProject.cloth_config_fabric_version)
+    project.ext.subIsLegacy1192 = isLegacy1192
+    project.ext.subIsLegacy1182 = isLegacy1182
+    project.ext.subIsForge = isForge
+    project.ext.subForgeVersion = isLegacy1192 ? forge_version_1192 : (isLegacy1182 ? forge_version_1182 : rootProject.forge_version)
+    project.ext.subArchitecturyVersion = isLegacy1192 ? architectury_version_1192 : (isLegacy1182 ? architectury_version_1182 : rootProject.architectury_version)
+    project.ext.subClothConfigForgeVersion = isLegacy1192 ? cloth_config_forge_version_1192 : (isLegacy1182 ? cloth_config_forge_version_1182 : rootProject.cloth_config_forge_version)
+
+    loom {
+        silentMojangMappingsLicense()
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${subMcVersion}"
+        mappings loom.officialMojangMappings()
+        modImplementation files(subMtrJar)
+        // common-1.19.2 和 common-1.18.2 需要 fabric-loader 和 architectury 依赖
+        if (isCommon && isLegacy1192) {
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version_1192}"
+            modApi "dev.architectury:architectury:${architectury_version_1192}"
+            modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1192}") {
+                exclude(group: "net.fabricmc.fabric-api")
+            }
+        }
+        if (isCommon && isLegacy1182) {
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version_1182}"
+            modApi "dev.architectury:architectury:${architectury_version_1182}"
+            modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1182}") {
+                exclude(group: "net.fabricmc.fabric-api")
+            }
+        }
+    }
+}
+
+task setupLibrary() {
+    doLast {
+        download {
+            src "https://www.minecrafttransitrailway.com/libs/${rootProject.mtr_version}/MTR-common-${minecraft_version}-${rootProject.mtr_version}-dev.jar"
+            dest "checkouts/mtr-common.jar"
+            overwrite true
+        }
+
+        download {
+            src "https://www.minecrafttransitrailway.com/libs/${rootProject.mtr_version}/MTR-fabric-${minecraft_version}-${rootProject.mtr_version}-dev-shadow.jar"
+            dest "checkouts/mtr-fabric.jar"
+            overwrite true
+        }
+
+        download {
+            src "https://www.minecrafttransitrailway.com/libs/${rootProject.mtr_version}/MTR-forge-${minecraft_version}-${rootProject.mtr_version}-dev-shadow.jar"
+            dest "checkouts/mtr-forge.jar"
+            overwrite true
+        }
+    }
+}
+
+task setupFiles() {
+    System.out.println("Fabric Loader: " + rootProject.fabric_loader_version)
+    System.out.println("Forge: " + rootProject.forge_version)
+    System.out.println("Fabric API: " + rootProject.fabric_api_version)
+    System.out.println("Mod Menu: " + rootProject.mod_menu_version)
+    System.out.println("Architectury: " + rootProject.architectury_version)
+
+    copy {
+        outputs.upToDateWhen { false }
+        from "MTR-fabric-1.20.1-3.5.8-hotfix-1.jar"
+        into "fabric/run/mods"
+    }
+
+    copy {
+        outputs.upToDateWhen { false }
+        from "common/src/main/latest-tjmetro.json"
+        into "build/latest"
+        filter(ReplaceTokens, tokens: ["version": rootProject.mod_version])
+    }
+}
+
+allprojects {
+    // 所有子项目都使用 architectury-plugin
+    apply plugin: "architectury-plugin"
+
+    version = minecraft_version + "-" + project.mod_version
+    group = project.maven_group
+
+    repositories {
+        maven { url = "https://maven.aliyun.com/repository/public" }
+        maven { url = "https://jitpack.io/" }
+        maven { url = "https://maven.terraformersmc.com/" }
+        maven { url = "https://maven.shedaniel.me/" }
+        maven { url = "https://maven.ziyuesinicization.site/releases/" }
+        maven { url = "https://api.modrinth.com/maven" }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+
+        if (minecraft_main_version == 16) {
+            def targetVersion = 16
+            if (JavaVersion.current().isJava9Compatible()) {
+                options.release = targetVersion
+            }
+        } else if (minecraft_main_version == 17) {
+            options.release = 16
+        } else {
+            options.release = 17
+        }
+    }
+
+    afterEvaluate {
+        for (def task in it.tasks) {
+            if (task != rootProject.tasks.setupFiles) {
+                task.dependsOn rootProject.tasks.setupFiles
+            }
+        }
+    }
+}
+
+static def getModrinthVersion(loader, minecraftVersion, projectId) {
+    def versionsArray = new JsonSlurper().parse(("https://api.modrinth.com/v2/project/" + projectId + "/version").toURL())
+    for (def versionElement : versionsArray) {
+        if (versionElement["loaders"].contains(loader) && versionElement["game_versions"].contains(minecraftVersion)) {
+            return versionElement["version_number"]
+        }
+    }
+    return ""
+}
