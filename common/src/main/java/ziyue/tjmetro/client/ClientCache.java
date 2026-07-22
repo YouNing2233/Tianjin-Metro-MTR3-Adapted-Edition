@@ -190,6 +190,10 @@ public class ClientCache extends DataCache implements IGui
         return getResource(String.format("tjmetro_station_name_projector_%s_%s", stationName, aspectRatio), () -> RouteMapGenerator.generateStationNameProjector(stationName, aspectRatio), DefaultRenderingColor.TRANSPARENT);
     }
 
+    public DynamicResource getPlainText(String text, int backgroundColor, int textColor) {
+        return getResource(String.format("tjmetro_plain_text_%s_%s_%s", text, backgroundColor, textColor), () -> RouteMapGenerator.generatePlainText(text, backgroundColor, textColor), DefaultRenderingColor.TRANSPARENT);
+    }
+
     public DynamicResource getStationNavigator(Set<Long> selectedRoutes, boolean arrowLeft, int backgroundColor, float aspectRatio) {
         return getResource(String.format("tjmetro_station_navigator_%s_%s_%s_%s", selectedRoutes.hashCode(), arrowLeft, backgroundColor, aspectRatio), () -> RouteMapGenerator.generateStationNavigator(selectedRoutes, arrowLeft, backgroundColor, aspectRatio), DefaultRenderingColor.TRANSPARENT);
     }

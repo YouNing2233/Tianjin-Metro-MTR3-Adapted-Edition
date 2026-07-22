@@ -195,7 +195,6 @@
     "block.tjmetro.apg_tianjin_jinjing":  "Automatic Platform Gates (Tianjin, Jinjing Line)",
     "block.tjmetro.trash_can":  "Trash Can",
     "block.tjmetro.pids_tianjin":  "Passenger Information Display System (Tianjin)",
-    "block.tjmetro.pids_tianjin_single":  "Passenger Information Display System (Tianjin, Single)",
     "gui.tjmetro.service_corridor_sign_cjk":  "暖行服务连廊",
     "gui.tjmetro.terminus_bmt":  "TERMINAL",
     "gui.tjmetro.current_station_cjk":  "当前站",
@@ -262,7 +261,6 @@
     "tooltip.tjmetro.disable_dynamic_textures":  "Skip generating textures for signs, gates, etc.",
     "tooltip.tjmetro.pids_tianjin":  "A PIDS which has a customizable advertisement part. Using Railway Sign Pole (Tianjin) to extend its pole.",
     "tooltip.tjmetro.dynamic_texture_max_size":  "Dynamic textures that exceed the limitation will be truncated. If you meet this issue, please adjust this with caution.",
-
     "tooltip.tjmetro.railway_sign_wall":  "You can place it on the ground. Use Wrench to switch the font.",
     "tooltip.tjmetro.disable_filters":  "You can\u0027t open config screen from the tab too.",
     "footer.tjmetro.discord":  "Join our Discord server!",

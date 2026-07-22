@@ -1431,4 +1431,24 @@ public class RouteMapGenerator implements IGui
         }
         return null;
     }
+
+    /**
+     * Generates a plain text image for PIDS advertisement scrolling text.
+     */
+    public static NativeImage generatePlainText(String text, int backgroundColor, int textColor) {
+        try {
+            final int height = scale;
+            final int padding = scale / 16;
+            final ClientCache.Text instanceText = ClientCache.DATA_CACHE.getText(text, Integer.MAX_VALUE, height, fontSizeBig, fontSizeBig, padding, null);
+
+            final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, instanceText.renderWidth(), height, false);
+            nativeImage.fillRect(0, 0, instanceText.renderWidth(), height, 0);
+            drawString(nativeImage, instanceText, instanceText.renderWidth() / 2, height / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, backgroundColor, textColor, false);
+            return nativeImage;
+        } catch (Exception e) {
+            TianjinMetro.LOGGER.error(e.getMessage(), e);
+        }
+
+        return null;
+    }
 }

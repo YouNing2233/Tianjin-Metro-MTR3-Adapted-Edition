@@ -1,0 +1,328 @@
+package ziyue.tjmetro.render;
+
+import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import mtr.MTRClient;
+import mtr.block.IBlock;
+import mtr.client.ClientData;
+import mtr.client.IDrawing;
+import mtr.data.*;
+import mtr.mappings.BlockEntityRendererMapper;
+import mtr.mappings.Text;
+import mtr.render.MoreRenderLayers;
+import mtr.render.RenderTrains;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import ziyue.tjmetro.Reference;
+import ziyue.tjmetro.block.BlockPIDSTianjin;
+import ziyue.tjmetro.client.ClientCache;
+import ziyue.tjmetro.client.RouteMapGenerator;
+
+import java.util.*;
+
+public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTianjin> extends BlockEntityRendererMapper<T> implements IGui {
+
+    protected final float maxHeight;
+    protected final int maxWidth;
+    protected final boolean rotate90;
+    protected final float textPadding;
+
+    public static final float LEFT_TEXT_X_CENTER = 42.45F;
+    public static final float LEFT_TEXT_MAX_WIDTH = 78.55F;
+
+    private static final int SWITCH_LANGUAGE_TICKS = 60;
+
+    private static final Map<String, ResourceLocation> TEXT_TEXTURE_CACHE = new HashMap<>();
+
+    public RenderPIDSTianjin(BlockEntityRenderDispatcher dispatcher) {
+        this(dispatcher, 2.5F, 30, true, 1F);
+    }
+
+    public RenderPIDSTianjin(BlockEntityRenderDispatcher dispatcher, float maxHeight, int maxWidth, boolean rotate90, float textPadding) {
+        super(dispatcher);
+        this.maxHeight = maxHeight;
+        this.maxWidth = maxWidth;
+        this.rotate90 = rotate90;
+        this.textPadding = textPadding;
+    }
+
+    @Override
+    public void render(T entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
+        final BlockGetter world = entity.getLevel();
+        if (world == null) return;
+
+        final BlockPos pos = entity.getBlockPos();
+        if (!BlockPIDSTianjin.canStoreData(world, pos)) return;
+
+        final Direction facing = IBlock.getStatePropertySafe(world, pos, HorizontalDirectionalBlock.FACING);
+        final float scale = 320 / maxHeight * textPadding;
+
+        renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
+        renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
+    }
+
+    private void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
+        matrices.pushPose();
+        matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ);
+        matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees((rotate90 ? 90 : 0) - facing.toYRot()));
+        matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
+        matrices.translate(-0.48, 0, -0.48);
+        matrices.scale(1F / scale, 1F / scale, 1F / scale);
+        matrices.mulPose(com.mojang.math.Axis.XP.rotationDegrees(22.5F));
+        matrices.translate(0, 0.05, 0);
+
+        final RenderType bgRenderType = MoreRenderLayers.getExterior(new ResourceLocation(Reference.MOD_ID, "textures/block/pids_tianjin.png"));
+        final VertexConsumer bgConsumer = vertexConsumers.getBuffer(bgRenderType);
+        IDrawing.drawTexture(matrices, bgConsumer, 0, 0, 251F, 115F, facing, MAX_LIGHT_GLOWING);
+
+        matrices.translate(0, 0, -0.1);
+
+        renderTime(matrices, vertexConsumers, facing);
+
+        final Map<Long, String> platformIdToName = new HashMap<>();
+        final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, platformIdToName);
+        renderArrivals(matrices, vertexConsumers, facing, scheduleList, entity.getDisplayPage());
+
+        renderAdvertisement(matrices, vertexConsumers, entity, facing);
+
+        matrices.popPose();
+    }
+
+    private void renderTime(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing) {
+        final String timeString = getFormattedTime();
+        final NativeImage timeImage = generateTextImage(timeString, ARGB_WHITE);
+        if (timeImage == null) return;
+
+        final ResourceLocation textureId = getCachedTexture(timeString + "_" + ARGB_WHITE, timeImage);
+
+        matrices.pushPose();
+        matrices.translate(LEFT_TEXT_X_CENTER - 25, 78F, 0);
+        final float timeScale = 0.4F;
+        matrices.scale(timeScale, timeScale, timeScale);
+        final RenderType renderType = MoreRenderLayers.getExterior(textureId);
+        final VertexConsumer consumer = vertexConsumers.getBuffer(renderType);
+        IDrawing.drawTexture(matrices, consumer, 0, 0, timeImage.getWidth(), timeImage.getHeight(), facing, MAX_LIGHT_GLOWING);
+        matrices.popPose();
+    }
+
+    private String getFormattedTime() {
+        final java.util.Calendar calendar = java.util.Calendar.getInstance();
+        return String.format("%02d:%02d:%02d",
+                calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                calendar.get(java.util.Calendar.MINUTE),
+                calendar.get(java.util.Calendar.SECOND));
+    }
+
+    private void renderArrivals(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, List<ScheduleEntry> scheduleList, int displayPage) {
+        final int languageTicks = (int) Math.floor(MTRClient.getGameTick()) / SWITCH_LANGUAGE_TICKS;
+        int arrivalIndex = displayPage * 2;
+
+        for (int i = 0; i < 2; i++) {
+            final ScheduleEntry scheduleEntry = i + arrivalIndex < scheduleList.size() ? scheduleList.get(i + arrivalIndex) : null;
+            if (scheduleEntry == null) continue;
+
+            final Route route = ClientData.DATA_CACHE.routeIdMap.get(scheduleEntry.routeId);
+            if (route == null) continue;
+
+            final String[] destinationSplit = ClientData.DATA_CACHE.getFormattedRouteDestination(route, scheduleEntry.currentStationIndex, "").split("\\|");
+            final String[] routeNumberSplit = route.lightRailRouteNumber.split("\\|");
+
+            String[] finalDestinationSplit;
+            if (routeNumberSplit.length == 0 || routeNumberSplit[0].isEmpty()) {
+                finalDestinationSplit = destinationSplit;
+            } else {
+                final List<String> newDestinations = new ArrayList<>();
+                int destinationIndex = 0;
+                int numberIndex = 0;
+                while (true) {
+                    final String newDestination = String.format("%s %s",
+                            routeNumberSplit[numberIndex % routeNumberSplit.length],
+                            destinationSplit[destinationIndex % destinationSplit.length]);
+                    if (newDestinations.contains(newDestination)) break;
+                    newDestinations.add(newDestination);
+                    destinationIndex++;
+                    numberIndex++;
+                }
+                finalDestinationSplit = newDestinations.toArray(new String[0]);
+            }
+
+            final int languageIndex = languageTicks % finalDestinationSplit.length;
+            final String destination = finalDestinationSplit[languageIndex];
+            final boolean isCjk = IGui.isCjk(destination);
+            final float yOffset = i * 45F;
+
+            final String destinationFormatted = Text.translatable(
+                    isCjk ? "gui.tjmetro.bound_for_pids_cjk" : "gui.tjmetro.bound_for_pids",
+                    destination).getString();
+
+            final String trainLabel = Text.translatable(i == 0
+                    ? (isCjk ? "gui.tjmetro.this_train_cjk" : "gui.tjmetro.this_train")
+                    : (isCjk ? "gui.tjmetro.next_train_cjk" : "gui.tjmetro.next_train")).getString();
+
+            renderTextTexture(matrices, vertexConsumers, facing, trainLabel, LEFT_TEXT_X_CENTER, 12F + yOffset, 1.5F, ARGB_WHITE);
+            renderTextTexture(matrices, vertexConsumers, facing, destinationFormatted, LEFT_TEXT_X_CENTER, 38F + yOffset, 1.3F, ARGB_WHITE);
+
+            final long arrivalSeconds = (scheduleEntry.arrivalMillis - System.currentTimeMillis()) / 1000;
+            if (arrivalSeconds <= 15) {
+                final String textKey = (arrivalSeconds < 0 ? "gui.tjmetro.arrived" : "gui.tjmetro.arriving") + (isCjk ? "_cjk" : "");
+                renderTextTexture(matrices, vertexConsumers, facing, Text.translatable(textKey).getString(), LEFT_TEXT_X_CENTER, 26F + yOffset, 1.5F, 0xFFEFEF00);
+            } else {
+                final boolean isMinute = arrivalSeconds > 60;
+                final String arrivalTime = String.valueOf(isMinute ? arrivalSeconds / 60 : arrivalSeconds);
+                final String arrivalUnit = Text.translatable(
+                        (isMinute ? "gui.tjmetro.minute" : "gui.tjmetro.second") + (isCjk ? "_cjk" : "")).getString();
+
+                renderTextTexture(matrices, vertexConsumers, facing, arrivalTime, LEFT_TEXT_X_CENTER - 12, 26F + yOffset, 1.8F, 0xFFEFEF00);
+                final float unitScale = isCjk ? 1.8F : 1.2F;
+                renderTextTexture(matrices, vertexConsumers, facing, arrivalUnit, LEFT_TEXT_X_CENTER + 12, 26F + yOffset, unitScale, ARGB_WHITE);
+            }
+        }
+    }
+
+    private void renderTextTexture(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, String text, float x, float y, float scale, int color) {
+        final NativeImage textImage = generateTextImage(text, color);
+        if (textImage == null) return;
+
+        final String cacheKey = text + "_" + color + "_" + scale;
+        final ResourceLocation textureId = getCachedTexture(cacheKey, textImage);
+
+        matrices.pushPose();
+        matrices.translate(x, y, 0);
+        matrices.scale(scale * 0.2F, scale * 0.2F, scale * 0.2F);
+        final float imageWidth = textImage.getWidth();
+        final float imageHeight = textImage.getHeight();
+        matrices.translate(-imageWidth / 2F, -imageHeight / 2F, 0);
+        final RenderType renderType = MoreRenderLayers.getExterior(textureId);
+        final VertexConsumer consumer = vertexConsumers.getBuffer(renderType);
+        IDrawing.drawTexture(matrices, consumer, 0, 0, imageWidth, imageHeight, facing, MAX_LIGHT_GLOWING);
+        matrices.popPose();
+    }
+
+    private NativeImage generateTextImage(String text, int textColor) {
+        return RouteMapGenerator.generatePlainText(text, 0, textColor);
+    }
+
+    private ResourceLocation getCachedTexture(String key, NativeImage image) {
+        if (!TEXT_TEXTURE_CACHE.containsKey(key)) {
+            final ResourceLocation textureId = new ResourceLocation(Reference.MOD_ID, "pids_text_" + key.hashCode());
+            final DynamicTexture dynamicTexture = new DynamicTexture(image);
+            Minecraft.getInstance().getTextureManager().register(textureId, dynamicTexture);
+            TEXT_TEXTURE_CACHE.put(key, textureId);
+        }
+        return TEXT_TEXTURE_CACHE.get(key);
+    }
+
+    private void renderAdvertisement(PoseStack matrices, MultiBufferSource vertexConsumers, T entity, Direction facing) {
+        if (entity.getCategories().isEmpty()) return;
+
+        matrices.translate(86.7, 3.38, 0);
+
+        if (entity.getCategoryIndex() >= entity.getCategories().size()
+                || !BlockPIDSTianjin.CATEGORIES.containsKey(entity.getCategories().getLong(entity.getCategoryIndex()))) {
+            entity.setCategoryIndex((entity.getCategoryIndex() + 1) % entity.getCategories().size());
+            entity.setAdvertisementIndex(0);
+            if (!BlockPIDSTianjin.CATEGORIES.containsKey(entity.getCategories().getLong(entity.getCategoryIndex()))) {
+                entity.getCategories().clear();
+                return;
+            }
+        }
+
+        final BlockPIDSTianjin.Category category = BlockPIDSTianjin.CATEGORIES.get(entity.getCategories().getLong(entity.getCategoryIndex()));
+        if (entity.getAdvertisementIndex() >= category.size()) {
+            entity.setAdvertisementIndex(0);
+        }
+        final BlockPIDSTianjin.Advertisement advertisement = category.get(entity.getAdvertisementIndex());
+        if (advertisement == null) return;
+
+        if (entity.advertisement != advertisement) {
+            entity.advertisement = advertisement;
+            entity.scrollingText.changeImage(() -> ClientCache.DATA_CACHE.getPlainText(
+                    "   " + advertisement.text().getString() + "   ", 0xFF1A1D46, ARGB_WHITE));
+        }
+
+        final RenderType adRenderType = MoreRenderLayers.getExterior(advertisement.image());
+        final VertexConsumer adVertexConsumer = vertexConsumers.getBuffer(adRenderType);
+        IDrawing.drawTexture(matrices, adVertexConsumer, 0, 0, 161F, 88.3F, facing, MAX_LIGHT_GLOWING);
+
+        if (advertisement.url() != null) {
+            matrices.translate(0, 0, -0.1F);
+            final RenderType clickRenderType = MoreRenderLayers.getExterior(new ResourceLocation(Reference.MOD_ID, "textures/sign/click.png"));
+            final VertexConsumer clickVertexConsumer = vertexConsumers.getBuffer(clickRenderType);
+            IDrawing.drawTexture(matrices, clickVertexConsumer, 0, 0, 15F, 15F, facing, MAX_LIGHT_GLOWING);
+            matrices.translate(0, 0, 0.1F);
+        }
+
+        matrices.translate(1.5F, 75.3F, 0);
+        entity.scrollingText.setVertexConsumer(vertexConsumers);
+        final boolean scrolledComplete = entity.scrollingText.scrollText(matrices, facing);
+        if (scrolledComplete && advertisement.text().getString() != null && !advertisement.text().getString().isEmpty()) {
+            nextSlide(entity);
+        }
+    }
+
+    protected void nextSlide(T entity) {
+        final int categoryIndex = entity.getCategoryIndex();
+        final int advertisementIndex = entity.getAdvertisementIndex();
+        final BlockPIDSTianjin.Category category = BlockPIDSTianjin.CATEGORIES.get(entity.getCategories().getLong(categoryIndex));
+
+        if (advertisementIndex + 1 >= category.size()) {
+            entity.setCategoryIndex((categoryIndex + 1) % entity.getCategories().size());
+            entity.setAdvertisementIndex(0);
+        } else {
+            entity.setAdvertisementIndex(advertisementIndex + 1);
+        }
+    }
+
+    public List<ScheduleEntry> getSchedules(T entity, BlockPos pos, final Map<Long, String> platformIdToName) {
+        final Station station = RailwayData.getStation(ClientData.STATIONS, ClientData.DATA_CACHE, pos);
+        if (station == null) {
+            return new ArrayList<>();
+        }
+
+        final Map<Long, Platform> platforms = ClientData.DATA_CACHE.requestStationIdToPlatforms(station.id);
+        if (platforms.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        final Set<Long> platformIds = entity.getPlatformIds();
+        final Set<ScheduleEntry> schedules = new HashSet<>();
+
+        platforms.values().forEach(platform -> {
+            if (platformIds.isEmpty() || platformIds.contains(platform.id)) {
+                final Set<ScheduleEntry> scheduleForPlatform = ClientData.SCHEDULES_FOR_PLATFORM.get(platform.id);
+                if (scheduleForPlatform != null) {
+                    scheduleForPlatform.forEach(scheduleEntry -> {
+                        final Route route = ClientData.DATA_CACHE.routeIdMap.get(scheduleEntry.routeId);
+                        if (route != null && scheduleEntry.currentStationIndex < route.platformIds.size() - 1) {
+                            schedules.add(scheduleEntry);
+                            platformIdToName.put(platform.id, platform.name);
+                        }
+                    });
+                }
+            }
+        });
+
+        final List<ScheduleEntry> scheduleList = new ArrayList<>(schedules);
+        Collections.sort(scheduleList);
+        return scheduleList;
+    }
+
+    @Override
+    public boolean shouldRenderOffScreen(T entity) {
+        return true;
+    }
+
+    @Override
+    public int getViewDistance() {
+        return Math.min(RenderTrains.maxTrainRenderDistance, 64);
+    }
+}

@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "tjmetro:item/pids_tianjin_single"
-    }
-}

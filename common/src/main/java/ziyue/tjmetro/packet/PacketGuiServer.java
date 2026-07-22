@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import ziyue.tjmetro.block.BlockRailwaySignTianjinDouble;
 import ziyue.tjmetro.block.BlockRailwaySignWallDouble;
 import ziyue.tjmetro.block.BlockStationNameEntranceTianjin;
+import ziyue.tjmetro.block.BlockPIDSTianjin;
 import ziyue.tjmetro.block.base.BlockCustomColorBase;
 import ziyue.tjmetro.block.base.BlockCustomContentBlockBase;
 import ziyue.tjmetro.block.base.BlockRailwaySignBase;
@@ -26,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static ziyue.tjmetro.packet.IPacket.*;
 
@@ -126,6 +128,12 @@ public class PacketGuiServer
         Registry.sendToPlayer(player, PACKET_OPEN_RAILWAY_SIGN_DOUBLE_SCREEN, packet);
     }
 
+    public static void openPIDSTianjinScreenS2C(ServerPlayer player, BlockPos pos) {
+        final FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+        packet.writeBlockPos(pos);
+        Registry.sendToPlayer(player, PACKET_OPEN_PIDS_TIANJIN_SCREEN, packet);
+    }
+
     public static void sendSignIdsDoubleC2S(BlockPos signPos, List<Set<Long>> selectedIds, String[][] signIds) {
         final FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
         packet.writeBlockPos(signPos);
@@ -197,5 +205,38 @@ public class PacketGuiServer
 
             railwayData.railwayDataLoggingModule.addEvent(player, entities[0].getClass(), RailwayDataLoggingModule.getData(compoundTagOld), RailwayDataLoggingModule.getData(compoundTagNew), blockPos);
         }
+    }
+
+    public static void receivePIDSTianjinConfigC2S(MinecraftServer minecraftServer, ServerPlayer player, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        final int platformIdCount = packet.readVarInt();
+        final Set<Long> platformIds = new HashSet<>();
+        for (int i = 0; i < platformIdCount; i++) {
+            platformIds.add(packet.readLong());
+        }
+        final int displayPage = packet.readInt();
+
+        minecraftServer.execute(() -> {
+            final BlockEntity entity = player.level().getBlockEntity(pos);
+            if (entity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
+                pidsEntity.setData(new String[0], new boolean[0], platformIds, displayPage);
+            }
+        });
+    }
+
+    public static void receivePIDSAdsConfigC2S(MinecraftServer minecraftServer, ServerPlayer player, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        final int categoryCount = packet.readVarInt();
+        final BlockPIDSTianjin.LongAdderList categories = new BlockPIDSTianjin.LongAdderList();
+        for (int i = 0; i < categoryCount; i++) {
+            categories.add(packet.readLong());
+        }
+
+        minecraftServer.execute(() -> {
+            final BlockEntity entity = player.level().getBlockEntity(pos);
+            if (entity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
+                pidsEntity.setCategories(categories);
+            }
+        });
     }
 }

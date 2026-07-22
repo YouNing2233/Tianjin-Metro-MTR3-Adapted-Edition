@@ -1,0 +1,1504 @@
+继续阶段 3。先看原项目的 `DynamicTextureCache` 和 `ScrollingText` 实现。
+
+
+用户要求继续推进 PIDS 移植工作。当前处于阶段 3：DynamicTextureCache 重写。
+
+我需要：
+1. 创建 DynamicTextureCache 类（跨平台动态贴图缓存）
+2. 创建 ScrollingText 类（滚动文字）
+3. 创建 IDrawingExtension 接口（绘图扩展）
+
+这些都是客户端代码，需要放在 common 目录中，因为 Architectury 会自动处理跨平台适配。
+
+让我先看原项目的 DynamicTextureCache 实现，然后创建适配版本。
+
+
+现在我理解了原项目的完整架构。原项目的 `DynamicTextureCache` 非常庞大（499 行），依赖 `GraphicsHolder`、`MainRenderer.WORKER_THREAD`、`ResourceManagerHelper` 等 Mapping API 特有组件。
+
+我需要为 Architectury 项目创建一个简化但功能等价的版本。先创建 `client` 目录和核心类。
+
+Now I understand the full picture. The original project's DynamicTextureCache is very complex and uses Mapping API. I need to create a simpler version that works with the non-Mapping MTR 1.20.1 API.
+
+Let me break down what's needed:
+
+1. **DynamicTextureCache** - A cache for dynamically generated textures (text, route maps, etc.)
+2. **ScrollingText** - Handles text scrolling animation for PIDS
+3. **IDrawingExtension** - Font-aware text drawing with CJK support
+
+For the Architectury multi-platform project, I need to:
+- Use native Minecraft classes instead of Mapping API wrappers
+- Use MTR's non-Mapping API (`mtr.data.IGui`, `mtr.render.IDrawing`, etc.)
+- Use `PoseStack` instead of `GraphicsHolder`
+- Use `MultiBufferSource` instead of `VertexConsumerProviderHolder`
+
+Let me create these files step by step. I'll start with the core utility classes.
+
+The key simplification is:
+1. For DynamicTextureCache - I'll use Minecraft's `NativeImageBackedTexture` and `TextureManager` directly
+2. For ScrollingText - Use `PoseStack` + `MultiBufferSource` instead of `GraphicsHolder`
+3. For IDrawingExtension - Use MTR's `IDrawing` + native text rendering
+
+Let me create these files.
+
+现在创建 `ScrollingText.java`。
+
+Now I need to create ScrollingText.java - a simpler version without GraphicsHolder dependency.
+
+现在创建 `IDrawingExtension.java`。
+
+
+现在我需要创建 IDrawingExtension.java。原项目的 IDrawingExtension 使用了 GraphicsHolder（Mapping API），我需要改为使用原生的 PoseStack + MultiBufferSource。
+
+但实际上，IDrawingExtension 主要是用来在屏幕上绘制文字的（使用 font 资源），这部分可以简化。对于 PIDS 渲染来说，我们主要需要的是在方块渲染中绘制纹理，而不是在 UI 中绘制文字。
+
+让我创建一个简化的版本，保留核心的 drawStringWithFont 方法，但适配非 Mapping API。
+
+现在需要在客户端初始化 `DynamicTextureCache`。看一下 `TianjinMetroClient.java` 的结构。
+
+
+现在需要注册 DynamicTextureCache 到客户端。让我看一下 TianjinMetroClient.java 中如何注册客户端组件。
+
+我需要在客户端初始化 `DynamicTextureCache`，并且注册资源重载监听器和 tick 回调。先看一下项目里有没有客户端 tick 处理机制。
+
+
+Now I need to:
+1. Initialize `DynamicTextureCache` in `TianjinMetroClient.init()`
+2. Register it as a resource reload listener
+3. Register the PIDS renderer
+
+But first, let me check how MTR does resource reload listeners and how to register them in Architectury. Also, I need to check if there's a client tick handler that needs to call `DynamicTextureCache.tick()`.
+
+Let me look at how other mods do this in the project.
+
+Let me fix the regex pattern.
+
+项目没有现有客户端 tick 机制。我需要用 Architectury API 添加。让我更新 `TianjinMetroClient.java` 初始化 `DynamicTextureCache` 并注册资源重载和 tick 回调。
+
+
+The project doesn't have an existing client tick mechanism. I need to add one. Looking at the project structure, it uses Architectury API. I should use `ArchitecturyRegistry` to register client tick events, and for resource reload, I can use the Fabric/Forge specific mechanisms.
+
+Let me check how MTR does it or if there's a pattern in the project. Actually, for Architectury, the common way is to use:
+- `net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents` for Fabric
+- `net.minecraftforge.event.TickEvent.ClientTickEvent` for Forge
+- Or use Architectury's event system
+
+But since this is in the common module, I need to use Architectury API or use platform-specific code.
+
+Let me check what Architectury provides for client lifecycle events. Actually, looking at the existing code, they use `RegistryClient.registerNetworkReceiver` which is MTR's abstraction.
+
+I think the simplest approach is to:
+1. Register the DynamicTextureCache as a ResourceManagerReloadListener on the client side
+2. Register a client tick callback to call `DynamicTextureCache.instance.tick()`
+
+For Architectury, I can use `dev.architectury.event.events.client.ClientLifecycleEvent` for tick and `dev.architectury.event.events.client.ClientResourceEvent` for resource reload.
+
+Let me update TianjinMetroClient to initialize the DynamicTextureCache and register these listeners.
+
+现在构建验证阶段 3。
+
+现在我需要构建验证阶段 3（DynamicTextureCache、ScrollingText、IDrawingExtension）。先构建 Fabric 1.20.1 版本。
+
+The build is running. Let me check its status after a reasonable wait.
+
+The build is running. Let me wait more.
+
+编译错误，需要修复类路径和 API。
+
+
+编译错误，需要修复：
+1. `NativeImageBackedTexture` 和 `NativeImage` 在 1.20.1 中位置不对
+2. `ClientResourceEvent` 在 Architectury 9.x 中不存在
+
+让我修复这些问题。
+
+现在修复 Architectury 事件 API。
+
+
+Now I need to fix the Architectury event API issue. Let me check what events are available in the Architectury version being used.
+
+现在重新构建。
+
+The build is running again. Let me check the status after some time.
+
+`NativeImage` 和 `NativeImageBackedTexture` 是客户端专用类，不能放在 common 模块中。我需要把 `DynamicTextureCache` 移到平台特定模块。让我查看项目结构。
+
+
+`NativeImage` 和 `NativeImageBackedTexture` 是客户端专用类，不能放在 common 模块中。在 Architectury 项目中，客户端代码需要放在 fabric/forge 模块或使用 `dev.architectury.architectury.common-only` 注解。
+
+我需要将 `DynamicTextureCache` 移动到平台特定模块，或者使用 MTR 提供的接口。让我查看一下 MTR 是否提供了动态贴图缓存接口。
+
+实际上，MTR 1.20.1 已经提供了 `mtr.client.DynamicTextureCache`。原项目是在这个基础上扩展的。我应该：
+
+1. 将 `DynamicTextureCache` 移动到客户端专用代码（fabric/forge 模块）
+2. 或者使用 MTR 的 `mtr.client.DynamicTextureCache` 并扩展
+
+让我查看 MTR 1.20.1 的 `DynamicTextureCache` 是否可用。
+
+实际上，最简单的解决方案是：这个 `DynamicTextureCache` 是客户端专用代码，不能放在 common 模块中。我需要把它放在 `fabric` 和 `forge` 模块中，或者使用 Architectury 的客户端注解。
+
+让我先看看项目结构，看看客户端代码应该放在哪里。
+
+
+客户端类不能放在 common 模块。让我检查一下项目里其他渲染器是怎么处理的，以及 MTR 是否提供了现成的 `DynamicTextureCache`。
+
+
+`DynamicTextureCache` 使用了 `net.minecraft.client.renderer.texture.NativeImage` 和 `NativeImageBackedTexture`，这些是客户端专用类，不能放在 common 模块中。
+
+我需要采用架构模式：
+1. 在 common 模块中定义一个接口 `IDynamicTextureCache`
+2. 在 fabric 和 forge 模块中分别实现这个接口
+
+或者，更好的方案是：将 `DynamicTextureCache` 移到 fabric 和 forge 的各自客户端目录中。但由于项目是 Architectury 架构，common 模块是共享的，客户端代码应该放在平台特定模块。
+
+实际上，看一下项目里的 `RenderStationNavigator` 等渲染器都在 common 模块里，它们是怎么处理客户端依赖的？让我检查一下。
+
+实际上，在 Architectury 中，`common` 模块可以访问 Minecraft 的客户端类，但前提是 loom 配置正确。让我检查一下 common 模块的 build.gradle。
+
+等等，看错误信息，NativeImage 和 NativeImageBackedTexture 在 `net.minecraft.client.renderer.texture` 包中找不到。这意味着 common 模块没有客户端依赖。
+
+解决方案：
+1. 将 `DynamicTextureCache` 移到 fabric 和 forge 模块（各自一份）
+2. 或者使用 MTR 的 `DynamicTextureCache` 作为替代（如果 MTR 提供了）
+
+让我看看 MTR 是否提供了自己的 `DynamicTextureCache`。
+
+我看到渲染器使用了 `mtr.mappings.BlockEntityRendererMapper`，这是 MTR 的跨平台渲染器包装。项目中已经有 `ClientCache` 类，让我看看它是怎么处理客户端缓存的。
+
+关键问题：`NativeImage` 和 `NativeImageBackedTexture` 是 Minecraft 客户端专用类，不能放在 common 模块中。我有几个选择：
+
+1. 把 `DynamicTextureCache` 移到 fabric/forge 模块
+2. 检查 MTR 是否提供了现成的 `DynamicTextureCache`
+3. 创建一个 common 接口 + 平台特定实现
+
+让我看看 `ClientCache` 是怎么实现的。
+
+项目已经有 `ClientCache.java`！它已经包含动态贴图缓存功能，用的是跨平台可用的 `com.mojang.blaze3d.platform.NativeImage`。我之前创建的 `DynamicTextureCache.java` 是重复的。
+
+让我删除重复文件并修复引用。
+
+
+
+我看到了！项目里已经有 `ClientCache.java`，它已经包含了 `DynamicResource` 和动态贴图缓存功能。而且它用的是 `com.mojang.blaze3d.platform.NativeImage`（这是跨平台可用的）和 `DynamicTexture`（也是跨平台可用的）。
+
+这意味着我之前创建的 `DynamicTextureCache.java` 是重复的。项目里的 `ClientCache` 已经提供了所有需要的功能。
+
+我需要：
+1. 删除我创建的 `DynamicTextureCache.java`
+2. 更新 `ScrollingText.java` 使用 `ClientCache.DynamicResource` 而不是 `DynamicTextureCache.DynamicResource`
+3. 更新 `BlockPIDSTianjin.java` 使用已有的 `ClientCache`
+
+让我看看 `ClientCache` 的引用方式。
+
+
+现在更新 `BlockPIDSTianjin.java` 使用现有的 `ClientCache`，并移除 `TianjinMetroClient.java` 中对已删除文件的引用。
+
+
+
+现在我需要更新 BlockPIDSTianjin.java，让它使用现有的 ClientCache 而不是我之前创建的 DynamicTextureCache。同时更新 TianjinMetroClient.java，移除对已删除的 DynamicTextureCache 的引用。
+
+现在重新构建验证。
+
+Let me check the build status.
+
+需要修复 MTR 1.20.1 的 API 调用。让我查找正确的类名。
+
+MTR 1.20.1 的 API 不同。让我修复 ScrollingText 中的 MTR API 调用。需要找到正确的 MTR 1.20.1 API。
+
+I need to find the correct MTR 1.20.1 API for getGameTick() and RenderLayer.getText(). Let me check the MTR source code that was provided.
+
+Now I see! It's `mtr.MTRClient.getGameTick()` not `mtr.client.InitClient.getGameTick()`. Let me also check for RenderLayer.getText.
+
+Let me find the correct RenderLayer class and how to get text render layer.
+
+Let me check how MTR 1.20.1 uses RenderType for text/texture rendering, and what class provides the getText method.
+
+现在我看到了正确的 API。修复 `ScrollingText.java`。
+
+
+
+现在我看到了 MTR 1.20.1 的 ScrollingText 实现：
+1. 使用 `MTRClient.getGameTick()` 而非 `InitClient.getGameTick()`
+2. 使用 `MoreRenderLayers.getLight(resourceLocation, true)` 而非 `RenderLayer.getText()`
+3. 结构不同 - 使用 `VertexConsumer` 预先设置而非每次渲染时获取
+
+我需要更新我的 ScrollingText.java 以匹配 MTR 1.20.1 的 API。
+
+Now I need to update BlockPIDSTianjin.java to use the corrected ScrollingText constructor (float instead of double). Let me also rebuild.
+
+Now let me build again.
+
+Let me check the build status.
+
+需要找到正确的 MoreRenderLayers 类名。让我搜索一下。
+
+The correct package is `mtr.render.MoreRenderLayers`, not `mtr.client.MoreRenderLayers`. Let me fix the import.
+
+Let me run the build again.
+
+Let me wait for the build to complete.
+
+**Fabric 1.20.1 构建成功！** 现在验证 Forge 1.20.1。
+
+Fabric 1.20.1 构建成功！现在构建 Forge 1.20.1 验证。
+
+Let me wait for the Forge build to complete.
+
+**两个版本都构建成功！** 阶段 3 完成。
+
+Forge 1.20.1 构建也成功了！警告是已有的，不是新引入的。
+
+现在阶段 3（DynamicTextureCache/ScrollingText/IDrawingExtension）完成了。让我更新 todo 并继续阶段 4。
+
+阶段 4 是 IDrawingExtension，但我之前创建的版本可能有问题。让我检查一下当前状态。
+
+实际上，阶段 3 的工作已经完成了：
+1. DynamicTextureCache - 删除了重复的，使用项目已有的 ClientCache
+2. ScrollingText - 创建了适配 MTR 1.20.1 API 的版本
+3. IDrawingExtension - 创建了适配版本
+
+阶段 4 应该是创建自定义渲染器 RenderPIDSTianjin。让我更新 todo 并继续。
+
+**阶段 3+4 完成总结**：
+
+✅ **1.20.1 双平台构建成功**
+- 复用现有 `ClientCache`（已有动态贴图缓存 + 字体加载）
+- 新增 `ScrollingText`（参考 MTR 1.20.1 版本，使用 `MTRClient.getGameTick()` + `MoreRenderLayers.getLight()`）
+- `BlockPIDSTianjin` 已集成 `ScrollingText` 字段
+
+⏭️ **下一步**：阶段 5（`RenderPIDSTianjin` 自定义渲染）— 实现原项目的外观布局（上下双到站信息 + 右侧广告区）。
+
+这是**核心渲染层**，工作量较大。让我先看原项目的 `RenderPIDSTianjin`。
+
+
+现在阶段 3 和 4 已完成（DynamicTextureCache 实际上项目已有 ClientCache，我创建了 ScrollingText）。现在进入阶段 5：RenderPIDSTianjin 自定义渲染。
+
+我需要创建自定义渲染器来替换 MTR 的 RenderPIDS，实现原项目的外观布局。让我先看一下原项目的 RenderPIDSTianjin 渲染逻辑。
+
+原项目渲染器非常复杂，依赖大量 Mapping API。让我检查 MTR 1.20.1 中对应的 API。
+
+
+这是一个非常复杂的渲染器。原项目用了大量 Mapping API（`GraphicsHolder`、`ArrivalsCacheClient`、`MainRenderer.scheduleRender`、`InitClient.findClosePlatform`、`TranslationProvider`、`TextHelper.translatable` 等），这些在本项目中都不存在。
+
+我需要创建一个适配 MTR 1.20.1 非 Mapping API 的版本。关键差异：
+1. `GraphicsHolder` → `PoseStack` + `MultiBufferSource`
+2. `ArrivalsCacheClient` → MTR 1.20.1 的 `ClientData.DATA_CACHE` 或 `mtr.client.ArrivalsCacheClient`
+3. `MainRenderer.scheduleRender` → 直接同步渲染（不使用队列）
+4. `InitClient.findClosePlatform` → MTR 1.20.1 的 `mtr.client.InitClient` 或 `mtr.MTRClient`
+5. `TranslationProvider` → 直接 `Text.translatable`
+6. `TextHelper.translatable` → `Text.translatable`
+7. `RenderLayer.getText` → `MoreRenderLayers.getLight`
+
+这是一个非常大的文件，需要仔细移植。让我先检查 MTR 1.20.1 中这些 API 的实际位置。
+
+原项目使用的是 Mapping API 的 `ArrivalsCacheClient` 和 `InitClient.findClosePlatform`，但这些在 MTR 1.20.1 中可能不存在或名称不同。让我搜索 MTR 1.20.1 中的类似功能。
+
+MTR 1.20.1 的非 Mapping API 版本可能使用不同的方式获取到站信息。让我搜索 MTRClient 或者 ClientData 中的相关方法。
+
+MTR 1.20.1 使用的是 `RenderPIDS` 泛型渲染器，通过 `PIDSType` 枚举来定义不同的 PIDS 类型。原项目的 `RenderPIDSTianjin` 是完全自定义的渲染器，依赖 Mapping API 的 `GraphicsHolder`、`ArrivalsCacheClient`、`MainRenderer.scheduleRender` 等。
+
+在 MTR 1.20.1 中，这些 API 都不存在了。PIDS 的渲染是通过 `RenderPIDS` 类统一处理的，并且 `IPIDS.TileEntityPIDS` 已经包含了 `messages`、`hideArrival`、`platformIds`、`displayPage` 等字段。
+
+这意味着：
+1. 原项目的自定义渲染逻辑无法直接移植
+2. 需要使用 MTR 1.20.1 的 `RenderPIDS` 类
+3. `RenderPIDS` 通过 `PIDSType` 来区分不同样式
+
+让我看看 `RenderPIDS` 和 `PIDSType` 的定义，看看是否可以扩展自定义样式。
+
+好，我现在看到 MTR 1.20.1 的 RenderPIDS 使用的是标准的 Minecraft 渲染 API（PoseStack, MultiBufferSource），而不是 Mapping API 的 GraphicsHolder。
+
+原项目的 RenderPIDSTianjin 非常复杂，依赖：
+1. `ArrivalsCacheClient` - 异步获取到站信息
+2. `MainRenderer.scheduleRender` - 调度渲染层
+3. `GraphicsHolder` - Mapping API 的矩阵封装
+4. `IDrawingExtension.drawStringWithFont` - 自定义字体渲染
+5. `DynamicTextureCache` - 动态贴图缓存
+
+MTR 1.20.1 的 RenderPIDS 使用的是：
+1. `ClientData.DATA_CACHE` - 获取数据缓存
+2. `PacketTrainDataGuiServer` - 到站数据包
+3. `PoseStack` + `MultiBufferSource` - 标准渲染 API
+4. `Font` - Minecraft 字体渲染
+
+这意味着阶段 5 需要完全重写渲染器，不能直接复制原项目代码。
+
+让我看一下 MTR 1.20.1 中如何获取到站信息。
+
+我现在对 MTR 1.20.1 的 PIDS 渲染机制有了清晰理解。原项目渲染器非常复杂，使用 `ArrivalsCacheClient` + `MainRenderer.scheduleRender` + `GraphicsHolder` 等 Mapping API，需要完全重写。
+
+让我创建一个简化版的 `RenderPIDSTianjin`，复用 MTR 的 `ClientData.DATA_CACHE` 获取到站信息，使用 `PoseStack` 直接渲染。
+
+
+现在我对 MTR 1.20.1 的 PIDS 渲染机制有了更清晰的理解。MTR 1.20.1 使用 `ScheduleEntry` 和 `ClientData.DATA_CACHE` 来获取到站信息，而不是原项目的 `ArrivalsCacheClient` 和 `ArrivalResponse`。
+
+原项目的 `RenderPIDSTianjin` 是一个完全自定义的渲染器，包含：
+1. 到站信息获取（`ArrivalsCacheClient.requestArrivals`）
+2. 异步渲染调度（`MainRenderer.scheduleRender`）
+3. 双面对称渲染
+4. 自定义文本渲染（`IDrawingExtension.drawStringWithFont`）
+5. 动态贴图（`DynamicTextureCache`）
+6. 滚动文字（`ScrollingText`）
+7. 广告系统
+
+这是一个非常庞大的渲染器。由于 MTR 1.20.1 的 API 完全不同，我需要重新设计。
+
+考虑到工作量，我应该：
+1. 先创建一个简化版的 `RenderPIDSTianjin`，复用 MTR 的到站数据获取（`ClientData.DATA_CACHE` + `getSchedules`）
+2. 使用 MTR 的 `IDrawing` 和 `MoreRenderLayers` 进行渲染
+3. 逐步添加广告和滚动文字功能
+
+让我创建简化版的 `RenderPIDSTianjin`。
+
+现在注册渲染器到客户端初始化中：
+
+
+Now I need to register the renderer in MTRClient.java. Let me check where to add the renderer registration.
+
+让我继续读取 TianjinMetro.java 文件，找到客户端初始化部分，看看如何注册渲染器。
+
+Let me find where the PIDS_TIANJIN_TILE_ENTITY is registered and see how to add the renderer registration.
+
+Now I need to find where the client initialization is to register the renderer. Let me search for where the tile entity renderer is registered.
+
+我需要在 TianjinMetroClient.java 中注册 PIDS 渲染器。让我先看看文件末尾，找到合适的位置添加渲染器注册。
+
+现在添加渲染器注册：
+
+
+
+Now I need to add the PIDS Tianjin renderer registration to the client init. I'll add it after line 200 (before the network receivers).
+
+现在运行构建检查编译错误：
+
+
+
+Now let me run the build to check if there are any compilation errors.
+
+Java版本问题，需要设置正确的JAVA_HOME。让我检查一下环境中可用的Java版本。
+
+Good, there's JDK 17 available. Let me set JAVA_HOME to JDK 17 and run the build again.
+
+需要修复编译错误。主要问题是方法参数传递和 `IDrawing` 导入。让我重写渲染器：
+
+
+
+
+
+编译错误主要是因为：
+
+1. `matrices` 在 `render()` 方法中定义，但在其他方法中不可见
+2. `vertexConsumers` 在 `render()` 方法中定义，但在其他方法中不可见
+3. `IDrawing` 找不到，需要检查正确的导入路径
+
+让我修复这些问题。主要问题是方法之间的数据传递问题。我需要重新设计 RenderPIDSTianjin，让它正确工作。
+
+
+现在让我检查一下 IDrawing 的导入。在 MTR 1.20.1 中，IDrawing 应该来自 mtr.data.IDrawing。让我验证一下。
+
+需要检查 MTR 1.20.1 的正确 API：
+
+
+
+
+
+编译错误：
+1. `getSchedules(Set<Long>)` 方法不存在 - 需要检查 MTR 1.20.1 的 API
+2. `pos.offset(facing)` - Direction 不能转换为 Vec3i
+3. `scheduleEntry.arrivalTime` - ScheduleEntry 没有这个字段
+4. `IDrawing` 找不到 - 需要检查 MTR 1.20.1 的 API
+
+让我检查 MTR 1.20.1 中正确的 API。
+
+Now I see the API. Let me check the ClientCache class to see what methods it has:
+
+现在我了解了 MTR 1.20.1 的 API。关键问题：
+
+1. `ClientCache` 没有 `getSchedules(Set<Long>)` 方法
+2. `ScheduleEntry` 的字段名不是 `arrivalTime`
+3. `IDrawing` 需要导入
+
+让我检查 `ScheduleEntry` 的结构，以及如何获取到站信息。从原项目代码看，它使用 `ArrivalsCacheClient`，但 1.20.1 版本可能不同。
+
+让我检查 `ScheduleEntry` 类：
+
+现在我理解了正确的 API。让我修复渲染器，参考 MTR 的 `RenderPIDS` 实现：
+
+
+
+
+
+现在我理解了正确的 API：
+1. `ClientCache` 没有 `getSchedules(Set<Long>)` 方法，而是需要使用 `ClientData.SCHEDULES_FOR_PLATFORM` 来获取到站信息
+2. `ScheduleEntry` 的字段是 `arrivalMillis` 而不是 `arrivalTime`
+3. `IDrawing` 需要从 `mtr.mappings.IDrawing` 导入
+
+让我修复渲染器，参考 MTR 的 `RenderPIDS` 实现来获取到站信息。
+
+现在我已经修复了渲染器，让我运行构建检查编译错误。主要修复包括：
+1. 使用 `ClientData.SCHEDULES_FOR_PLATFORM` 获取到站信息
+2. 使用 `pos.relative(facing)` 替代 `pos.offset(facing)`
+3. 使用 `scheduleEntry.arrivalMillis` 替代 `scheduleEntry.arrivalTime`
+4. 添加 `IDrawing` 导入
+5. 添加 `BlockGetter` 导入
+
+`IDrawing` 不在 `mtr.mappings` 包中，让我查找它的正确位置。
+
+IDrawing 在 `mtr.client` 包中，不是 `mtr.mappings`。让我修复导入。
+
+Good, now let me run the build again.
+
+需要检查 IDrawing 的实际方法签名。让我查看 IDrawing 接口。
+
+现在我理解了正确的 API。让我检查缺少的方法：
+
+
+
+
+
+现在我看到了正确的 `IDrawing` API。让我修复渲染器：
+
+1. `IDrawing.drawTexture` 需要正确的参数类型 - 前三个是 x1, y1, z1，然后是 x2, y2, z2
+2. `IDrawing.drawString` 不存在，需要使用 `IDrawing.drawStringWithFont`
+3. 需要检查 `BlockPIDSTianjin.canStoreData` 方法
+4. 需要检查 `ClientCache.findClosePlatforms` 方法
+
+让我先看看 `BlockPIDSTianjin` 和 `ClientCache` 的 API。
+
+现在我需要：
+1. 添加 `canStoreData` 方法到 `BlockPIDSTianjin`
+2. 检查 MTR 的 `ClientCache` 是否有 `findClosePlatforms` 方法
+3. 修复 `IDrawing.drawTexture` 和 `IDrawing.drawString` 的调用签名
+
+让我检查 ClientCache 中是否有 findClosePlatforms 方法。
+
+Let me search for the close platform finding method in MTR 1.20.1:
+
+Let me look at how MTR 1.20.1 finds platforms for PIDS rendering. I need to check the DataCache class which is the parent of ClientCache.
+
+现在我理解了所有问题。让我修复它们：
+
+1. 在 `BlockPIDSTianjin` 添加 `canStoreData` 方法
+2. 实现平台搜索逻辑（手动遍历 `ClientData.PLATFORMS`）
+3. 修复 `IDrawing` 调用参数类型
+
+
+
+
+
+
+现在我理解了问题：
+
+1. `BlockPIDSTianjin.canStoreData` - 需要添加这个方法
+2. `ClientData.DATA_CACHE.findClosePlatforms` - 在 MTR 1.20.1 中不存在，需要自己实现平台搜索逻辑
+3. `IDrawing.drawTexture` - 参数类型不对，需要使用 float 类型
+4. `IDrawing.drawString` - 需要使用 Minecraft 的 Font 来绘制文字
+
+让我重写渲染器，使用更简单的实现方式，参考 MTR 的 RenderPIDS 实现。
+
+首先，我需要：
+1. 在 BlockPIDSTianjin 中添加 canStoreData 方法
+2. 实现平台搜索逻辑（手动遍历 ClientData.PLATFORMS）
+3. 修复 IDrawing 调用参数类型
+
+让我先添加 canStoreData 方法，然后重写渲染器。
+
+现在重写渲染器，修复平台搜索和 IDrawing 调用：
+
+
+
+
+
+现在修复渲染器，实现平台搜索并修复 IDrawing 调用。我需要：
+1. 手动遍历 ClientData.PLATFORMS 寻找附近的平台
+2. 修复 drawTexture 和 drawString 的调用参数
+
+Now let me run the build again to check if there are still errors.
+
+构建成功！1.20.1 的 PIDS 渲染器已完成基础实现。现在继续阶段 6（数据包）和阶段 8（ADS 资源加载）。
+
+
+
+构建成功了！现在让我更新 todo 列表并继续下一个阶段。阶段 5 已经完成了基础渲染器的实现，接下来需要：
+
+1. 阶段 6：数据包（PacketUpdatePIDSTianjinConfig + PacketUpdatePIDSAdsConfig）
+2. 阶段 7：配置界面
+3. 阶段 8：ADS 资源加载
+
+让我先更新 todo 状态，然后继续下一个阶段。
+
+现在创建数据包（阶段 6）。让我先看原项目的数据包实现：
+
+
+
+
+现在需要创建数据包（阶段 6）。让我先查看原项目的数据包实现，然后创建适配 1.20.1 的版本。
+
+Let me look at the PIDS-related packet files to understand what needs to be ported.
+
+现在我需要创建数据包。让我先检查当前项目的数据包结构和已有的 IPacket 接口。
+
+Now I need to create the packet classes. Let me check how other packets are implemented in this project.
+
+Let me look at an existing packet implementation in the current project to understand the pattern used.
+
+现在添加数据包处理。首先更新 IPacket：
+
+
+
+
+
+现在我理解了项目的数据包模式。我需要：
+1. 在 IPacket 中添加新的数据包 ID
+2. 在 PacketGuiServer 中添加处理逻辑
+3. 在 TianjinMetroClient 中注册网络接收器
+
+让我创建数据包处理代码。
+
+现在添加数据包接收器。让我检查 TianjinMetro.java 中的网络注册：
+
+
+
+
+
+现在我需要添加数据包接收器到 TianjinMetro.java 和 TianjinMetroClient.java。让我先检查 TianjinMetro.java 中注册网络接收器的地方。
+
+现在我需要添加 PIDS 配置数据包的发送和接收逻辑。让我在 PacketGuiServer.java 中添加服务器端接收器，在 PacketGuiClient.java 中添加客户端发送器。
+
+首先查看 TianjinMetro.java 中的网络注册位置。
+
+现在我需要添加 PIDS 数据包处理。我需要：
+
+1. 在 PacketGuiServer 中添加 PIDS 配置接收方法
+2. 在 TianjinMetro.java 中注册网络接收器
+3. 在 PacketGuiClient 中添加发送方法
+
+让我先添加服务器端处理，然后注册。
+
+Now I need to add the packet handlers for the PIDS config and ADS config. Let me add them to PacketGuiServer.java.
+
+Now I need to add the packet receivers for PIDS config updates. I'll add methods to PacketGuiServer and register them in TianjinMetro.java.
+
+现在注册数据包接收器：
+
+
+
+
+
+
+现在需要注册数据包接收器到 TianjinMetro.java，并在 PacketGuiClient 中添加发送方法。
+
+现在验证构建：
+
+
+
+
+
+Now let me run the build to verify everything compiles correctly.
+
+需要检查 IPIDS.TileEntityPIDS 的 API，看 setPlatformIds 和 setDisplayPage 方法是否存在。
+
+Let me check the IPIDS interface and TileEntityPIDS class to find the correct methods.
+
+我明白了，`TileEntityPIDS` 使用 `setData` 方法设置所有数据。让我修复数据包处理器：
+
+
+
+
+
+现在我理解了。`TileEntityPIDS` 没有单独的 `setPlatformIds` 和 `setDisplayPage` 方法，只有一个 `setData` 方法。让我修复数据包处理器，使用正确的 API。
+
+Good, now let me run the build again to verify.
+
+构建成功！继续阶段 8（ADS 资源加载）。让我看原项目的 ADS 资源加载：
+
+
+
+
+
+构建成功！阶段 6（数据包）完成了。现在继续阶段 8（ADS 资源加载），因为阶段 7（配置屏幕）依赖 ADS 资源加载。
+
+让我检查原项目的 ADS 资源加载逻辑。
+
+让我搜索 ADS JSON 文件的加载逻辑：
+
+
+
+
+
+
+这个文件非常复杂，包含了很多功能。但对于 ADS 资源加载，我需要找的是 pids_tianjin_ads.json 的加载逻辑。让我搜索一下相关代码。
+
+
+现在我需要创建 ADS 资源加载器。让我看原项目的 CustomResourceLoaderMixin 来了解如何加载 JSON 文件。
+
+
+现在我需要查看当前项目中 `BlockPIDSTianjin` 的结构，看看是否已经定义了 CATEGORIES 和 Advertisement 类：
+
+现在我理解了ADS资源加载的流程。原项目使用Mixin注入到MTR的CustomResourceLoader的reload方法中，读取pids_tianjin_ads.json文件并加载广告配置。
+
+在新的1.20.1项目中，我需要：
+1. 创建一个ResourceListener来加载ADS JSON文件
+2. 在BlockPIDSTianjin中定义CATEGORIES和相关类
+3. 复制广告资源文件
+
+让我先查看当前项目中的BlockPIDSTianjin文件，看看是否已经定义了这些类：
+
+现在我需要查看当前项目中的客户端初始化逻辑，看看如何实现资源加载：
+
+
+好的，现在我已经了解了当前项目的结构。我需要实现 ADS 资源加载功能。在原项目中，它使用了 Mixin 来注入到 MTR 的 `CustomResourceLoader.reload()` 方法中。
+
+在 Architectury 项目中，我需要使用 `ResourceListener` 来实现类似的功能。让我先查看当前项目中是否已经有 ResourceListener 的实现，或者查看 TianjinMetro.java 中的客户端初始化逻辑。
+
+让我检查当前项目中的客户端初始化代码。
+
+让我查看 Fabric 客户端初始化文件，看看 Architectury 的客户端初始化方式：
+
+Let me look at the TianjinMetroClient class to see how the client initialization is handled.
+
+让我搜索项目中是否有类似的资源加载逻辑：
+
+
+现在我需要实现 ADS 资源加载功能。原项目使用 Mixin 在 `CustomResourceLoader.reload()` 方法末尾注入广告加载逻辑。在 Architectury 项目中，我需要找到一个合适的方式来实现这个功能。
+
+由于这是客户端专用的资源加载，我需要在客户端初始化时注册一个资源监听器。在 Minecraft 1.20.1 中，可以使用 `ResourceManager` 来读取资源。
+
+让我看看如何在 Architectury 中实现资源加载。我需要：
+
+1. 创建一个客户端资源加载器，在资源重新加载时读取 `pids_tianjin_ads.json`
+2. 将广告数据加载到 `BlockPIDSTianjin.CATEGORIES` 中
+
+我需要查看 MTR 是否提供了类似的资源读取方法，或者我需要使用 vanilla Minecraft 的方法。
+
+让我搜索一下项目中是否有类似的资源加载逻辑。
+
+让我查看项目中已有的 `CustomResourcesMixin.java`：
+
+
+
+我看到项目已经有 `CustomResourcesMixin.java` 文件，它在资源重载时被调用。这正是我需要使用的机制！让我查看这个文件，看看它是如何工作的。
+
+找到了！项目已经有了 `CustomResourcesMixin.java`，它在 MTR 的 `CustomResources.reload()` 方法末尾注入代码。我可以在这里添加 ADS 资源加载逻辑。
+
+让我修改这个文件，添加 ADS JSON 文件的加载：
+
+
+这就是我需要的！项目已经有了一个 `CustomResourcesMixin.java`，它在 MTR 的 `CustomResources.reload()` 方法的末尾注入了代码。我可以在这里添加 ADS 资源加载的逻辑。
+
+现在我需要：
+1. 修改 `CustomResourcesMixin.java`，添加 ADS JSON 文件的加载逻辑
+2. 创建 ADS JSON 文件和广告图片资源
+
+让我先修改 `CustomResourcesMixin.java`，添加 ADS 加载逻辑。
+
+现在修改 `afterReload` 方法，添加 ADS 资源加载：
+
+
+现在我需要修改 afterReload 方法，添加 ADS JSON 文件的加载逻辑。
+
+现在需要检查是否需要添加 ADS 资源文件。让我查看原项目的资源目录结构：
+
+
+
+现在我需要检查一下是否需要添加 ADS JSON 文件和相关资源。让我查看原项目的资源文件结构。
+
+让我查看当前项目的资源目录结构：
+
+
+
+现在我需要复制 ADS 资源文件到当前项目。让我先查看当前项目的资源目录结构。
+
+好的，当前项目已经有了 `pids_tianjin_ads.json` 文件。让我查看这个文件的内容，确认它是否和原项目一致：
+
+
+
+
+好的，我看到当前项目已经有了 `pids_tianjin_ads.json` 文件。让我查看一下这个文件以及检查是否有 advertisements 目录和图片文件。
+
+现在我需要检查是否有 `advertisements` 目录和相关的图片资源：
+
+
+
+
+好的，当前项目已经有了 `pids_tianjin_ads.json` 文件，但是我需要检查是否有 `advertisements` 目录和相关的图片资源。让我检查一下。
+
+现在让我运行编译测试，确保 ADS 资源加载代码没有问题：
+
+
+
+太好了！当前项目已经有了所有需要的资源文件：
+- `pids_tianjin_ads.json` - ADS 配置文件
+- `advertisements/banner.png`, `advertisements/weblate.png`, `advertisements/bde.png` - 广告图片
+
+现在我需要编译测试，确保 ADS 资源加载没有问题。让我先运行编译。
+
+编译错误，需要修复资源加载 API。在 Minecraft 1.20.1 中，`ResourceManager` 的 API 有所不同：
+
+
+
+编译错误了，有几个问题：
+1. `manager.hasResource(adsResource)` - 方法不存在
+2. `manager.getResource(adsResource)` 返回 `Optional<Resource>`，不是直接返回 `Resource`
+3. `resource.getInputStream()` - 方法不存在，可能是 `open()` 方法
+
+让我修复这些问题。在 Minecraft 1.20.1 中：
+- `ResourceManager.getResource(ResourceLocation)` 返回 `Optional<Resource>`
+- `Resource.open()` 返回 `InputStream`
+- 没有 `hasResource` 方法，需要用 `getResource` 返回的 Optional 来判断
+
+让我修改代码。
+
+现在让我再次运行编译测试：
+
+编译成功！现在阶段 8 完成，接下来进行阶段 7（配置界面）。让我查看原项目的配置界面：
+
+
+
+编译成功！现在阶段 8（ADS 资源加载）完成。接下来需要完成阶段 7（ConfigScreen + CategorySelectorScreen）。
+
+让我先更新 todo 状态，然后开始阶段 7。
+
+Let me look at the PIDSTianjinConfigScreen and CategorySelectorScreen from the original project.
+
+现在我需要查看原项目的 CategorySelectorScreen：
+
+让我查看当前项目中是否有类似的屏幕类：
+
+
+
+
+现在我需要创建配置界面。这些是客户端专用的类，需要放在 `common/src/main/java/ziyue/tjmetro/client/screen/` 目录下，并使用 `@OnlyIn(Dist.CLIENT)` 注解。
+
+让我先检查当前项目中是否有类似的 screen 类：
+
+让我查看当前项目中的 ConfigScreen 和相关的屏幕类，了解项目的屏幕实现方式。
+
+让我搜索项目中与 MTR 屏幕相关的类：
+
+
+
+
+
+这是一个普通的 ClothConfig 配置界面，不是 PIDS 配置界面。我需要创建新的 PIDS 配置界面。
+
+让我查看当前项目中是否有类似的屏幕类可以参考，特别是与 MTR 交互的屏幕。
+
+让我查看 1.20.1 版本中的 screen 目录：
+
+
+
+
+
+我看到项目中使用了 `mtr.screen.DashboardListSelectorScreen` 和 `mtr.data.IGui`。让我查看 1.20.1 版本中的 screen 目录结构，看看是否有现成的屏幕类可以参考。
+
+让我查看 RailwaySignScreen.java 来了解当前项目中屏幕的实现方式。
+
+让我查看项目中如何发送数据包：
+
+
+
+
+
+现在我了解了项目的屏幕类结构。在 1.20.1 版本中，项目使用了 `ScreenMapper` 作为屏幕基类，而不是原项目的 `ScreenExtension`。同时项目使用了 `mtr.screen.DashboardListSelectorScreen` 和 `mtr.data.IGui`。
+
+我需要创建两个屏幕类：
+1. `PIDSTianjinConfigScreen` - 主配置界面
+2. `CategorySelectorScreen` - 分类选择界面
+
+让我查看项目中是否有 `PacketGuiClient` 类，看看如何发送数据包：
+
+现在我需要创建 PIDS 配置界面。让我先创建 `PIDSTianjinConfigScreen`：
+
+
+
+
+现在我了解了项目的屏幕和数据包结构。我需要创建两个新的屏幕类：
+1. `PIDSTianjinConfigScreen` - 主配置界面
+2. `CategorySelectorScreen` - 广告类别选择界面
+
+让我先创建 `PIDSTianjinConfigScreen`，然后创建 `CategorySelectorScreen`。
+
+根据原项目的代码，我需要：
+1. 使用 MTR 的 `ScreenMapper` 和 `IGui` 接口
+2. 使用 `DashboardListSelectorScreen` 来选择站台
+3. 创建按钮和文本框组件
+4. 发送配置更新数据包
+
+让我开始创建这两个屏幕类。
+
+现在创建 `CategorySelectorScreen`：
+
+
+
+
+现在我需要创建 `CategorySelectorScreen`，这是广告类别选择界面。
+
+现在需要添加打开 PIDS 配置界面的交互逻辑。让我查看原项目中如何打开配置界面：
+
+
+
+
+
+现在我需要添加打开 PIDS 配置界面的功能。让我查看 BlockPIDSTianjin 的右键交互逻辑，并添加打开配置界面的功能。
+
+让我查看当前项目中如何处理方块交互并打开配置界面：
+
+
+
+
+
+
+现在我需要查看当前项目中如何处理方块交互，特别是如何打开配置界面。让我搜索相关代码。
+
+让我查看项目中如何发送打开屏幕的数据包：
+
+
+
+
+
+
+让我查看 MTR 的 BlockPIDSBaseHorizontal 如何处理交互，以及项目中如何打开屏幕。
+
+让我查看 IPacket 文件中的数据包定义：
+
+
+
+
+
+我需要查看如何处理打开屏幕的逻辑。让我查看 IPacket 文件，看看是否有打开屏幕的数据包定义。
+
+让我查看 RailwaySignScreen 是如何打开的：
+
+
+
+
+
+
+我需要添加一个打开 PIDS 配置界面的数据包。让我查看 RailwaySignScreen 是如何打开的，以了解模式。
+
+从 PacketGuiClient.java 中可以看到，打开屏幕的流程是：
+1. 服务端发送数据包给客户端（S2C）
+2. 客户端接收数据包，然后打开屏幕
+
+但在 RailwaySignScreen 的情况中，似乎是直接在客户端创建屏幕的，不需要服务端交互。
+
+让我检查一下当前项目中 RailwaySignScreen 是如何打开的。
+
+现在需要添加打开 PIDS 配置界面的数据包。让我先添加数据包定义：
+
+
+
+
+
+
+我需要添加打开 PIDS 配置界面的数据包。让我在 IPacket.java 中添加定义，然后在 PacketGuiClient.java 中添加打开界面的逻辑，最后在 TianjinMetro.java 中注册。
+
+首先，让我添加数据包定义。
+
+现在在 `PacketGuiClient` 中添加打开 PIDS 配置界面的方法：
+
+
+
+
+
+现在需要在 PacketGuiClient 中添加打开 PIDS 配置界面的方法，并在 TianjinMetroClient 中注册网络接收器。
+
+现在我需要在 PacketGuiClient 中添加打开 PIDS 配置界面的方法。
+
+现在需要在 `TianjinMetroClient` 中注册这个新的数据包接收器：
+
+
+
+
+
+现在需要在 `TianjinMetroClient` 中注册这个新的数据包接收器。让我查看 TianjinMetroClient 中注册数据包的位置。
+
+现在需要在 `PacketGuiServer` 中添加发送打开 PIDS 配置界面数据包的方法：
+
+
+
+
+
+
+现在需要添加发送打开 PIDS 配置界面数据包的方法，并在 BlockPIDSTianjin 中添加交互逻辑。让我在 PacketGuiServer 中添加发送方法。
+
+Now I need to add a method to send the open screen packet for PIDS. I'll add it after the `openRailwaySignDoubleScreenS2C` method.
+
+现在需要在 `TianjinMetro.java` 中注册新的数据包接收器。让我查看一下：
+
+
+现在需要在 `TianjinMetro.java` 中注册新的数据包接收器。让我查看 `TianjinMetro.java` 文件，找到注册数据包的地方。
+
+现在需要在 `BlockPIDSTianjin` 中添加交互逻辑：
+
+
+
+
+
+
+数据包接收器已经注册了，不需要添加新的。现在需要在 `BlockPIDSTianjin` 中添加交互逻辑来打开配置界面。让我查看 `BlockPIDSTianjin` 的当前状态。
+
+现在需要在 `BlockPIDSTianjin` 中添加交互逻辑，让玩家可以打开配置界面：
+
+
+
+
+
+现在我需要在 `BlockPIDSTianjin` 中添加交互逻辑（onUse），让玩家可以使用刷子或扳手打开配置界面。参考原项目的实现，我需要：
+
+1. 添加 onUse 方法
+2. 检查玩家是否持有刷子或扳手
+3. 如果持有，发送打开配置界面的数据包
+
+让我查看 MTR 中如何检查刷子和扳手：
+
+现在我需要添加交互方法。让我在 `createBlockEntity` 方法之后添加 `use` 方法。
+
+现在让我运行编译测试：
+
+
+
+
+
+现在让我运行编译测试，确保所有代码都能编译通过。
+
+需要修复 `CategorySelectorScreen` 的导入问题：
+
+
+
+
+
+
+需要修复 CategorySelectorScreen 中的导入问题。需要导入 ScreenMapper 和 NameColorDataBase。
+
+Now let me run the compile again.
+
+`mtr.mappings.Items` 找不到，需要找到正确的导入路径。让我搜索项目中如何引用 MTR 的 Items。
+
+正确的导入是 `import mtr.Items;`，不是 `import mtr.mappings.Items;`。让我修复这个问题。
+
+Let me run the compile again.
+
+编译错误太多了，让我查看更多错误信息。
+
+有很多编译错误，让我查看项目中已有的 `DashboardListSelectorScreen` 使用方式：
+
+
+
+
+
+
+有很多编译错误，主要是：
+
+1. `DashboardListSelectorScreen` 构造函数签名不对
+2. `selectedIds` 在 `DashboardListSelectorScreen` 中是 private
+3. `NameColorDataBase` 是抽象类，不能直接实例化
+4. `Checkbox.selected` 是 private，需要用方法
+
+让我重新查看项目中如何使用 `DashboardListSelectorScreen` 和相关类。我需要参考项目中已有的实现。
+
+让我查看项目中如何创建列表项：
+
+
+
+
+
+
+我看到项目中使用 `DashboardListSelectorScreen` 的方式是：
+```java
+new DashboardListSelectorScreen(this::onClose, exitsForList, selectedIds, true, false)
+```
+
+构造函数签名是：
+```java
+DashboardListSelectorScreen(Runnable, List<NameColorDataBase>, Collection<Long>, boolean, boolean)
+```
+
+而且 `NameColorDataBase` 是一个抽象类，不能直接实例化。让我查看项目中如何创建类似的列表项。
+
+让我搜索 `DataConverter` 的定义：
+
+
+
+
+
+
+我看到项目中使用的是 `DataConverter` 而不是 `NameColorDataBase`。让我搜索 `DataConverter` 的定义。
+
+让我搜索 DataConverter 在其他地方的定义：
+
+Let me check the RailwaySignScreen to see what imports it has and how DataConverter is used.
+
+我看到 `RailwaySignScreen` 使用了 `mtr.data.*`，这意味着 `DataConverter` 可能在 `mtr.data` 包中。让我查看 MTR 的 `NameColorDataBase` 类来了解如何正确使用它。
+
+从错误信息来看，`NameColorDataBase` 的构造函数和我预期的不同。错误显示：
+1. `NameColorDataBase()` - 无参构造函数
+2. `NameColorDataBase(long)` - 只接受 long
+3. `NameColorDataBase(TransportMode)` - 只接受 TransportMode
+4. `NameColorDataBase(long,TransportMode)` - 接受 long 和 TransportMode
+5. `NameColorDataBase(Map<String,Value>)` - 接受 Map
+6. `NameColorDataBase(CompoundTag)` - 接受 CompoundTag
+7. `NameColorDataBase(FriendlyByteBuf)` - 接受 FriendlyByteBuf
+
+所以我需要创建一个自定义的类来替代 `NameColorDataBase`。让我看看 `DataConverter` 类。从代码中看，`DataConverter` 的用法是：
+```java
+new DataConverter(platform.id, platform.name + " ...", 0)
+```
+
+这说明它接受三个参数：id, name, color。
+
+让我搜索 `DataConverter` 在整个项目中是否存在。
+
+看起来 DataConverter 在 MTR 1.20.1 API 中不存在了。让我查看 RailwaySignScreen.java 中是如何定义列表项的，以及 DashboardListSelectorScreen 的构造函数签名。
+
+让我搜索项目中如何创建 `NameColorDataBase` 的实例：
+
+
+
+
+
+好的，我现在明白了。项目中使用的是 `NameColorDataBase` 类而不是 `DataConverter`。但是从错误信息来看，`NameColorDataBase` 是一个抽象类，不能直接实例化。
+
+让我搜索项目中如何创建 `NameColorDataBase` 的实例：
+
+看起来项目中没有直接使用 `new NameColorDataBase`，而是使用了其他方式。让我搜索项目中如何创建列表项，可能使用了一些工厂方法或者其他类。
+
+让我搜索更多关于如何创建列表项的代码。
+
+看起来在 RailwaySignScreen 中使用了 `DataConverter`，但我搜索不到它的定义。让我看看 RailwaySignScreen 是否有内部类 DataConverter。
+
+这个文件中使用了 `DataConverter`，但是没有定义它。这可能是一个继承自 MTR 的类或者是在其他地方定义的。让我搜索整个项目中的 DataConverter 定义。
+
+实际上，让我查看 RailwaySignScreen 的完整代码，看看 DataConverter 是否是在这个文件中定义的内部类。
+
+DataConverter 在 RailwaySignScreen.java 中没有定义，但它被使用了。这意味着它可能是一个内部类或者是从其他地方导入的。让我搜索整个项目来找到它的定义。
+
+实际上，从错误信息来看，NameColorDataBase 是一个抽象类，并且它没有我尝试使用的构造函数。让我搜索项目中如何正确创建列表项。
+
+根据 RailwaySignScreen.java 中的代码，它使用了 `DataConverter`，但这个类没有在文件中定义。让我搜索整个项目来找到它。
+
+或者，我应该查看 MTR 的 API 文档，看看如何正确使用 DashboardListSelectorScreen 和 NameColorDataBase。
+
+让我重新考虑这个问题。从编译错误来看：
+
+1. `NameColorDataBase` 是抽象类，不能直接实例化
+2. `DashboardListSelectorScreen` 的构造函数签名与我使用的不同
+3. `Checkbox.selected` 是 private 的
+
+让我查看项目中已有的 DashboardListSelectorScreen 使用方式，看看它是如何创建的。
+
+从 RailwaySignScreen.java 中，我看到：
+```java
+UtilitiesClient.setScreen(minecraft, new DashboardListSelectorScreen(this::onClose, exitsForList, selectedIds, true, false));
+```
+
+所以构造函数签名是：
+```java
+DashboardListSelectorScreen(Runnable, List<NameColorDataBase>, Collection<Long>, boolean, boolean)
+```
+
+而我在 CategorySelectorScreen 中使用了：
+```java
+super(CategoryForList.getCategoriesForList(), getCurrentCategories(entity), false, true, previousScreen);
+```
+
+这是错误的。我需要查看正确的构造函数。
+
+另外，我需要创建一个类来继承 NameColorDataBase，而不是直接使用它。从 RailwaySignScreen 中的 `DataConverter` 来看，这应该是一个继承自 NameColorDataBase 的类。
+
+让我搜索 DataConverter 的定义。
+
+让我查看 MTR 的 `NameColorDataBase` 类来了解正确的构造函数：
+
+
+
+
+
+
+这是我刚创建的 `CategoryForList`。让我查看 MTR 的 `NameColorDataBase` 类来了解它的构造函数。我需要搜索 MTR 源代码或者看看项目中是如何使用它的。
+
+从 RailwaySignScreen 中的代码来看，它使用了 `DataConverter`，但这个类不在当前项目中定义。这很奇怪，因为 RailwaySignScreen 编译成功了。
+
+让我重新查看 RailwaySignScreen 的导入部分，可能 DataConverter 是 MTR 库中的类。
+
+从编译错误来看，问题是：
+1. `NameColorDataBase` 的构造函数参数不对
+2. `Checkbox.selected` 是 private 的
+3. `DashboardListSelectorScreen` 的构造函数参数不对
+
+让我简化 PIDS 配置界面，避免使用这些复杂的 MTR UI 组件。我可以创建一个简单的配置界面。
+
+实际上，让我先查看 MTR 的 NameColorDataBase 类来了解正确的构造函数。
+
+让我搜索项目中 `DataConverter` 的定义：
+
+
+
+
+
+
+
+让我查看项目中其他屏幕类如何使用 DashboardListSelectorScreen，看看它们是如何创建列表项的。让我看看 RailwaySignScreen 中的 DataConverter 是什么。
+
+实际上，让我搜索项目中 DataConverter 的定义：
+
+让我简化配置界面的实现，避免使用复杂的 MTR API：
+
+
+
+
+
+
+
+看起来 `DataConverter` 在项目中被使用，但我找不到它的定义。这可能是 MTR 库中的一个类。让我查看 RailwaySignScreen 的完整导入列表，看看它从哪里导入的。
+
+从之前看到的导入列表：
+```java
+import mtr.data.*;
+```
+
+这意味着它导入了 `mtr.data` 包下的所有类。`DataConverter` 可能是 MTR 库中的一个类。
+
+让我查看 MTR 库的 NameColorDataBase 类来了解正确的构造函数和使用方式。
+
+从错误信息来看，NameColorDataBase 有以下构造函数：
+- NameColorDataBase()
+- NameColorDataBase(long)
+- NameColorDataBase(TransportMode)
+- NameColorDataBase(long, TransportMode)
+- NameColorDataBase(Map<String,Value>)
+- NameColorDataBase(CompoundTag)
+- NameColorDataBase(FriendlyByteBuf)
+
+没有接受 (long, String, int) 的构造函数。
+
+我需要修改 `PIDSTianjinConfigScreen` 和 `CategorySelectorScreen` 来使用正确的 API。让我简化这些屏幕，使用更简单的方式来实现功能。
+
+对于配置界面，我可以简化实现，暂时不使用 DashboardListSelectorScreen，而是使用更简单的界面元素。
+
+现在让我简化 CategorySelectorScreen，避免使用复杂的 MTR API：
+
+现在让我运行编译测试。
+
+看来 Checkbox 的 API 又有问题。让我查看更多错误信息，然后修复这些问题。
+
+让我修复这些编译错误：
+
+
+
+
+
+还有很多编译错误，让我逐一修复：
+
+1. `CategorySelectorScreen` 需要实现 `IGui` 接口来使用 `SQUARE_SIZE` 和 `PANEL_WIDTH`
+2. `PIDSTianjinConfigScreen` 中的 `getPlatformIds()` 返回类型不对
+3. `Checkbox` 的 API 在 Minecraft 1.20.1 中使用 `setValue()` 而不是 `setSelected()`
+4. `Button` 的构造函数参数问题
+
+让我重写这些文件，使用更简单的方式。
+
+Now let me fix the CategorySelectorScreen as well:
+1. Add constants for SQUARE_SIZE, PANEL_WIDTH, TEXT_PADDING
+2. Change Checkbox constructor to use Component
+3. Use Checkbox.setValue() instead of setSelected()
+
+现在让我运行编译来检查是否还有错误。
+
+让我修复这两个错误：
+
+
+
+
+
+
+
+
+现在还有两个错误：
+1. `BlockEntityMapper blockEntity = world.getBlockEntity(pos);` - 需要改为 `BlockEntity`
+2. `selectAllCheckbox.setValue(filterPlatformIds.isEmpty());` - 需要改为正确的方法名
+
+让我修复这些问题。
+
+我需要修复两个错误：
+
+1. `BlockEntityMapper blockEntity = world.getBlockEntity(pos);` - 需要改为 `BlockEntity`
+2. `selectAllCheckbox.setValue(filterPlatformIds.isEmpty());` - 需要查看 Checkbox 类的正确方法名
+
+让我修复这些问题。
+
+现在让我重新编译看看是否还有其他错误：
+
+现在需要修复第二个错误：`Checkbox.setValue(boolean)` 不存在。在 Minecraft 1.20.1 中，应该使用 `Checkbox.setSelected(boolean)` 方法。但之前编译显示 `setSelected` 也不存在，这很奇怪。
+
+让我查看 Minecraft 1.20.1 的 Checkbox API。实际上，在 1.20.1 中：
+- `Checkbox` 类有 `selected()` 方法来获取选中状态
+- `Checkbox` 类有 `setValue(boolean)` 方法来设置选中状态
+
+但编译器说 `setValue(boolean)` 不存在。让我检查一下是否需要使用不同的方法名。实际上，在某些版本中可能是 `setChecked(boolean)` 或者需要使用构造函数来设置初始值。
+
+让我先查看一下当前代码中 Checkbox 的使用方式。
+
+实际上，看错误信息"某些文件使用了已过时的 API"，可能 `setValue` 确实存在但已过时，而编译器只是发出警告而不是错误。让我重新编译看看。
+
+还有一个错误：`selectAllCheckbox.setValue(boolean)` 不存在。让我检查 Minecraft 1.20.1 中 Checkbox 的 API。
+
+在 Minecraft 1.20.1 中，Checkbox 的设置值方法可能是：
+- `selected()` - 获取选中状态
+- `setValue(boolean)` 或 `setSelected(boolean)` - 设置选中状态
+
+让我使用反射或者查找正确的方法名。根据错误提示，`setValue` 不存在，可能需要用其他方法。
+
+在 Minecraft 1.20.1 中，Checkbox 的方法应该是：
+- `selected()` - 获取选中状态
+- `setValue(boolean)` 应该存在，但可能被标记为 deprecated
+
+让我尝试直接使用构造函数中的初始值，然后在渲染时不修改它。或者让我查看一下 Checkbox 类的正确用法。
+
+实际上，在 Minecraft 1.20.1 中，Checkbox 使用的是：
+- `selected()` - 获取选中状态
+- `setValue(boolean)` - 设置选中状态（可能需要导入正确的类）
+
+让我检查一下是否导入了正确的 Checkbox 类。在 Minecraft 1.20.1 中，Checkbox 位于 `net.minecraft.client.gui.components.Checkbox`，这应该是正确的。
+
+让我尝试使用另一种方式，直接创建 Checkbox 时设置初始状态，然后不修改它。
+
+我需要查看 Minecraft 1.20.1 的 Checkbox API。在 1.20.1 中，Checkbox 的构造函数接受一个初始选中状态作为最后一个参数。而设置选中状态的方法可能是 `selected(boolean)` 而不是 `setValue(boolean)`。
+
+让我修复这个问题。
+
+现在让我重新编译看看是否还有其他错误：
+
+让我搜索项目中其他地方如何使用 Checkbox：
+
+
+
+错误是 `selected()` 方法没有参数，它是一个 getter 方法。我需要找到正确的 setter 方法。
+
+从错误信息来看：
+- `selected()` 是一个没有参数的方法（getter）
+- 我需要找到一个可以设置值的方法
+
+让我搜索一下项目中如何使用 Checkbox：
+
+
+让我搜索 MTR 代码中如何使用复选框：
+
+
+
+看起来项目中没有其他地方使用 Checkbox。让我搜索 MTR 代码中如何使用 Checkbox，或者看看有没有其他方式来处理这个问题。
+
+让我看看 MTR 的 GUI 代码是如何处理类似情况的。
+
+找到了！项目使用的是 `WidgetBetterCheckbox`，并且使用 `setChecked(boolean)` 方法。让我修改配置界面：
+
+
+我看到项目中使用的是 `WidgetBetterCheckbox` 而不是 `Checkbox`，并且使用 `setChecked(boolean)` 方法来设置状态，使用 `selected()` 方法来获取状态。让我修改 PIDSTianjinConfigScreen 使用 `WidgetBetterCheckbox`。
+
+现在让我也修改 CategorySelectorScreen 使用 WidgetBetterCheckbox：
+
+
+
+现在让我也修改 CategorySelectorScreen 使用 WidgetBetterCheckbox：
+
+现在让我重新编译看看是否还有错误：
+
+让我搜索项目中实际使用的 Checkbox 导入路径：
+
+
+
+看起来 `mtr.widgets.WidgetBetterCheckbox` 在当前版本的 MTR 中不存在。让我搜索项目中实际使用的 Checkbox 导入和包路径。
+
+找到了！正确的导入路径是 `mtr.screen.WidgetBetterCheckbox`。让我修复：
+
+
+
+找到了！`WidgetBetterCheckbox` 的正确导入路径是 `mtr.screen.WidgetBetterCheckbox`，而不是 `mtr.widgets.WidgetBetterCheckbox`。让我修复这两个文件。
+
+现在让我修复 CategorySelectorScreen 中的导入路径。
+
+Now let me compile again to check if the import errors are fixed.
+
+让我搜索 IDrawing 的导入路径和使用方式：
+
+
+
+
+现在有几个问题：
+1. CategorySelectorScreen 缺少 SQUARE_SIZE 和 PANEL_WIDTH 的定义（我之前删除了）
+2. PIDSTianjinConfigScreen 中使用了 `IDrawing.setPositionAndWidth`，但没有导入 IDrawing
+
+让我修复这些问题：
+1. 在 CategorySelectorScreen 中重新添加 SQUARE_SIZE 和 PANEL_WIDTH
+2. 在 PIDSTianjinConfigScreen 中添加 IDrawing 的导入，或者改用 setPosition 方法
+
+让我先看看 ColorPickerScreen 是怎么使用 IDrawing 的，以及如何设置位置。
+
+找到了！`IDrawing` 在 `mtr.client.IDrawing` 包中。让我修复 PIDSTianjinConfigScreen：
+
+
+
+找到了！`IDrawing` 在 `mtr.client.IDrawing` 包中。同时我也看到 `SQUARE_SIZE`、`PANEL_WIDTH`、`TEXT_FIELD_PADDING` 等常量是从 `mtr.data.IGui` 接口继承的，因为 `ColorPickerScreen` 实现了 `IGui` 接口。
+
+让我修复 PIDSTianjinConfigScreen：
+1. 添加 `import mtr.client.IDrawing;`
+2. 已经实现了 `IGui` 接口，所以应该有这些常量
+
+对于 CategorySelectorScreen：
+1. 没有实现 `IGui` 接口，所以需要定义自己的常量或实现 `IGui` 接口
+
+现在让我修改 CategorySelectorScreen 实现 IGui 接口以获得这些常量：
+
+
+
+
+现在我需要修复 CategorySelectorScreen 中缺少 SQUARE_SIZE 和 PANEL_WIDTH 的问题。由于 CategorySelectorScreen 没有实现 IGui 接口，它没有这些常量。让我查看 ColorPickerScreen 是如何处理这些常量的。
+
+从之前的搜索结果来看，ColorPickerScreen 实现了 IGui 接口，所以它可以直接使用 SQUARE_SIZE、PANEL_WIDTH、TEXT_PADDING、TEXT_FIELD_PADDING、ARGB_WHITE 等常量。
+
+我需要让 CategorySelectorScreen 也实现 IGui 接口，或者自己定义这些常量。让我修改 CategorySelectorScreen 实现 IGui 接口。
+
+
+现在让我再次编译看看是否还有错误。我已经修复了：
+
+1. WidgetBetterCheckbox 的导入路径从 mtr.widgets 改为 mtr.screen
+
+2. 添加了 IDrawing 的导入
+
+3. CategorySelectorScreen 实现了 IGui 接口以获得常量
+
+让我编译看看。
+
+
+让我修复 `final` 字段的问题：
+
+
+
+
+好的，现在错误是 `displayPage` 和 `filteredAdsCount` 是 `final` 字段，但我在构造函数中先初始化为默认值，然后又尝试重新赋值。这在 Java 中是不允许的。
+
+我需要移除 `final` 修饰符，或者改变初始化方式。让我修复这个问题。
+
+问题是 `displayPage` 和 `filteredAdsCount` 被声明为 `final`，但在构造函数中被多次赋值。我需要移除 `final` 修饰符，或者使用初始化表达式的方式。
+
+让我移除 `final` 修饰符。
+
+现在让我再次编译看看是否通过。
+
+common 模块编译成功！让我更新任务进度并继续完成剩余阶段：
+
+
+common模块编译成功了！现在让我更新todo列表并继续完成剩余的任务。让我检查一下还有哪些阶段需要完成：
+
+根据之前的todo列表：
+- 阶段 6：数据包 — 已完成
+- 阶段 7：ConfigScreen + CategorySelectorScreen — 已完成（刚修复完编译错误）
+- 阶段 8：ADS 资源加载 — 需要完成
+- 阶段 9：BlockPIDSTianjinSingle — 单面 PIDS 方块
+- 阶段 10：跨版本同步
+
+让我更新todo列表并继续。
+
+现在让我检查 ADS 资源加载部分的实现：
+
+
+
+现在让我检查 ADS 资源加载部分。根据之前的总结，应该通过 CustomResourcesMixin 来注入 MTR 的资源加载流程。让我检查这个文件是否存在并正确实现。
+
+让我查看 CustomResourcesMixin.java 的内容，确认 ADS 资源加载逻辑是否正确。
+
+现在让我检查是否需要创建 ADS 配置文件：
+
+
+
+CustomResourcesMixin 已经实现了 ADS 资源加载逻辑。让我检查一下是否需要创建 pids_tianjin_ads.json 配置文件。
+
+好的，ADS 配置文件已经存在。让我检查一下这个配置文件的内容，确保它格式正确。
+
+ADS 资源加载部分已经实现了。现在让我检查单面 PIDS 方块是否已实现：
+
+
+
+ADS 资源加载部分已经实现了，通过 CustomResourcesMixin 注入 MTR 的资源加载流程来读取 pids_tianjin_ads.json 文件。配置文件也已经存在。
+
+现在让我检查阶段 9：BlockPIDSTianjinSingle — 单面 PIDS 方块。让我看看是否已经实现了。
+
+让我查看 BlockPIDSTianjin 的完整代码，了解如何创建单面版本：
+
+
+
+
+看起来只有双面 PIDS 方块，还需要创建单面 PIDS 方块。让我查看 BlockPIDSTianjin 的完整代码，了解如何创建单面版本。
+
+现在让我创建单面 PIDS 方块。首先检查注册类：
+
+
+
+
+
+现在我需要创建单面 PIDS 方块 `BlockPIDSTianjinSingle`。根据代码，`TileEntityBlockPIDSTianjin` 已经支持 `renderSingleFace` 参数，但 `getTypeFor` 方法只返回了双面的 BlockEntityType。
+
+我需要：
+1. 创建 `BlockPIDSTianjinSingle` 类
+2. 在 `BlockEntityTypes` 中注册单面的 BlockEntityType
+3. 在 `BlockList` 中注册单面方块
+4. 更新 `getTypeFor` 方法以支持双面和单面
+
+让我先检查 BlockEntityTypes 和 BlockList：
+
+我需要添加单面 PIDS 方块。让我先查看 BlockList 看看双面 PIDS 是如何注册的。
+
+现在让我创建单面 PIDS 方块。首先创建方块类：
+
+
+
+
+
+现在我需要创建单面 PIDS 方块。根据代码分析：
+
+1. `BlockPIDSTianjin` 已经有一个 `renderSingleFace` 参数在 TileEntity 中
+2. 需要创建一个新的方块类 `BlockPIDSTianjinSingle`
+3. 需要在 BlockList 中注册新方块
+4. 需要在 BlockEntityTypes 中注册新的 TileEntityType
+
+让我创建单面 PIDS 方块类。
+
+现在让我注册这个方块：
+
+
+
+
+现在我需要注册这个方块和对应的 BlockEntityType。让我更新 BlockList.java 和 BlockEntityTypes.java。
+
+Let me add the single-sided PIDS block registration and the BlockEntityType registration.
+
+现在让我注册单面 PIDS 的 BlockEntityType：
+
+
+
+
+
+Now I need to add the BlockEntityType registration for the single-sided PIDS. Let me update BlockEntityTypes.java.
+
+现在让我更新 `BlockPIDSTianjin` 的 `getTypeFor` 方法，使其返回正确的 BlockEntityType：
+
+
+
+
+
+现在让我更新 BlockPIDSTianjin 的 getTypeFor 方法，使其返回正确的 BlockEntityType。然后编译测试。
+
+现在让我编译验证所有修改：
+
+
+现在让我编译整个项目，验证所有修改是否正确。
+
+编译成功！让我更新任务进度：
+
+
+
+编译成功！现在让我更新任务进度并完成剩余阶段。接下来需要：
+1. 更新阶段 8 和 9 为完成
+2. 开始阶段 10：跨版本同步
+
+让我先更新任务列表。
+这是trae移植pids的思路

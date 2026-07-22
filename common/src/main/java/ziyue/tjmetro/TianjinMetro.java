@@ -179,6 +179,8 @@ public class TianjinMetro
 
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         registerBlockItem.accept("station_name_projector", BlockList.STATION_NAME_PROJECTOR, SIGNS);
+        /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
+        registerBlockItem.accept("pids_tianjin", BlockList.PIDS_TIANJIN, DECORATION);
         /* DECORATION - logo, furniture, signs, barriers, misc */
         registerBlockItem.accept("logo", BlockList.LOGO, DECORATION);
         registerBlockItem.accept("bench", BlockList.BENCH, DECORATION);
@@ -362,10 +364,15 @@ public class TianjinMetro
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         registerBlockEntityType.accept("station_name_projector", BlockEntityTypes.STATION_NAME_PROJECTOR);
 
+        /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
+        registerBlockEntityType.accept("pids_tianjin", BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY);
+
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_CONTENT, PacketGuiServer::receiveCustomContentC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_COLOR, PacketGuiServer::receiveCustomColorC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_SIGN_TYPES, PacketGuiServer::receiveSignIdsC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_SIGN_TYPES_DOUBLE, PacketGuiServer::receiveSignIdsDoubleC2S);
+        mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_TIANJIN_CONFIG, PacketGuiServer::receivePIDSTianjinConfigC2S);
+        mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_ADS_CONFIG, PacketGuiServer::receivePIDSAdsConfigC2S);
     }
 
     @FunctionalInterface

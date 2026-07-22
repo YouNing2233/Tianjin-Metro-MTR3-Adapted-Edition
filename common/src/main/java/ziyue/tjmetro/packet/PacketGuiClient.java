@@ -11,6 +11,7 @@ import ziyue.tjmetro.block.base.BlockCustomColorBase;
 import ziyue.tjmetro.block.base.BlockCustomContentBlockBase;
 import ziyue.tjmetro.screen.ColorPickerScreen;
 import ziyue.tjmetro.screen.CustomContentScreen;
+import ziyue.tjmetro.screen.PIDSTianjinConfigScreen;
 import ziyue.tjmetro.screen.RailwaySignDoubleScreen;
 import ziyue.tjmetro.screen.RailwaySignScreen;
 
@@ -75,6 +76,15 @@ public class PacketGuiClient
         minecraftClient.execute(() -> {
             if (!(minecraftClient.screen instanceof RailwaySignScreen)) {
                 UtilitiesClient.setScreen(minecraftClient, new RailwaySignDoubleScreen(pos));
+            }
+        });
+    }
+
+    public static void openPIDSTianjinScreenS2C(Minecraft minecraftClient, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        minecraftClient.execute(() -> {
+            if (!(minecraftClient.screen instanceof PIDSTianjinConfigScreen)) {
+                UtilitiesClient.setScreen(minecraftClient, new PIDSTianjinConfigScreen(pos));
             }
         });
     }
