@@ -1,7 +1,7 @@
 package ziyue.tjmetro.render;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mtr.MTRClient;
 import mtr.block.IBlock;
@@ -16,7 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import ziyue.tjmetro.Reference;
 import ziyue.tjmetro.block.BlockPIDSTianjin;
 import ziyue.tjmetro.client.ClientCache;
-import ziyue.tjmetro.client.RouteMapGenerator;
 
 import java.util.*;
 
@@ -40,8 +38,6 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
     public static final float LEFT_TEXT_MAX_WIDTH = 78.55F;
 
     private static final int SWITCH_LANGUAGE_TICKS = 60;
-
-    private static final Map<String, ResourceLocation> TEXT_TEXTURE_CACHE = new HashMap<>();
 
     public RenderPIDSTianjin(BlockEntityRenderDispatcher dispatcher) {
         this(dispatcher, 2.5F, 30, true, 1F);
@@ -86,32 +82,27 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         matrices.translate(0, 0, -0.1);
 
-        renderTime(matrices, vertexConsumers, facing);
+        renderTime(matrices);
 
         final Map<Long, String> platformIdToName = new HashMap<>();
         final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, platformIdToName);
-        renderArrivals(matrices, vertexConsumers, facing, scheduleList, entity.getDisplayPage());
+        renderArrivals(matrices, scheduleList, entity.getDisplayPage());
 
         renderAdvertisement(matrices, vertexConsumers, entity, facing);
 
         matrices.popPose();
     }
 
-    private void renderTime(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing) {
+    private void renderTime(PoseStack matrices) {
         final String timeString = getFormattedTime();
-        final NativeImage timeImage = generateTextImage(timeString, ARGB_WHITE);
-        if (timeImage == null) return;
-
-        final ResourceLocation textureId = getCachedTexture(timeString + "_" + ARGB_WHITE, timeImage);
+        final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
         matrices.pushPose();
         matrices.translate(LEFT_TEXT_X_CENTER - 25, 78F, 0);
-        final float timeScale = 0.4F;
-        matrices.scale(timeScale, timeScale, timeScale);
-        final RenderType renderType = MoreRenderLayers.getExterior(textureId);
-        final VertexConsumer consumer = vertexConsumers.getBuffer(renderType);
-        IDrawing.drawTexture(matrices, consumer, 0, 0, timeImage.getWidth(), timeImage.getHeight(), facing, MAX_LIGHT_GLOWING);
+        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, timeString, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 78F, -1, -1, 1.2F, ARGB_WHITE, false, MAX_LIGHT_GLOWING, null);
         matrices.popPose();
+
+        immediate.endBatch();
     }
 
     private String getFormattedTime() {
@@ -122,9 +113,10 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
                 calendar.get(java.util.Calendar.SECOND));
     }
 
-    private void renderArrivals(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, List<ScheduleEntry> scheduleList, int displayPage) {
+    private void renderArrivals(PoseStack matrices, List<ScheduleEntry> scheduleList, int displayPage) {
         final int languageTicks = (int) Math.floor(MTRClient.getGameTick()) / SWITCH_LANGUAGE_TICKS;
         int arrivalIndex = displayPage * 2;
+        final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
         for (int i = 0; i < 2; i++) {
             final ScheduleEntry scheduleEntry = i + arrivalIndex < scheduleList.size() ? scheduleList.get(i + arrivalIndex) : null;
@@ -168,57 +160,32 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
                     ? (isCjk ? "gui.tjmetro.this_train_cjk" : "gui.tjmetro.this_train")
                     : (isCjk ? "gui.tjmetro.next_train_cjk" : "gui.tjmetro.next_train")).getString();
 
-            renderTextTexture(matrices, vertexConsumers, facing, trainLabel, LEFT_TEXT_X_CENTER, 12F + yOffset, 1.5F, ARGB_WHITE);
-            renderTextTexture(matrices, vertexConsumers, facing, destinationFormatted, LEFT_TEXT_X_CENTER, 38F + yOffset, 1.3F, ARGB_WHITE);
+            renderText(matrices, immediate, trainLabel, LEFT_TEXT_X_CENTER, 12F + yOffset, 1.5F, ARGB_WHITE);
+            renderText(matrices, immediate, destinationFormatted, LEFT_TEXT_X_CENTER, 38F + yOffset, 1.3F, ARGB_WHITE);
 
             final long arrivalSeconds = (scheduleEntry.arrivalMillis - System.currentTimeMillis()) / 1000;
             if (arrivalSeconds <= 15) {
                 final String textKey = (arrivalSeconds < 0 ? "gui.tjmetro.arrived" : "gui.tjmetro.arriving") + (isCjk ? "_cjk" : "");
-                renderTextTexture(matrices, vertexConsumers, facing, Text.translatable(textKey).getString(), LEFT_TEXT_X_CENTER, 26F + yOffset, 1.5F, 0xFFEFEF00);
+                renderText(matrices, immediate, Text.translatable(textKey).getString(), LEFT_TEXT_X_CENTER, 26F + yOffset, 1.5F, 0xFFEFEF00);
             } else {
                 final boolean isMinute = arrivalSeconds > 60;
                 final String arrivalTime = String.valueOf(isMinute ? arrivalSeconds / 60 : arrivalSeconds);
                 final String arrivalUnit = Text.translatable(
                         (isMinute ? "gui.tjmetro.minute" : "gui.tjmetro.second") + (isCjk ? "_cjk" : "")).getString();
 
-                renderTextTexture(matrices, vertexConsumers, facing, arrivalTime, LEFT_TEXT_X_CENTER - 12, 26F + yOffset, 1.8F, 0xFFEFEF00);
+                renderText(matrices, immediate, arrivalTime, LEFT_TEXT_X_CENTER - 12, 26F + yOffset, 1.8F, 0xFFEFEF00);
                 final float unitScale = isCjk ? 1.8F : 1.2F;
-                renderTextTexture(matrices, vertexConsumers, facing, arrivalUnit, LEFT_TEXT_X_CENTER + 12, 26F + yOffset, unitScale, ARGB_WHITE);
+                renderText(matrices, immediate, arrivalUnit, LEFT_TEXT_X_CENTER + 12, 26F + yOffset, unitScale, ARGB_WHITE);
             }
         }
+
+        immediate.endBatch();
     }
 
-    private void renderTextTexture(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, String text, float x, float y, float scale, int color) {
-        final NativeImage textImage = generateTextImage(text, color);
-        if (textImage == null) return;
-
-        final String cacheKey = text + "_" + color + "_" + scale;
-        final ResourceLocation textureId = getCachedTexture(cacheKey, textImage);
-
+    private void renderText(PoseStack matrices, MultiBufferSource.BufferSource immediate, String text, float x, float y, float scale, int color) {
         matrices.pushPose();
-        matrices.translate(x, y, 0);
-        matrices.scale(scale * 0.2F, scale * 0.2F, scale * 0.2F);
-        final float imageWidth = textImage.getWidth();
-        final float imageHeight = textImage.getHeight();
-        matrices.translate(-imageWidth / 2F, -imageHeight / 2F, 0);
-        final RenderType renderType = MoreRenderLayers.getExterior(textureId);
-        final VertexConsumer consumer = vertexConsumers.getBuffer(renderType);
-        IDrawing.drawTexture(matrices, consumer, 0, 0, imageWidth, imageHeight, facing, MAX_LIGHT_GLOWING);
+        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, text, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, x, y, -1, -1, scale, color, false, MAX_LIGHT_GLOWING, null);
         matrices.popPose();
-    }
-
-    private NativeImage generateTextImage(String text, int textColor) {
-        return RouteMapGenerator.generatePlainText(text, 0, textColor);
-    }
-
-    private ResourceLocation getCachedTexture(String key, NativeImage image) {
-        if (!TEXT_TEXTURE_CACHE.containsKey(key)) {
-            final ResourceLocation textureId = new ResourceLocation(Reference.MOD_ID, "pids_text_" + key.hashCode());
-            final DynamicTexture dynamicTexture = new DynamicTexture(image);
-            Minecraft.getInstance().getTextureManager().register(textureId, dynamicTexture);
-            TEXT_TEXTURE_CACHE.put(key, textureId);
-        }
-        return TEXT_TEXTURE_CACHE.get(key);
     }
 
     private void renderAdvertisement(PoseStack matrices, MultiBufferSource vertexConsumers, T entity, Direction facing) {
