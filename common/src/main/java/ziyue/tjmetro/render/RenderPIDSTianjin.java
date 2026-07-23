@@ -96,7 +96,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
-        renderText(matrices, immediate, getFormattedTime(entity), HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 100F, maxWidth * scale / 16, 0.5F, ARGB_WHITE);
+        renderText(matrices, immediate, getFormattedTime(entity), HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 104F, maxWidth * scale / 16, 0.5F, ARGB_WHITE);
 
         final Map<Long, String> platformIdToName = new HashMap<>();
         final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, platformIdToName);

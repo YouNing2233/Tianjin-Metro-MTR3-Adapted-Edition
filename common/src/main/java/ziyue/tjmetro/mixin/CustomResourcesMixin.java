@@ -50,54 +50,59 @@ public abstract class CustomResourcesMixin implements IResourcePackCreatorProper
         BlockPIDSTianjin.CATEGORIES.clear();
 
         final ResourceLocation adsResource = new ResourceLocation("tjmetro", "pids_tianjin_ads.json");
-        manager.getResource(adsResource).ifPresent(resource -> {
+        for (final Resource resource : manager.getResourceStack(adsResource)) {
             try {
                 final JsonObject config = JsonParser.parseReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8)).getAsJsonObject();
 
                 for (Map.Entry<String, com.google.gson.JsonElement> entry : config.entrySet()) {
-                    if (entry.getValue().isJsonObject()) {
-                        final long id = entry.getKey().hashCode();
-                        if (BlockPIDSTianjin.CATEGORIES.containsKey(id)) {
-                            TianjinMetro.LOGGER.warn("Duplicate category key: {}. Skipping!", entry.getKey());
-                        } else {
-                            final JsonObject adDefinition = entry.getValue().getAsJsonObject();
-                            final BlockPIDSTianjin.Category category = new BlockPIDSTianjin.Category(
-                                    id,
-                                    new Color(Integer.parseInt(adDefinition.get("color").getAsString(), 16)),
-                                    Component.translatable(adDefinition.get("name").getAsString()),
-                                    Component.translatable(adDefinition.get("description").getAsString())
-                            );
-                            BlockPIDSTianjin.CATEGORIES.put(id, category);
+                    if (!entry.getValue().isJsonObject()) {
+                        continue;
+                    }
 
-                            if (!adDefinition.has("advertisements") || !adDefinition.get("advertisements").isJsonArray()) {
-                                TianjinMetro.LOGGER.warn("Bad advertisement config at {}: missing advertisement array. Skipping!", entry.getKey());
-                            } else {
-                                final JsonArray advertisements = adDefinition.get("advertisements").getAsJsonArray();
-                                final AtomicInteger index = new AtomicInteger();
-                                for (com.google.gson.JsonElement adElement : advertisements) {
-                                    try {
-                                        if (adElement.isJsonObject()) {
-                                            final JsonObject slide = adElement.getAsJsonObject();
-                                            final ResourceLocation image = new ResourceLocation(slide.get("image").getAsString());
-                                            final Component text = Component.translatable(slide.get("text").getAsString());
-                                            final String url = slide.has("url") && !slide.get("url").isJsonNull() && !slide.get("url").getAsString().isEmpty()
-                                                    ? slide.get("url").getAsString()
-                                                    : null;
-                                            category.add(new BlockPIDSTianjin.Advertisement(image, text, url));
-                                        }
-                                    } catch (Exception e) {
-                                        TianjinMetro.LOGGER.warn("Bad advertisement config at {}, index {}. Skipping!", entry.getKey(), index.get());
-                                    }
-                                    index.getAndIncrement();
-                                }
+                    final long id = entry.getKey().hashCode();
+                    final JsonObject adDefinition = entry.getValue().getAsJsonObject();
+
+                    final BlockPIDSTianjin.Category category;
+                    if (BlockPIDSTianjin.CATEGORIES.containsKey(id)) {
+                        category = BlockPIDSTianjin.CATEGORIES.get(id);
+                    } else {
+                        category = new BlockPIDSTianjin.Category(
+                                id,
+                                new Color(Integer.parseInt(adDefinition.get("color").getAsString(), 16)),
+                                Component.translatable(adDefinition.get("name").getAsString()),
+                                Component.translatable(adDefinition.get("description").getAsString())
+                        );
+                        BlockPIDSTianjin.CATEGORIES.put(id, category);
+                    }
+
+                    if (!adDefinition.has("advertisements") || !adDefinition.get("advertisements").isJsonArray()) {
+                        TianjinMetro.LOGGER.warn("Bad advertisement config at {}: missing advertisement array. Skipping!", entry.getKey());
+                        continue;
+                    }
+
+                    final JsonArray advertisements = adDefinition.get("advertisements").getAsJsonArray();
+                    final AtomicInteger index = new AtomicInteger();
+                    for (com.google.gson.JsonElement adElement : advertisements) {
+                        try {
+                            if (adElement.isJsonObject()) {
+                                final JsonObject slide = adElement.getAsJsonObject();
+                                final ResourceLocation image = new ResourceLocation(slide.get("image").getAsString());
+                                final Component text = Component.translatable(slide.get("text").getAsString());
+                                final String url = slide.has("url") && !slide.get("url").isJsonNull() && !slide.get("url").getAsString().isEmpty()
+                                        ? slide.get("url").getAsString()
+                                        : null;
+                                category.add(new BlockPIDSTianjin.Advertisement(image, text, url));
                             }
+                        } catch (Exception e) {
+                            TianjinMetro.LOGGER.warn("Bad advertisement config at {}, index {}. Skipping!", entry.getKey(), index.get());
                         }
+                        index.getAndIncrement();
                     }
                 }
             } catch (Exception e) {
                 TianjinMetro.LOGGER.warn("Error when initializing advertisements!", e);
             }
-        });
+        }
         TianjinMetro.LOGGER.info("Found {} categories for PIDS Tianjin", BlockPIDSTianjin.CATEGORIES.size());
     }
 }
