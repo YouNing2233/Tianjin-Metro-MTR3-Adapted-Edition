@@ -8,6 +8,7 @@ import mtr.block.IBlock;
 import mtr.client.ClientData;
 import mtr.client.IDrawing;
 import mtr.data.*;
+import ziyue.tjmetro.client.IDrawingExtension;
 import mtr.mappings.BlockEntityRendererMapper;
 import mtr.mappings.Text;
 import mtr.render.MoreRenderLayers;
@@ -95,7 +96,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
-        renderTime(matrices, immediate, entity);
+        renderText(matrices, immediate, getFormattedTime(entity), HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 106.5F, maxWidth * scale / 16, 0.5F, ARGB_WHITE);
 
         final Map<Long, String> platformIdToName = new HashMap<>();
         final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, platformIdToName);
@@ -105,11 +106,6 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         immediate.endBatch();
         matrices.popPose();
-    }
-
-    private void renderTime(PoseStack matrices, MultiBufferSource.BufferSource immediate, T entity) {
-        final String timeString = getFormattedTime(entity);
-        renderText(matrices, immediate, timeString, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 106.5F, LEFT_TEXT_MAX_WIDTH, 0.5F, ARGB_WHITE);
     }
 
     private String getFormattedTime(T entity) {
@@ -191,23 +187,22 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
                 final String arrivalUnit = Text.translatable(
                         (isMinute ? "gui.tjmetro.minute" : "gui.tjmetro.second") + (isCjk ? "_cjk" : "")).getString();
 
-                final Font textRenderer = Minecraft.getInstance().font;
-                final float arrivalTimeWidth = getStringWidth(textRenderer, arrivalTime, 1.0F);
-                final float arrivalUnitWidth = getStringWidth(textRenderer, arrivalUnit, 1.5F);
+                final float arrivalTimeWidth = getStringWidth(Minecraft.getInstance().font, arrivalTime, 0.4F);
+                final float arrivalUnitWidth = getStringWidth(Minecraft.getInstance().font, arrivalUnit, 1.5F);
 
-                renderText(matrices, immediate, arrivalTime, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER - (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.0F, 0xFFEFEF00);
+                renderText(matrices, immediate, arrivalTime, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER - (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 0.4F, 0xFFEFEF00);
                 renderText(matrices, immediate, arrivalUnit, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER + (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.5F, ARGB_WHITE);
             }
         }
     }
 
     private float getStringWidth(Font textRenderer, String text, float scale) {
-        return textRenderer.width(text) * scale * 0.5F;
+        return IDrawingExtension.stringWidthWithFont(text, scale, 1, false);
     }
 
     private void renderText(PoseStack matrices, MultiBufferSource.BufferSource immediate, String text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, float x, float y, float availableWidth, float scale, int color) {
         matrices.pushPose();
-        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, text, horizontalAlignment, verticalAlignment, horizontalAlignment, x, y, availableWidth, -1, scale, color, color, 2, false, MAX_LIGHT_GLOWING, null);
+        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, text, horizontalAlignment, verticalAlignment, horizontalAlignment, x, y, availableWidth, -1, scale, color, color, 1, false, MAX_LIGHT_GLOWING, null);
         matrices.popPose();
     }
 
