@@ -128,7 +128,6 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         protected int advertisementIndex;
         public BlockPIDSTianjin.Advertisement advertisement;
         public final ScrollingText scrollingText;
-        public final boolean renderSingleFace;
         protected boolean useRealTime;
 
         public static final String CATEGORIES_ID = "categories";
@@ -137,14 +136,9 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         public static final String USE_REAL_TIME_ID = "use_real_time";
 
         public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state) {
-            this(pos, state, false);
-        }
-
-        public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state, boolean renderSingleFace) {
-            super(renderSingleFace ? BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get() : BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
+            super(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
             categories.add("tjmetro".hashCode());
             this.scrollingText = new ScrollingText(158F, 47F, 4, true);
-            this.renderSingleFace = renderSingleFace;
         }
 
         @Override

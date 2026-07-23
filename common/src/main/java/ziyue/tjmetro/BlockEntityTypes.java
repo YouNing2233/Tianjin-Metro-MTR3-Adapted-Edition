@@ -116,5 +116,4 @@ public interface BlockEntityTypes
 
     /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
     RegistryObject<BlockEntityType<BlockPIDSTianjin.TileEntityBlockPIDSTianjin>> PIDS_TIANJIN_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPIDSTianjin.TileEntityBlockPIDSTianjin::new, BlockList.PIDS_TIANJIN.get()));
-    RegistryObject<BlockEntityType<BlockPIDSTianjin.TileEntityBlockPIDSTianjin>> PIDS_TIANJIN_SINGLE_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockPIDSTianjin.TileEntityBlockPIDSTianjin(pos, state, true), BlockList.PIDS_TIANJIN_SINGLE.get()));
 }

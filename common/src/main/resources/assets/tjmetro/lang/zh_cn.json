@@ -264,8 +264,6 @@
     "advertisement.tjmetro.bde":  "《拆弹专家》是一款允许玩家拆弹以及苦力怕的有趣模组",
     "block.tjmetro.pids_tianjin":  "乘客资讯显示屏（天津）",
     "tooltip.tjmetro.pids_tianjin":  "一个支持自定义广告的PIDS。使用“指示牌柱（天津）”可以加长柱子。",
-    "block.tjmetro.pids_tianjin_single":  "单面乘客资讯显示屏（天津）",
-    "tooltip.tjmetro.pids_tianjin_single":  "一个仅单面显示的PIDS。使用“指示牌柱（天津）”可以加长柱子。",
     "gui.tjmetro.use_real_time":  "使用现实时间",
     "gui.tjmetro.this_train_cjk":  "本次列车",
     "gui.tjmetro.filtered_ads":  "已筛选广告 (%s)",

@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import ziyue.tjmetro.Reference;
 import ziyue.tjmetro.block.BlockPIDSTianjin;
-import ziyue.tjmetro.block.BlockPIDSTianjinSingle;
 import ziyue.tjmetro.client.ClientCache;
 
 import java.util.*;
@@ -68,14 +67,8 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         final Direction facing = IBlock.getStatePropertySafe(world, pos, HorizontalDirectionalBlock.FACING);
         final float scale = 320 / maxHeight * textPadding;
 
-        if (entity.renderSingleFace) {
-            if (IBlock.getStatePropertySafe(world, pos, BlockPIDSTianjinSingle.SHOULD_RENDER)) {
-                renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
-            }
-        } else {
-            renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
-            renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
-        }
+        renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
+        renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
     }
 
     private void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
