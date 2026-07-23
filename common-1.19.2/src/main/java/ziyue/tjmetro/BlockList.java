@@ -178,4 +178,7 @@ public interface BlockList
 
     /* 1.1.6 - Ported from 4.0 - Station Name Projector */
     RegistryObject<Block> STATION_NAME_PROJECTOR = new RegistryObject<>(BlockStationNameProjector::new);
+
+    /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
+    RegistryObject<Block> PIDS_TIANJIN = new RegistryObject<>(BlockPIDSTianjin::new);
 }

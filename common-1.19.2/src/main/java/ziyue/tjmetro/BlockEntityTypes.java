@@ -111,4 +111,7 @@ public interface BlockEntityTypes
 
     /* 1.1.6 - Ported from 4.0 - Station Name Projector */
     RegistryObject<BlockEntityType<BlockStationNameProjector.BlockEntity>> STATION_NAME_PROJECTOR = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockStationNameProjector.BlockEntity::new, BlockList.STATION_NAME_PROJECTOR.get()));
+
+    /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
+    RegistryObject<BlockEntityType<BlockPIDSTianjin.TileEntityBlockPIDSTianjin>> PIDS_TIANJIN_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPIDSTianjin.TileEntityBlockPIDSTianjin::new, BlockList.PIDS_TIANJIN.get()));
 }

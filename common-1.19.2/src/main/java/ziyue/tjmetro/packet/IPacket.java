@@ -17,4 +17,8 @@ public interface IPacket
     ResourceLocation PACKET_OPEN_RAILWAY_SIGN_DOUBLE_SCREEN = new ResourceLocation(Reference.MOD_ID, "packet_open_railway_sign_double_screen");
     ResourceLocation PACKET_SIGN_TYPES = new ResourceLocation(Reference.MOD_ID, "packet_sign_types");
     ResourceLocation PACKET_SIGN_TYPES_DOUBLE = new ResourceLocation(Reference.MOD_ID, "packet_sign_types_double");
+
+    ResourceLocation PACKET_UPDATE_PIDS_TIANJIN_CONFIG = new ResourceLocation(Reference.MOD_ID, "packet_update_pids_tianjin_config");
+    ResourceLocation PACKET_UPDATE_PIDS_ADS_CONFIG = new ResourceLocation(Reference.MOD_ID, "packet_update_pids_ads_config");
+    ResourceLocation PACKET_OPEN_PIDS_TIANJIN_SCREEN = new ResourceLocation(Reference.MOD_ID, "packet_open_pids_tianjin_screen");
 }

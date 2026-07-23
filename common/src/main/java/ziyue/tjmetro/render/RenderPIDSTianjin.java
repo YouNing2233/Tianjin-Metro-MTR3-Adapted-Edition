@@ -169,7 +169,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
                     ? (useChinese ? "gui.tjmetro.this_train_cjk" : "gui.tjmetro.this_train")
                     : (useChinese ? "gui.tjmetro.next_train_cjk" : "gui.tjmetro.next_train")).getString();
 
-            renderText(matrices, immediate, trainLabel, HorizontalAlignment.CENTER, VerticalAlignment.TOP, LEFT_TEXT_X_CENTER, 8F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.5F, ARGB_WHITE);
+            renderText(matrices, immediate, trainLabel, HorizontalAlignment.CENTER, VerticalAlignment.TOP, LEFT_TEXT_X_CENTER, 12F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.7F, ARGB_WHITE);
             renderText(matrices, immediate, destinationFormatted, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM, LEFT_TEXT_X_CENTER, 45F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.3F, ARGB_WHITE);
 
             final long arrivalSeconds = (scheduleEntry.arrivalMillis - System.currentTimeMillis()) / 1000;
