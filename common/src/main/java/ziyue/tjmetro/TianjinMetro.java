@@ -181,6 +181,7 @@ public class TianjinMetro
         registerBlockItem.accept("station_name_projector", BlockList.STATION_NAME_PROJECTOR, SIGNS);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockItem.accept("pids_tianjin", BlockList.PIDS_TIANJIN, DECORATION);
+        registerBlockItem.accept("pids_tianjin_single", BlockList.PIDS_TIANJIN_SINGLE, DECORATION);
         /* DECORATION - logo, furniture, signs, barriers, misc */
         registerBlockItem.accept("logo", BlockList.LOGO, DECORATION);
         registerBlockItem.accept("bench", BlockList.BENCH, DECORATION);
@@ -366,6 +367,7 @@ public class TianjinMetro
 
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockEntityType.accept("pids_tianjin", BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY);
+        registerBlockEntityType.accept("pids_tianjin_single", BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY);
 
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_CONTENT, PacketGuiServer::receiveCustomContentC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_COLOR, PacketGuiServer::receiveCustomColorC2S);

@@ -59,12 +59,12 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         super();
     }
 
-    public static boolean canStoreData(BlockGetter world, BlockPos pos) {
+    public boolean canStoreData(BlockGetter world, BlockPos pos) {
         final Direction facing = IBlock.getStatePropertySafe(world, pos, net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING);
         return facing == Direction.NORTH || facing == Direction.EAST;
     }
 
-    public static BlockPos getBlockPosWithData(BlockGetter world, BlockPos pos) {
+    public BlockPos getBlockPosWithData(BlockGetter world, BlockPos pos) {
         if (canStoreData(world, pos)) {
             return pos;
         } else {
@@ -128,15 +128,23 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         protected int advertisementIndex;
         public BlockPIDSTianjin.Advertisement advertisement;
         public final ScrollingText scrollingText;
+        public final boolean renderSingleFace;
+        protected boolean useRealTime;
 
         public static final String CATEGORIES_ID = "categories";
         public static final String CATEGORY_INDEX_ID = "category_index";
         public static final String ADVERTISEMENT_INDEX_ID = "advertisement_index";
+        public static final String USE_REAL_TIME_ID = "use_real_time";
 
         public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state) {
-            super(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
+            this(pos, state, false);
+        }
+
+        public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state, boolean renderSingleFace) {
+            super(renderSingleFace ? BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get() : BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
             categories.add("tjmetro".hashCode());
             this.scrollingText = new ScrollingText(158F, 47F, 4, true);
+            this.renderSingleFace = renderSingleFace;
         }
 
         @Override
@@ -166,6 +174,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             }
             categoryIndex = compoundTag.getInt(CATEGORY_INDEX_ID);
             advertisementIndex = compoundTag.getInt(ADVERTISEMENT_INDEX_ID);
+            useRealTime = compoundTag.getBoolean(USE_REAL_TIME_ID);
         }
 
         @Override
@@ -174,6 +183,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             compoundTag.putLongArray(CATEGORIES_ID, new java.util.ArrayList<>(categories));
             compoundTag.putInt(CATEGORY_INDEX_ID, categoryIndex);
             compoundTag.putInt(ADVERTISEMENT_INDEX_ID, advertisementIndex);
+            compoundTag.putBoolean(USE_REAL_TIME_ID, useRealTime);
         }
 
         public LongAdderList getCategories() {
@@ -203,6 +213,23 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         public void setCategories(LongAdderList newCategories) {
             this.categories.clear();
             this.categories.addAll(newCategories);
+            setChanged();
+            syncData();
+        }
+
+        public boolean isUseRealTime() {
+            return useRealTime;
+        }
+
+        public void setUseRealTime(boolean useRealTime) {
+            this.useRealTime = useRealTime;
+            setChanged();
+            syncData();
+        }
+
+        public void setData(String[] messages, boolean[] hideArrival, java.util.Set<Long> platformIds, int displayPage, boolean useRealTime) {
+            super.setData(messages, hideArrival, platformIds, displayPage);
+            this.useRealTime = useRealTime;
             setChanged();
             syncData();
         }

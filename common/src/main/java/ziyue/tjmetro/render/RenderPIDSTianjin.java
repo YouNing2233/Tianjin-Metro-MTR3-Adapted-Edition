@@ -13,6 +13,7 @@ import mtr.mappings.Text;
 import mtr.render.MoreRenderLayers;
 import mtr.render.RenderTrains;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -20,9 +21,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import ziyue.tjmetro.Reference;
 import ziyue.tjmetro.block.BlockPIDSTianjin;
+import ziyue.tjmetro.block.BlockPIDSTianjinSingle;
 import ziyue.tjmetro.client.ClientCache;
 
 import java.util.*;
@@ -57,13 +60,21 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         if (world == null) return;
 
         final BlockPos pos = entity.getBlockPos();
-        if (!BlockPIDSTianjin.canStoreData(world, pos)) return;
+        final Block block = world.getBlockState(pos).getBlock();
+        if (!(block instanceof BlockPIDSTianjin pidsBlock)) return;
+        if (!pidsBlock.canStoreData(world, pos)) return;
 
         final Direction facing = IBlock.getStatePropertySafe(world, pos, HorizontalDirectionalBlock.FACING);
         final float scale = 320 / maxHeight * textPadding;
 
-        renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
-        renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
+        if (entity.renderSingleFace) {
+            if (IBlock.getStatePropertySafe(world, pos, BlockPIDSTianjinSingle.SHOULD_RENDER)) {
+                renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
+            }
+        } else {
+            renderFace(matrices, vertexConsumers, facing, scale, entity, pos, 0, 0);
+            renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
+        }
     }
 
     private void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
@@ -82,41 +93,48 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         matrices.translate(0, 0, -0.1);
 
-        renderTime(matrices);
+        final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+
+        renderTime(matrices, immediate, entity);
 
         final Map<Long, String> platformIdToName = new HashMap<>();
         final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, platformIdToName);
-        renderArrivals(matrices, scheduleList, entity.getDisplayPage());
+        renderArrivals(matrices, immediate, scheduleList, entity.getDisplayPage());
 
         renderAdvertisement(matrices, vertexConsumers, entity, facing);
 
-        matrices.popPose();
-    }
-
-    private void renderTime(PoseStack matrices) {
-        final String timeString = getFormattedTime();
-        final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-
-        matrices.pushPose();
-        matrices.translate(LEFT_TEXT_X_CENTER - 25, 78F, 0);
-        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, timeString, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 78F, -1, -1, 1.2F, ARGB_WHITE, false, MAX_LIGHT_GLOWING, null);
-        matrices.popPose();
-
         immediate.endBatch();
+        matrices.popPose();
     }
 
-    private String getFormattedTime() {
-        final java.util.Calendar calendar = java.util.Calendar.getInstance();
-        return String.format("%02d:%02d:%02d",
-                calendar.get(java.util.Calendar.HOUR_OF_DAY),
-                calendar.get(java.util.Calendar.MINUTE),
-                calendar.get(java.util.Calendar.SECOND));
+    private void renderTime(PoseStack matrices, MultiBufferSource.BufferSource immediate, T entity) {
+        final String timeString = getFormattedTime(entity);
+        renderText(matrices, immediate, timeString, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER, 106.5F, LEFT_TEXT_MAX_WIDTH, 0.5F, ARGB_WHITE);
     }
 
-    private void renderArrivals(PoseStack matrices, List<ScheduleEntry> scheduleList, int displayPage) {
+    private String getFormattedTime(T entity) {
+        if (entity.isUseRealTime()) {
+            final java.util.Calendar calendar = java.util.Calendar.getInstance();
+            return String.format("%02d:%02d:%02d",
+                    calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                    calendar.get(java.util.Calendar.MINUTE),
+                    calendar.get(java.util.Calendar.SECOND));
+        } else {
+            final BlockGetter world = entity.getLevel();
+            if (world == null) return "";
+            final long dayTime = ((net.minecraft.world.level.Level) world).getDayTime();
+            final long ticks = dayTime % 24000;
+            final long totalSeconds = ticks * 36 / 10;
+            final long hours = (totalSeconds / 3600 + 6) % 24;
+            final long minutes = totalSeconds / 60 % 60;
+            final long seconds = totalSeconds % 60;
+            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        }
+    }
+
+    private void renderArrivals(PoseStack matrices, MultiBufferSource.BufferSource immediate, List<ScheduleEntry> scheduleList, int displayPage) {
         final int languageTicks = (int) Math.floor(MTRClient.getGameTick()) / SWITCH_LANGUAGE_TICKS;
         int arrivalIndex = displayPage * 2;
-        final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
         for (int i = 0; i < 2; i++) {
             final ScheduleEntry scheduleEntry = i + arrivalIndex < scheduleList.size() ? scheduleList.get(i + arrivalIndex) : null;
@@ -160,31 +178,36 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
                     ? (isCjk ? "gui.tjmetro.this_train_cjk" : "gui.tjmetro.this_train")
                     : (isCjk ? "gui.tjmetro.next_train_cjk" : "gui.tjmetro.next_train")).getString();
 
-            renderText(matrices, immediate, trainLabel, LEFT_TEXT_X_CENTER, 12F + yOffset, 1.5F, ARGB_WHITE);
-            renderText(matrices, immediate, destinationFormatted, LEFT_TEXT_X_CENTER, 38F + yOffset, 1.3F, ARGB_WHITE);
+            renderText(matrices, immediate, trainLabel, HorizontalAlignment.CENTER, VerticalAlignment.TOP, LEFT_TEXT_X_CENTER, 8F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.5F, ARGB_WHITE);
+            renderText(matrices, immediate, destinationFormatted, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM, LEFT_TEXT_X_CENTER, 45F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.3F, ARGB_WHITE);
 
             final long arrivalSeconds = (scheduleEntry.arrivalMillis - System.currentTimeMillis()) / 1000;
             if (arrivalSeconds <= 15) {
                 final String textKey = (arrivalSeconds < 0 ? "gui.tjmetro.arrived" : "gui.tjmetro.arriving") + (isCjk ? "_cjk" : "");
-                renderText(matrices, immediate, Text.translatable(textKey).getString(), LEFT_TEXT_X_CENTER, 26F + yOffset, 1.5F, 0xFFEFEF00);
+                renderText(matrices, immediate, Text.translatable(textKey).getString(), HorizontalAlignment.CENTER, VerticalAlignment.TOP, LEFT_TEXT_X_CENTER, 21.5F + yOffset, LEFT_TEXT_MAX_WIDTH, 0.6F, 0xFFEFEF00);
             } else {
                 final boolean isMinute = arrivalSeconds > 60;
                 final String arrivalTime = String.valueOf(isMinute ? arrivalSeconds / 60 : arrivalSeconds);
                 final String arrivalUnit = Text.translatable(
                         (isMinute ? "gui.tjmetro.minute" : "gui.tjmetro.second") + (isCjk ? "_cjk" : "")).getString();
 
-                renderText(matrices, immediate, arrivalTime, LEFT_TEXT_X_CENTER - 12, 26F + yOffset, 1.8F, 0xFFEFEF00);
-                final float unitScale = isCjk ? 1.8F : 1.2F;
-                renderText(matrices, immediate, arrivalUnit, LEFT_TEXT_X_CENTER + 12, 26F + yOffset, unitScale, ARGB_WHITE);
+                final Font textRenderer = Minecraft.getInstance().font;
+                final float arrivalTimeWidth = getStringWidth(textRenderer, arrivalTime, 1.0F);
+                final float arrivalUnitWidth = getStringWidth(textRenderer, arrivalUnit, 1.5F);
+
+                renderText(matrices, immediate, arrivalTime, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER - (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.0F, 0xFFEFEF00);
+                renderText(matrices, immediate, arrivalUnit, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER + (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.5F, ARGB_WHITE);
             }
         }
-
-        immediate.endBatch();
     }
 
-    private void renderText(PoseStack matrices, MultiBufferSource.BufferSource immediate, String text, float x, float y, float scale, int color) {
+    private float getStringWidth(Font textRenderer, String text, float scale) {
+        return textRenderer.width(text) * scale * 0.5F;
+    }
+
+    private void renderText(PoseStack matrices, MultiBufferSource.BufferSource immediate, String text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, float x, float y, float availableWidth, float scale, int color) {
         matrices.pushPose();
-        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, text, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, x, y, -1, -1, scale, color, false, MAX_LIGHT_GLOWING, null);
+        IDrawing.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, text, horizontalAlignment, verticalAlignment, horizontalAlignment, x, y, availableWidth, -1, scale, color, color, 2, false, MAX_LIGHT_GLOWING, null);
         matrices.popPose();
     }
 

@@ -37,9 +37,11 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
 
     private final BlockPos blockPos;
     private final WidgetBetterCheckbox selectAllCheckbox;
+    private final WidgetBetterCheckbox useRealTimeCheckbox;
     private final Button filterButton;
     private final Button categoryButton;
     private final Set<Long> filterPlatformIds;
+    private boolean useRealTime;
 
     public PIDSTianjinConfigScreen(BlockPos blockPos) {
         super(Text.literal(""));
@@ -49,12 +51,17 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         final BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(blockPos);
         if (blockEntity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
             filterPlatformIds.addAll(pidsEntity.getPlatformIds());
+            useRealTime = pidsEntity.isUseRealTime();
         }
 
         selectAllCheckbox = new WidgetBetterCheckbox(0, 0, PANEL_WIDTH, SQUARE_SIZE, Text.translatable("gui.mtr.automatically_detect_nearby_platform"), selected -> {
             if (selected) {
                 filterPlatformIds.clear();
             }
+        });
+
+        useRealTimeCheckbox = new WidgetBetterCheckbox(0, 0, PANEL_WIDTH, SQUARE_SIZE, Text.translatable("gui.tjmetro.use_real_time"), selected -> {
+            useRealTime = selected;
         });
 
         filterButton = Button.builder(Component.translatable("gui.tjmetro.filter_platforms"), button -> openPlatformSelector()).size(PANEL_WIDTH, SQUARE_SIZE).build();
@@ -69,10 +76,14 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         IDrawing.setPositionAndWidth(selectAllCheckbox, SQUARE_SIZE, SQUARE_SIZE, PANEL_WIDTH);
         addDrawableChild(selectAllCheckbox);
 
-        filterButton.setPosition(SQUARE_SIZE, SQUARE_SIZE * 2 + TEXT_FIELD_PADDING);
+        useRealTimeCheckbox.setChecked(useRealTime);
+        IDrawing.setPositionAndWidth(useRealTimeCheckbox, SQUARE_SIZE, SQUARE_SIZE * 2 + TEXT_FIELD_PADDING, PANEL_WIDTH);
+        addDrawableChild(useRealTimeCheckbox);
+
+        filterButton.setPosition(SQUARE_SIZE, SQUARE_SIZE * 3 + TEXT_FIELD_PADDING * 2);
         addDrawableChild(filterButton);
 
-        categoryButton.setPosition(SQUARE_SIZE, SQUARE_SIZE * 3 + TEXT_FIELD_PADDING);
+        categoryButton.setPosition(SQUARE_SIZE, SQUARE_SIZE * 4 + TEXT_FIELD_PADDING * 2);
         addDrawableChild(categoryButton);
     }
 
@@ -80,7 +91,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         final Font textRenderer = Minecraft.getInstance().font;
         renderBackground(guiGraphics);
-        guiGraphics.drawString(textRenderer, Text.translatable("gui.mtr.filtered_platforms", selectAllCheckbox.selected() ? 0 : filterPlatformIds.size()).getString(), SQUARE_SIZE, SQUARE_SIZE * 2 + TEXT_PADDING, ARGB_WHITE, false);
+        guiGraphics.drawString(textRenderer, Text.translatable("gui.mtr.filtered_platforms", selectAllCheckbox.selected() ? 0 : filterPlatformIds.size()).getString(), SQUARE_SIZE, SQUARE_SIZE * 3 + TEXT_PADDING + TEXT_FIELD_PADDING, ARGB_WHITE, false);
         super.render(guiGraphics, mouseX, mouseY, delta);
     }
 
@@ -89,7 +100,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         if (selectAllCheckbox.selected()) {
             filterPlatformIds.clear();
         }
-        sendConfigToServer(filterPlatformIds, 0);
+        sendConfigToServer(filterPlatformIds, 0, useRealTime);
         super.onClose();
     }
 
@@ -123,7 +134,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         }
     }
 
-    private void sendConfigToServer(Set<Long> platformIds, int displayPage) {
+    private void sendConfigToServer(Set<Long> platformIds, int displayPage, boolean useRealTime) {
         final net.minecraft.network.FriendlyByteBuf packet = new net.minecraft.network.FriendlyByteBuf(Unpooled.buffer());
         packet.writeBlockPos(blockPos);
         packet.writeVarInt(platformIds.size());
@@ -131,6 +142,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
             packet.writeLong(id);
         }
         packet.writeInt(displayPage);
+        packet.writeBoolean(useRealTime);
         RegistryClient.sendToServer(PACKET_UPDATE_PIDS_TIANJIN_CONFIG, packet);
     }
 }

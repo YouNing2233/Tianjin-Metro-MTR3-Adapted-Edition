@@ -183,4 +183,5 @@ public interface BlockList
 
     /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
     RegistryObject<Block> PIDS_TIANJIN = new RegistryObject<>(BlockPIDSTianjin::new);
+    RegistryObject<Block> PIDS_TIANJIN_SINGLE = new RegistryObject<>(BlockPIDSTianjinSingle::new);
 }

@@ -263,6 +263,9 @@
 
     "tooltip.tjmetro.disable_dynamic_textures":  "Skip generating textures for signs, gates, etc.",
     "tooltip.tjmetro.pids_tianjin":  "A PIDS which has a customizable advertisement part. Using Railway Sign Pole (Tianjin) to extend its pole.",
+    "block.tjmetro.pids_tianjin_single":  "Single-sided Passenger Information Display System (Tianjin)",
+    "tooltip.tjmetro.pids_tianjin_single":  "A single-sided PIDS. Using Railway Sign Pole (Tianjin) to extend its pole.",
+    "gui.tjmetro.use_real_time":  "Use Real Time",
     "tooltip.tjmetro.dynamic_texture_max_size":  "Dynamic textures that exceed the limitation will be truncated. If you meet this issue, please adjust this with caution.",
 
     "chat.tjmetro.ad_link":  "Ad link: %s",
