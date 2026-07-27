@@ -87,7 +87,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
                         .setStyle(net.minecraft.network.chat.Style.EMPTY
                                 .withClickEvent(new net.minecraft.network.chat.ClickEvent(net.minecraft.network.chat.ClickEvent.Action.OPEN_URL, url))
                                 .withUnderlined(true));
-                player.sendMessage(new net.minecraft.network.chat.TranslatableComponent("chat.tjmetro.ad_link", link), net.minecraft.Util.NIL_UUID);
+                player.sendMessage(new net.minecraft.network.chat.TranslatableComponent("chat.tjmetro.ad_link", link), player.getUUID());
             }
             return InteractionResult.SUCCESS;
         }

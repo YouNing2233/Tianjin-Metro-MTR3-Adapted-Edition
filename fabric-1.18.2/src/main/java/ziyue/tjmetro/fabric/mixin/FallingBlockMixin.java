@@ -2,6 +2,7 @@ package ziyue.tjmetro.fabric.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import java.util.Random;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +20,7 @@ public abstract class FallingBlockMixin extends Block
     }
 
     @Inject(at = @At("HEAD"), method = "tick", cancellable = true, remap = true)
-    private void beforeTick(BlockState state, ServerLevel level, BlockPos pos, java.util.Random random, CallbackInfo ci) {
+    private void beforeTick(BlockState state, ServerLevel level, BlockPos pos, Random random, CallbackInfo ci) {
         if (level.getGameRules().getBoolean(TianjinMetro.PREVENT_BLOCK_FALLING)) {
             ci.cancel();
         }

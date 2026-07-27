@@ -108,6 +108,18 @@ public class BlockRailwaySignTianjin extends BlockRailwaySignBase
                         isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_6_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_6_EVEN_TILE_ENTITY.get();
                 case 7 ->
                         isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_7_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_7_EVEN_TILE_ENTITY.get();
+                case 8 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_8_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_8_EVEN_TILE_ENTITY.get();
+                case 9 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_9_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_9_EVEN_TILE_ENTITY.get();
+                case 10 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_10_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_10_EVEN_TILE_ENTITY.get();
+                case 11 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_11_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_11_EVEN_TILE_ENTITY.get();
+                case 12 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_12_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_12_EVEN_TILE_ENTITY.get();
+                case 13 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_13_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_13_EVEN_TILE_ENTITY.get();
                 default -> null;
             };
         }

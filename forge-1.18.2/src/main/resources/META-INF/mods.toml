@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[36,)"
+loaderVersion = "[40,)"
 license = "GPL-3.0-only"
 
 [[mods]]
@@ -18,21 +18,21 @@ logoFile = "icon.png"
 [[dependencies.tjmetro]]
 modId = "forge"
 mandatory = true
-versionRange = "[36,)"
+versionRange = "[40,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.tjmetro]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.5,)"
+versionRange = "[1.18.2,1.19)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.tjmetro]]
 modId = "architectury"
 mandatory = true
-versionRange = "[1.26.37,)"
+versionRange = "[4.0,)"
 ordering = "AFTER"
 side = "BOTH"
 

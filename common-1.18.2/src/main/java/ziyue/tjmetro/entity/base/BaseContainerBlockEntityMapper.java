@@ -1,7 +1,6 @@
 package ziyue.tjmetro.entity.base;
 
 import mtr.mappings.BlockEntityClientSerializableMapper;
-import mtr.mappings.Text;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -80,7 +79,7 @@ public abstract class BaseContainerBlockEntityMapper extends BlockEntityClientSe
 
     public static boolean canUnlock(Player player, LockCode lockCode, Component component) {
         if (!player.isSpectator() && !lockCode.unlocksWith(player.getMainHandItem())) {
-            player.displayClientMessage(Text.translatable("container.isLocked", component), true);
+            player.displayClientMessage(new net.minecraft.network.chat.TranslatableComponent("container.isLocked", component), true);
             player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1.0F, 1.0F);
             return false;
         } else {

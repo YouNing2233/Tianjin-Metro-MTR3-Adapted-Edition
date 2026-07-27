@@ -223,7 +223,7 @@ public interface IGuiExtends
      */
     static MutableComponent format(Component component, Style... styles) {
         Style componentStyle = component.getStyle();
-        MutableComponent result = Text.literal("");
+        MutableComponent result = (MutableComponent) (Component) net.minecraft.network.chat.TextComponent.EMPTY;
         StringBuilder contents = new StringBuilder(component.getString());
         int firstTagBegin = contents.indexOf("<");
         while (firstTagBegin != -1) {

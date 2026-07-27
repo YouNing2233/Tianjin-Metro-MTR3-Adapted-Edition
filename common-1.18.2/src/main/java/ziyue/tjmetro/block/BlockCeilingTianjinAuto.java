@@ -1,43 +1,24 @@
 package ziyue.tjmetro.block;
 
 import net.minecraft.core.BlockPos;
-import java.util.Random;
 import net.minecraft.core.Direction;
-import java.util.Random;
 import net.minecraft.server.level.ServerLevel;
 import java.util.Random;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import java.util.Random;
 import net.minecraft.world.level.BlockGetter;
-import java.util.Random;
 import net.minecraft.world.level.Level;
-import java.util.Random;
 import net.minecraft.world.level.LevelAccessor;
-import java.util.Random;
 import net.minecraft.world.level.block.Block;
-import java.util.Random;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import java.util.Random;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import java.util.Random;
 import net.minecraft.world.level.block.state.BlockState;
-import java.util.Random;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.StateDefinition;
-import java.util.Random;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import java.util.Random;
 import net.minecraft.world.level.material.FluidState;
-import java.util.Random;
-import net.minecraft.world.level.material.Material;
-import java.util.Random;
 import net.minecraft.world.level.material.Fluids;
-import java.util.Random;
-import net.minecraft.world.level.material.Material;
-import java.util.Random;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import java.util.Random;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import java.util.Random;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 

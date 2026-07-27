@@ -227,8 +227,8 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         if (entity.advertisement != advertisement) {
             entity.advertisement = advertisement;
-            entity.scrollingText.changeImage(() -> ClientCache.DATA_CACHE.getSignText(
-                    "   " + advertisement.text().getString() + "   ", IGui.HorizontalAlignment.LEFT, 0, 0xFF1A1D46, ARGB_WHITE));
+            entity.scrollingText.changeImage(() -> ClientCache.DATA_CACHE.getPlainText(
+                    "   " + advertisement.text().getString() + "   ", 0xFF1A1D46, ARGB_WHITE));
         }
 
         final RenderType adRenderType = MoreRenderLayers.getExterior(advertisement.image());

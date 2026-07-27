@@ -12,7 +12,6 @@ import mtr.mappings.UtilitiesClient;
 import mtr.packet.IPacket;
 import mtr.screen.WidgetBetterCheckbox;
 import mtr.screen.WidgetBetterTextField;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -100,8 +99,8 @@ public class ColorPickerScreen extends ScreenMapper implements IGui, IPacket
         final int mainWidth = getMainWidth();
         final int mainHeight = getMainHeight();
 
-        GuiComponent.drawCenteredString(matrices, font, Text.translatable("gui.mtr.color"), SQUARE_SIZE * 4 + mainWidth + RIGHT_WIDTH / 2, SQUARE_SIZE + 20 + 5, ARGB_WHITE);
-        GuiComponent.drawCenteredString(matrices, font, "RGB", SQUARE_SIZE * 4 + mainWidth + RIGHT_WIDTH / 2, SQUARE_SIZE * 3 + TEXT_FIELD_PADDING + 20 + 5, ARGB_WHITE);
+        font.draw(matrices, Text.translatable("gui.mtr.color"), SQUARE_SIZE * 4 + mainWidth + RIGHT_WIDTH / 2 - font.width(Text.translatable("gui.mtr.color")) / 2, SQUARE_SIZE + 20 + 5, ARGB_WHITE);
+        font.draw(matrices, "RGB", SQUARE_SIZE * 4 + mainWidth + RIGHT_WIDTH / 2 - font.width("RGB") / 2, SQUARE_SIZE * 3 + TEXT_FIELD_PADDING + 20 + 5, ARGB_WHITE);
 
         final Tesselator tesselator = Tesselator.getInstance();
         final BufferBuilder buffer = tesselator.getBuilder();

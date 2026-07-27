@@ -3,10 +3,10 @@ package ziyue.tjmetro.block;
 import mtr.Items;
 import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
-import mtr.mappings.Text;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -77,8 +77,8 @@ public class BlockStationNameProjector extends BlockCustomColorBase
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter world, List<Component> tooltip, TooltipFlag options) {
-        tooltip.add(Text.translatable("tooltip.tjmetro.custom_color").withStyle(net.minecraft.ChatFormatting.GRAY));
-        IGuiExtends.addHoldShiftTooltip(tooltip, (net.minecraft.network.chat.MutableComponent) Text.translatable("tooltip.tjmetro.station_name_projector").withStyle(net.minecraft.ChatFormatting.GRAY), false);
+        tooltip.add(new TranslatableComponent("tooltip.tjmetro.custom_color").withStyle(net.minecraft.ChatFormatting.GRAY));
+        IGuiExtends.addHoldShiftTooltip(tooltip, (net.minecraft.network.chat.MutableComponent) new TranslatableComponent("tooltip.tjmetro.station_name_projector").withStyle(net.minecraft.ChatFormatting.GRAY), false);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ziyue.tjmetro.forge.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import java.util.Random;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,12 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ziyue.tjmetro.TianjinMetro;
 
-/**
- * Prevents falling blocks from falling when the game rule is enabled.
- *
- * @author ZiYueCommentary
- * @since 1.1.0
- */
 @Mixin(FallingBlock.class)
 public abstract class FallingBlockMixin extends Block
 {
@@ -24,8 +19,8 @@ public abstract class FallingBlockMixin extends Block
         super(properties);
     }
 
-    @Inject(at = @At("HEAD"), method = "tick", cancellable = true)
-    private void beforeTick(BlockState state, ServerLevel level, BlockPos pos, java.util.Random random, CallbackInfo ci) {
+    @Inject(at = @At("HEAD"), method = "tick", cancellable = true, remap = true)
+    private void beforeTick(BlockState state, ServerLevel level, BlockPos pos, Random random, CallbackInfo ci) {
         if (level.getGameRules().getBoolean(TianjinMetro.PREVENT_BLOCK_FALLING)) {
             ci.cancel();
         }

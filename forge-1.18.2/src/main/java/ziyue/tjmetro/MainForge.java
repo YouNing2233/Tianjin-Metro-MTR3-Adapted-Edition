@@ -4,6 +4,7 @@ import dev.architectury.platform.forge.EventBuses;
 import mtr.RegistryObject;
 import mtr.item.ItemBlockEnchanted;
 import mtr.mappings.BlockEntityMapper;
+import mtr.mappings.DeferredRegisterHolder;
 import mtr.mappings.ForgeUtilities;
 import mtr.mappings.RegistryUtilities;
 import net.minecraft.world.item.BlockItem;
@@ -13,59 +14,39 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import ziyue.tjmetro.client.ConfigScreen;
 
-/**
- * Forge 1.18.2 entry point for Tianjin Metro Mod.
- *
- * <p>Adapted from the 1.20.1 MainForge to use 1.18.2 Forge APIs:
- * <ul>
- *   <li>{@code DeferredRegister} instead of {@code DeferredRegisterHolder}</li>
- *   <li>{@code ForgeRegistries} instead of {@code Registries}</li>
- *   <li>{@code ForgeUtilities.createCreativeModeTab} (Architectury-backed) instead of {@code BuildCreativeModeTabContentsEvent}</li>
- *   <li>Item creative tabs set via {@code Item.Properties.tab} (through {@code RegistryUtilities.createItemProperties})</li>
- * </ul>
- *
- * <p>Note: {@code ForgeUtilities.registerCreativeModeTab} is an empty implementation in 1.18.2 MTR,
- * so items must be assigned to the creative tab via {@code Item.Properties.tab(CreativeModeTab)} at
- * construction time. {@code ItemWithCreativeTabBase} and its subclasses already handle this.
- *
- * @since 1.0.0-rc-2
- */
 @Mod(Reference.MOD_ID)
 public class MainForge
 {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Reference.MOD_ID);
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Reference.MOD_ID);
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Reference.MOD_ID);
+    public static final DeferredRegisterHolder<Item> ITEMS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetItem());
+    public static final DeferredRegisterHolder<Block> BLOCKS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetBlock());
+    public static final DeferredRegisterHolder<BlockEntityType<?>> BLOCK_ENTITY_TYPES = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetBlockEntityType());
+
+    // 注意：1.18.2 不使用 BuildCreativeModeTabContentsEvent（1.20.1 才引入）。
+    // 创造物品栏通过 ForgeUtilities.createCreativeModeTab 注册（内部使用 Architectury CreativeTabRegistry）。
+    // 物品通过 RegistryUtilities.createItemProperties 设置 tab，会自动加入对应创造物品栏。
+    // 所有注册逻辑移到构造函数中，使用 Supplier 延迟求值避免注册表冻结问题。
 
     public MainForge() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         EventBuses.registerModEventBus(Reference.MOD_ID, eventBus);
 
-        // 注意：net.minecraftforge.client.ConfigScreenHandler 在 Forge 1.18.2 中不存在（1.19.2+ 才引入），
-        // 因此这里不注册配置屏幕入口。配置屏幕仍可通过模组内的指令或键位访问。
+        
 
-        // 创建天津地铁创造物品栏（通过 Architectury CreativeTabRegistry）
-        // 翻译键 itemGroup.tjmetro.tjmetro_tab 与 fabric.lang 中的条目对应
-        ForgeUtilities.createCreativeModeTab(
-                TianjinMetro.CREATIVE_MODE_TAB.resourceLocation,
-                () -> new ItemStack(BlockList.LOGO.get()),
-                "itemGroup.tjmetro.tjmetro_tab"
-        );
+        // 创建天津地铁创造物品栏（图标为 LOGO，翻译键为 itemGroup.tjmetro.tjmetro_tab）
+        ForgeUtilities.createCreativeModeTab(TianjinMetro.CREATIVE_MODE_TAB.resourceLocation, () -> new ItemStack(BlockList.LOGO.get()), "itemGroup.tjmetro.tjmetro_tab");
 
         // 初始化模组（填充 DeferredRegister）
-        // register 方法中使用 Supplier 延迟求值，避免立即访问注册表
         TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType);
 
-        ITEMS.register(eventBus);
-        BLOCKS.register(eventBus);
-        BLOCK_ENTITY_TYPES.register(eventBus);
+        ITEMS.register();
+        BLOCKS.register();
+        BLOCK_ENTITY_TYPES.register();
 
         eventBus.register(ForgeClientSetup.class);
     }
@@ -80,9 +61,6 @@ public class MainForge
     }
 
     public static void registerItem(String path, RegistryObject<Item> item, Object filter) {
-        // ItemWithCreativeTabBase 及其子类（如 WRENCH、ItemPSDAPGTianjinBase）已在构造时
-        // 通过 Item.Properties.tab() 设置创造物品栏，无需额外调用 ForgeUtilities.registerCreativeModeTab
-        // （1.18.2 MTR 中该方法为空实现）
         ITEMS.register(path, item::get);
     }
 

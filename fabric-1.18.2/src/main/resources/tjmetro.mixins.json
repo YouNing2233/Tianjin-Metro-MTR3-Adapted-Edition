@@ -14,5 +14,5 @@
 	"client": [
 		"RenderRailwaySignMixin"
 	],
-	"refmap": "tjmetro-refmap.json"
+	"refmap": "fabric-fabric-refmap.json"
 }

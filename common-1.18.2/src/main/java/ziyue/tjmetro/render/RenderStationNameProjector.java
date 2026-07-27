@@ -9,7 +9,6 @@ import mtr.data.RailwayData;
 import mtr.data.Station;
 import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.BlockEntityRendererMapper;
-import mtr.mappings.Text;
 import mtr.mappings.UtilitiesClient;
 import mtr.render.RenderTrains;
 import mtr.render.StoredMatrixTransformations;
@@ -47,9 +46,6 @@ public class RenderStationNameProjector<T extends BlockEntityMapper> extends Blo
         final Direction facing = IBlock.getStatePropertySafe(state, HorizontalDirectionalBlock.FACING);
         final int scale = IBlock.getStatePropertySafe(state, BlockStationNameProjector.SCALE);
 
-        final Station station = RailwayData.getStation(ClientData.STATIONS, ClientData.DATA_CACHE, pos);
-        final String stationName = station == null ? Text.translatable("gui.mtr.untitled").getString() : station.name;
-
         final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations();
         storedMatrixTransformations.add(matricesNew -> {
             matricesNew.translate(0.5 + pos.getX(), 0.5 + pos.getY(), 0.5 + pos.getZ());
@@ -58,6 +54,9 @@ public class RenderStationNameProjector<T extends BlockEntityMapper> extends Blo
             matricesNew.translate(0, 0, 0.5 - IGui.SMALL_OFFSET);
             matricesNew.scale(scale, scale, scale);
         });
+
+        final Station station = RailwayData.getStation(ClientData.STATIONS, ClientData.DATA_CACHE, pos);
+        final String stationName = station == null ? new net.minecraft.network.chat.TranslatableComponent("gui.mtr.untitled").getString() : station.name;
 
         // Get dynamic resource and calculate width based on actual text length
         final ClientCache.DynamicResource resource = ClientCache.DATA_CACHE.getStationNameProjector(stationName, 10);

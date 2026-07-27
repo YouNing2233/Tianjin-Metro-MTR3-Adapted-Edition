@@ -10,12 +10,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import ziyue.tjmetro.mapping.ContainerAccessor;
 
-/**
- * Exposes the inventory of a storage minecart via {@link ContainerAccessor}.
- *
- * @author ZiYueCommentary
- * @since 1.1.0
- */
 @Mixin(AbstractMinecartContainer.class)
 public abstract class StorageMinecartEntityMixin extends AbstractMinecart implements ContainerAccessor
 {

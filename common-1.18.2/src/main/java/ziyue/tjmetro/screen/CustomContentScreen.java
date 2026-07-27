@@ -8,7 +8,6 @@ import mtr.mappings.Text;
 import mtr.packet.IPacket;
 import mtr.screen.WidgetBetterTextField;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -52,7 +51,7 @@ public class CustomContentScreen extends ScreenMapper implements IGui, IPacket
     @Override
     public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        GuiComponent.drawString(matrices, font, Text.translatable("gui.tjmetro.custom_content"), SQUARE_SIZE, TEXT_PADDING, ARGB_WHITE);
+        font.draw(matrices, Text.translatable("gui.tjmetro.custom_content"), SQUARE_SIZE, TEXT_PADDING, ARGB_WHITE);
         textField.setWidth(width - (SQUARE_SIZE * 2));
         super.render(matrices, mouseX, mouseY, delta);
     }

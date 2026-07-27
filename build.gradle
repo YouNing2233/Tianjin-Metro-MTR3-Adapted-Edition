@@ -31,10 +31,12 @@ def mtr_forge_jar_1182 = "MTR-forge-1.18.2-3.2.2-hotfix-1.jar"
 def fabric_loader_version_1182 = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version_1182).toURL())[0]["loader"]["version"]
 def fabric_api_version_1182 = getModrinthVersion("fabric", minecraft_version_1182, "fabric-api")
 def mod_menu_version_1182 = getModrinthVersion("fabric", minecraft_version_1182, "modmenu")
-def cloth_config_fabric_version_1182 = "5.0.36"
+def cloth_config_fabric_version_1182 = "7.0.72"
 def forge_version_1182 = minecraft_version_1182 + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version_1182 + "-latest"]
-def cloth_config_forge_version_1182 = "5.0.36"
+def cloth_config_forge_version_1182 = "7.0.72"
 def architectury_version_1182 = getModrinthVersion("forge", minecraft_version_1182, "architectury-api").split("\\+")[0]
+
+
 
 rootProject.ext.fabric_loader_version = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version).toURL())[0]["loader"]["version"]
 rootProject.ext.forge_version = minecraft_version + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version + "-latest"]
