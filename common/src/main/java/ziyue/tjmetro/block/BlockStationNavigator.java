@@ -146,7 +146,6 @@ public class BlockStationNavigator extends BlockRailwaySignBase
         public static net.minecraft.world.level.block.entity.BlockEntityType<?> getType(int length) {
             return switch (length) {
                 case 3 -> BlockEntityTypes.STATION_NAVIGATOR_3.get();
-                case 4 -> BlockEntityTypes.STATION_NAVIGATOR_4.get();
                 case 5 -> BlockEntityTypes.STATION_NAVIGATOR_5.get();
                 default -> throw new IllegalArgumentException();
             };

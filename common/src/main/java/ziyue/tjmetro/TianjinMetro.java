@@ -107,7 +107,6 @@ public class TianjinMetro
         registerBlockItem.accept("railway_sign_tianjin_bmt_6_even", BlockList.RAILWAY_SIGN_TIANJIN_BMT_6_EVEN, SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_bmt_7_even", BlockList.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN, SIGNS);
         registerBlockItem.accept("station_navigator_3", BlockList.STATION_NAVIGATOR_3, SIGNS);
-        registerBlockItem.accept("station_navigator_4", BlockList.STATION_NAVIGATOR_4, SIGNS);
         registerBlockItem.accept("station_navigator_5", BlockList.STATION_NAVIGATOR_5, SIGNS);
         /* PLATFORM GATES - grouped by line style (TRT/default, BMT, Jinjing) */
         /* APG (half-height platform doors) - Single doors only (others commented due to bugs) */
@@ -236,6 +235,18 @@ public class TianjinMetro
         registerBlockItem.accept("railway_sign_tianjin_5_even", BlockList.RAILWAY_SIGN_TIANJIN_5_EVEN, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_6_even", BlockList.RAILWAY_SIGN_TIANJIN_6_EVEN, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_7_even", BlockList.RAILWAY_SIGN_TIANJIN_7_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_8_odd", BlockList.RAILWAY_SIGN_TIANJIN_8_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_9_odd", BlockList.RAILWAY_SIGN_TIANJIN_9_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_10_odd", BlockList.RAILWAY_SIGN_TIANJIN_10_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_11_odd", BlockList.RAILWAY_SIGN_TIANJIN_11_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_12_odd", BlockList.RAILWAY_SIGN_TIANJIN_12_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_13_odd", BlockList.RAILWAY_SIGN_TIANJIN_13_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_8_even", BlockList.RAILWAY_SIGN_TIANJIN_8_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_9_even", BlockList.RAILWAY_SIGN_TIANJIN_9_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_10_even", BlockList.RAILWAY_SIGN_TIANJIN_10_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_11_even", BlockList.RAILWAY_SIGN_TIANJIN_11_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_12_even", BlockList.RAILWAY_SIGN_TIANJIN_12_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_13_even", BlockList.RAILWAY_SIGN_TIANJIN_13_EVEN, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_double_3_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_3_ODD, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_double_4_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_4_ODD, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_double_5_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_5_ODD, RAILWAY_SIGNS);
@@ -247,6 +258,18 @@ public class TianjinMetro
         registerBlockItem.accept("railway_sign_tianjin_double_5_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_5_EVEN, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_double_6_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_6_EVEN, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_double_7_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_7_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_8_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_8_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_9_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_9_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_10_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_10_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_11_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_11_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_12_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_12_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_13_odd", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_13_ODD, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_8_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_8_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_9_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_9_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_10_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_10_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_11_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_11_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_12_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_12_EVEN, RAILWAY_SIGNS);
+        registerBlockItem.accept("railway_sign_tianjin_double_13_even", BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_13_EVEN, RAILWAY_SIGNS);
         registerBlockItem.accept("railway_sign_tianjin_pole", BlockList.RAILWAY_SIGN_TIANJIN_POLE, RAILWAY_SIGNS);
 
         registerBlock.accept("railway_sign_wall_middle", BlockList.RAILWAY_SIGN_WALL_MIDDLE);
@@ -297,6 +320,18 @@ public class TianjinMetro
         registerBlockEntityType.accept("railway_sign_tianjin_5_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_5_EVEN_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_6_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_6_EVEN_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_7_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_7_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_8_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_8_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_9_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_9_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_10_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_10_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_11_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_11_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_12_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_12_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_13_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_13_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_8_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_8_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_9_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_9_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_10_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_10_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_11_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_11_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_12_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_12_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_13_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_13_EVEN_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_double_3_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_3_ODD_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_double_4_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_4_ODD_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_double_5_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_5_ODD_TILE_ENTITY);
@@ -308,6 +343,18 @@ public class TianjinMetro
         registerBlockEntityType.accept("railway_sign_tianjin_double_5_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_5_EVEN_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_double_6_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_6_EVEN_TILE_ENTITY);
         registerBlockEntityType.accept("railway_sign_tianjin_double_7_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_7_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_8_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_8_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_9_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_9_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_10_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_10_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_11_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_11_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_12_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_12_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_13_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_13_ODD_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_8_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_8_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_9_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_9_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_10_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_10_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_11_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_11_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_12_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_12_EVEN_TILE_ENTITY);
+        registerBlockEntityType.accept("railway_sign_tianjin_double_13_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_13_EVEN_TILE_ENTITY);
         registerBlockEntityType.accept("metal_detection_door", BlockEntityTypes.METAL_DETECTION_DOOR_TILE_ENTITY);
 //        registerBlockEntityType.accept("bench", BlockEntityTypes.BENCH_TILE_ENTITY);
         registerBlockEntityType.accept("service_corridor_sign", BlockEntityTypes.SERVICE_CORRIDOR_SIGN_TILE_ENTITY);
@@ -337,7 +384,6 @@ public class TianjinMetro
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_6_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_6_EVEN);
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_7_even", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN);
         registerBlockEntityType.accept("station_navigator_3", BlockEntityTypes.STATION_NAVIGATOR_3);
-        registerBlockEntityType.accept("station_navigator_4", BlockEntityTypes.STATION_NAVIGATOR_4);
         registerBlockEntityType.accept("station_navigator_5", BlockEntityTypes.STATION_NAVIGATOR_5);
         /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
         // TODO: Fix bugs in next version - commented out all variants except single doors

@@ -15,5 +15,8 @@ include("fabric-1.19.2")
 include("forge")
 include("forge-1.19.2")
 include("common-1.19.2")
+include("common-1.18.2")
+include("fabric-1.18.2")
+include("forge-1.18.2")
 
 rootProject.name = "Tianjin-Metro"

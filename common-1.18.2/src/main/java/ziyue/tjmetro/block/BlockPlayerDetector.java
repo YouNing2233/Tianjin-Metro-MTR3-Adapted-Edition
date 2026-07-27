@@ -3,14 +3,15 @@ package ziyue.tjmetro.block;
 import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.EntityBlockMapper;
-import mtr.mappings.TickableMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -22,13 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import ziyue.tjmetro.BlockEntityTypes;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
-
-/**
- * Player detector.
- *
- * @author ZiYueCommentary
- * @since beta-1
- */
 
 public class BlockPlayerDetector extends Block implements SimpleWaterloggedBlock, EntityBlockMapper
 {
@@ -89,25 +83,32 @@ public class BlockPlayerDetector extends Block implements SimpleWaterloggedBlock
         return new TileEntityPlayerDetector(pos, state);
     }
 
-    public static class TileEntityPlayerDetector extends BlockEntityMapper implements TickableMapper
+    @Override
+    public BlockEntityType<? extends BlockEntityMapper> getType() {
+        return BlockEntityTypes.PLAYER_DETECTOR_TILE_ENTITY.get();
+    }
+
+    @Override
+    public <T extends BlockEntityMapper> void tick(Level level, BlockPos pos, T blockEntity) {
+        if (level.isClientSide) return;
+        final BlockState state = level.getBlockState(pos);
+        boolean[] hasPlayer = {
+                level.hasNearbyAlivePlayer(pos.getX(), pos.getY(), pos.getZ(), 2),
+                level.hasNearbyAlivePlayer(pos.getX(), pos.below().getY(), pos.getZ(), 2),
+                level.hasNearbyAlivePlayer(pos.getX(), pos.above().getY(), pos.getZ(), 2)
+        };
+        boolean powered = hasPlayer[0] || hasPlayer[1] || hasPlayer[2];
+        if (powered != state.getValue(POWERED)) {
+            level.setBlock(pos, state.setValue(POWERED, powered), 3);
+            level.updateNeighborsAt(pos, state.getBlock());
+            level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), state.getBlock());
+        }
+    }
+
+    public static class TileEntityPlayerDetector extends BlockEntityMapper
     {
         public TileEntityPlayerDetector(BlockPos pos, BlockState state) {
             super(BlockEntityTypes.PLAYER_DETECTOR_TILE_ENTITY.get(), pos, state);
-        }
-
-        @Override
-        public void tick() {
-            boolean[] hasPlayer = {
-                    this.level.hasNearbyAlivePlayer(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 2),
-                    this.level.hasNearbyAlivePlayer(getBlockPos().getX(), getBlockPos().below().getY(), getBlockPos().getZ(), 2),
-                    this.level.hasNearbyAlivePlayer(getBlockPos().getX(), getBlockPos().above().getY(), getBlockPos().getZ(), 2)
-            };
-            boolean powered = hasPlayer[0] || hasPlayer[1] || hasPlayer[2];
-            if (powered != getBlockState().getValue(POWERED)) {
-                level.setBlock(getBlockPos(), getBlockState().setValue(POWERED, powered), 3);
-                level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
-                level.updateNeighborsAt(getBlockPos().relative(getBlockState().getValue(FACING).getOpposite()), getBlockState().getBlock());
-            }
         }
     }
 }

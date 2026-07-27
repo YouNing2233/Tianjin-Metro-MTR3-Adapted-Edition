@@ -7,7 +7,6 @@ import mtr.mappings.Text;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,9 +20,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -145,7 +144,11 @@ public class BlockStationNavigator extends BlockRailwaySignBase
         }
 
         public static net.minecraft.world.level.block.entity.BlockEntityType<?> getType(int length) {
-            return BlockEntityTypes.STATION_NAVIGATOR_MIDDLE.get();
+            return switch (length) {
+                case 3 -> BlockEntityTypes.STATION_NAVIGATOR_3.get();
+                case 5 -> BlockEntityTypes.STATION_NAVIGATOR_5.get();
+                default -> throw new IllegalArgumentException();
+            };
         }
     }
 }

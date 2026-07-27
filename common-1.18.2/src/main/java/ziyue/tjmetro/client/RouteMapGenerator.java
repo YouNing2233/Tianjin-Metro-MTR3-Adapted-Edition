@@ -1395,10 +1395,9 @@ public class RouteMapGenerator implements IGui
                 });
                 if (!routes.isEmpty()) currentX.addAndGet(padding * -3);
             } else {
-                final AtomicInteger currentX = new AtomicInteger(width - (iconOffset + iconSize) * 2);
+                final AtomicInteger currentX = new AtomicInteger(width - (iconOffset + iconSize) * 2 - iconOffset);
                 drawResource(nativeImage, ARROW_RESOURCE, width - iconOffset - iconSize, iconOffset, iconSize, iconSize, true, 0, 1, 0, true);
                 drawResource(nativeImage, TRAIN_BORDERLESS_LOGO_RESOURCE, width - (iconOffset + iconSize) * 2, iconOffset, iconSize, iconSize, false, 0, 1, 0, true);
-                currentX.addAndGet(-iconOffset);
                 routes.forEach(route -> {
                     nativeImage.fillRect(currentX.get() - padding * 3 - route.getA().renderWidth(), iconOffset, padding * 3 + route.getA().renderWidth(), iconSize, invertColor(ARGB_BLACK | route.getB()));
                     drawString(nativeImage, route.getA(), currentX.get() - padding * 3 / 2, size / 2, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER, route.getB(), ARGB_WHITE, false);

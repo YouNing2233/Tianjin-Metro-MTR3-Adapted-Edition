@@ -83,6 +83,8 @@ public interface BlockEntityTypes
     RegistryObject<BlockEntityType<BlockRailwaySignTianjinBMT.BlockEntity>> RAILWAY_SIGN_TIANJIN_BMT_7_ODD = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockRailwaySignTianjinBMT.BlockEntity(7, true, pos, state), BlockList.RAILWAY_SIGN_TIANJIN_BMT_7_ODD.get()));
     RegistryObject<BlockEntityType<BlockRailwaySignTianjinBMT.BlockEntity>> RAILWAY_SIGN_TIANJIN_BMT_7_EVEN = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockRailwaySignTianjinBMT.BlockEntity(7, false, pos, state), BlockList.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN.get()));
 
+    RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_3 = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(3, pos, state), BlockList.STATION_NAVIGATOR_3.get()));
+    RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_5 = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(5, pos, state), BlockList.STATION_NAVIGATOR_5.get()));
     RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(0, pos, state), BlockList.STATION_NAVIGATOR_MIDDLE.get()));
 
     /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
@@ -111,4 +113,6 @@ public interface BlockEntityTypes
 
     /* 1.1.6 - Ported from 4.0 - Station Name Projector */
     RegistryObject<BlockEntityType<BlockStationNameProjector.BlockEntity>> STATION_NAME_PROJECTOR = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockStationNameProjector.BlockEntity::new, BlockList.STATION_NAME_PROJECTOR.get()));
+
+    RegistryObject<BlockEntityType<BlockPIDSTianjin.TileEntityBlockPIDSTianjin>> PIDS_TIANJIN_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPIDSTianjin.TileEntityBlockPIDSTianjin::new, BlockList.PIDS_TIANJIN.get()));
 }

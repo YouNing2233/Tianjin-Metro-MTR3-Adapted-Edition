@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import ziyue.tjmetro.block.*;
 import ziyue.tjmetro.block.base.StairBlock;
 
@@ -112,8 +113,8 @@ public interface BlockList
     RegistryObject<Block> CUSTOM_COLOR_MOSAIC_TILE = new RegistryObject<>(BlockCustomColorMosaicTile::new);
     RegistryObject<Block> CUSTOM_COLOR_MOSAIC_TILE_SLAB = new RegistryObject<>(BlockCustomColorMosaicTileSlab::new);
     RegistryObject<Block> CUSTOM_COLOR_MOSAIC_TILE_STAIRS = new RegistryObject<>(BlockCustomColorMosaicTileStairs::new);
-    RegistryObject<Block> MOSAIC_TILE_WHITE = new RegistryObject<>(() -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1)));
-    RegistryObject<Block> MOSAIC_TILE_GRAY = new RegistryObject<>(() -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1)));
+    RegistryObject<Block> MOSAIC_TILE_WHITE = new RegistryObject<>(() -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.SNOW).requiresCorrectToolForDrops().strength(1)));
+    RegistryObject<Block> MOSAIC_TILE_GRAY = new RegistryObject<>(() -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().strength(1)));
 
     RegistryObject<Block> CEILING_TIANJIN = new RegistryObject<>(BlockCeilingTianjinAuto::new);
     RegistryObject<Block> CEILING_TIANJIN_LIGHT = new RegistryObject<>(() -> new BlockCeilingTianjin(15));
@@ -139,6 +140,8 @@ public interface BlockList
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_7_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(7, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_MIDDLE = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(0, false));
 
+    RegistryObject<Block> STATION_NAVIGATOR_3 = new RegistryObject<>(() -> new BlockStationNavigator(3));
+    RegistryObject<Block> STATION_NAVIGATOR_5 = new RegistryObject<>(() -> new BlockStationNavigator(5));
     RegistryObject<Block> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> new BlockStationNavigator(0));
 
     /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
@@ -177,4 +180,6 @@ public interface BlockList
 
     /* 1.1.6 - Ported from 4.0 - Station Name Projector */
     RegistryObject<Block> STATION_NAME_PROJECTOR = new RegistryObject<>(BlockStationNameProjector::new);
+
+    RegistryObject<Block> PIDS_TIANJIN = new RegistryObject<>(BlockPIDSTianjin::new);
 }

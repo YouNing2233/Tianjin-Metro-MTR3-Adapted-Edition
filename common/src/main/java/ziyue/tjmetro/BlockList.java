@@ -82,6 +82,18 @@ public interface BlockList
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_5_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(5, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_6_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(6, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_7_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(7, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_8_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjin(8, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_9_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjin(9, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_10_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjin(10, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_11_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjin(11, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_12_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjin(12, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_13_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjin(13, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_8_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(8, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_9_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(9, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_10_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(10, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_11_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(11, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_12_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(12, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_13_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjin(13, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_MIDDLE = new RegistryObject<>(() -> new BlockRailwaySignTianjin(0, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_3_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(3, true));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_4_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(4, true));
@@ -94,6 +106,18 @@ public interface BlockList
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_5_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(5, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_6_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(6, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_7_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(7, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_8_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(8, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_9_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(9, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_10_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(10, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_11_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(11, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_12_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(12, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_13_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(13, true));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_8_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(8, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_9_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(9, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_10_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(10, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_11_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(11, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_12_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(12, false));
+    RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_13_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(13, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_DOUBLE_MIDDLE = new RegistryObject<>(() -> new BlockRailwaySignTianjinDouble(0, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_POLE = new RegistryObject<>(BlockRailwaySignTianjinPole::new);
     RegistryObject<Block> METAL_DETECTION_DOOR = new RegistryObject<>(BlockMetalDetectionDoor::new);
@@ -140,7 +164,6 @@ public interface BlockList
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_MIDDLE = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(0, false));
 
     RegistryObject<Block> STATION_NAVIGATOR_3 = new RegistryObject<>(() -> new BlockStationNavigator(3));
-    RegistryObject<Block> STATION_NAVIGATOR_4 = new RegistryObject<>(() -> new BlockStationNavigator(4));
     RegistryObject<Block> STATION_NAVIGATOR_5 = new RegistryObject<>(() -> new BlockStationNavigator(5));
     RegistryObject<Block> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> new BlockStationNavigator(0));
 

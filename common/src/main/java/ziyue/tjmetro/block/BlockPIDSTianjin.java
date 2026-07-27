@@ -78,6 +78,11 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
     }
 
     @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        return Shapes.empty();
+    }
+
+    @Override
     public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
         return new TileEntityBlockPIDSTianjin(pos, state);
     }

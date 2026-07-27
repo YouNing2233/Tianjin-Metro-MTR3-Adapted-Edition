@@ -60,7 +60,7 @@ public class BlockRailwaySignTianjinDouble extends BlockRailwaySignTianjin
         if (state.is(BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_MIDDLE.get()))
             return IBlock.getVoxelShapeByDirection(0, 0, 7, 16, 16, 9, facing);
         else
-            return IBlock.getVoxelShapeByDirection(getXStart() - 0.5, 0, 7, 16, 16, 9, facing);
+            return IBlock.getVoxelShapeByDirection(getXStart() - 0.5, 0, 7, getXStart() - 0.5 + 0.5 * length, 16, 9, facing);
     }
 
     @Override
@@ -149,6 +149,18 @@ public class BlockRailwaySignTianjinDouble extends BlockRailwaySignTianjin
                         isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_6_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_6_EVEN_TILE_ENTITY.get();
                 case 7 ->
                         isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_7_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_7_EVEN_TILE_ENTITY.get();
+                case 8 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_8_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_8_EVEN_TILE_ENTITY.get();
+                case 9 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_9_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_9_EVEN_TILE_ENTITY.get();
+                case 10 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_10_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_10_EVEN_TILE_ENTITY.get();
+                case 11 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_11_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_11_EVEN_TILE_ENTITY.get();
+                case 12 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_12_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_12_EVEN_TILE_ENTITY.get();
+                case 13 ->
+                        isOdd ? BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_13_ODD_TILE_ENTITY.get() : BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_13_EVEN_TILE_ENTITY.get();
                 default -> null;
             };
         }

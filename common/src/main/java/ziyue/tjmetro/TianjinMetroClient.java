@@ -42,6 +42,8 @@ public class TianjinMetroClient
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SERVICE_CORRIDOR_SIGN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.METAL_DETECTION_DOOR.get());
         RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.ROLLING.get());
+        /* 1.1.7 - Ported from 4.0 - PIDS */
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN.get());
         /* 1.1.0 - Ported from 4.0 */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.STATION_SIGN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.STATION_SIGN_BMT.get());
@@ -136,6 +138,18 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_5_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_6_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_7_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_8_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_9_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_10_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_11_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_12_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_13_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_8_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_9_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_10_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_11_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_12_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_13_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjin::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_2_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_3_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_4_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
@@ -147,6 +161,18 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_5_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_6_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_7_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_8_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_9_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_10_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_11_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_12_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_13_EVEN_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_8_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_9_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_10_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_11_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_12_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_DOUBLE_13_ODD_TILE_ENTITY.get(), RenderRailwaySignTianjinDouble::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.SERVICE_CORRIDOR_SIGN_TILE_ENTITY.get(), RenderServiceCorridorSign::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_TILE_ENTITY.get(), RenderStationNameEntranceTianjin::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_PINYIN_TILE_ENTITY.get(), RenderStationNameEntranceTianjin::new);
@@ -170,7 +196,6 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_ODD.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_3.get(), RenderStationNavigator::new);
-        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_4.get(), RenderStationNavigator::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_5.get(), RenderStationNavigator::new);
         /* 1.1.6 - Ported from 4.0 - APG doors (custom Tianjin renderer) */
         // TODO: Fix bugs in next version - commented out all variants except single doors

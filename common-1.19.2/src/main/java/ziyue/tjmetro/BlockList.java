@@ -140,6 +140,8 @@ public interface BlockList
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_7_EVEN = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(7, false));
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_MIDDLE = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(0, false));
 
+    RegistryObject<Block> STATION_NAVIGATOR_3 = new RegistryObject<>(() -> new BlockStationNavigator(3));
+    RegistryObject<Block> STATION_NAVIGATOR_5 = new RegistryObject<>(() -> new BlockStationNavigator(5));
     RegistryObject<Block> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> new BlockStationNavigator(0));
 
     /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */

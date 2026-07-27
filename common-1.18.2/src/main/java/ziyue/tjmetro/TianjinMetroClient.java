@@ -44,6 +44,8 @@ public class TianjinMetroClient
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SERVICE_CORRIDOR_SIGN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.METAL_DETECTION_DOOR.get());
         RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.ROLLING.get());
+        /* 1.1.7 - Ported from 4.0 - PIDS */
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN.get());
         /* 1.1.0 - Ported from 4.0 */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.STATION_SIGN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.STATION_SIGN_BMT.get());
@@ -171,6 +173,8 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_6_EVEN.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_ODD.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN.get(), RenderRailwaySignBMTBase::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_3.get(), RenderStationNavigator::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_5.get(), RenderStationNavigator::new);
         /* 1.1.6 - Ported from 4.0 - APG doors (custom Tianjin renderer) */
         // TODO: Fix bugs in next version - commented out all variants except single doors
         // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin", "apg_door_tianjin", false));
@@ -196,11 +200,13 @@ public class TianjinMetroClient
         // registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY.get(), RenderPSDTop::new);
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PROJECTOR.get(), RenderStationNameProjector::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), RenderPIDSTianjin::new);
 
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_CUSTOM_CONTENT_SCREEN, packet -> PacketGuiClient.openCustomContentScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_CUSTOM_COLOR_SCREEN, packet -> PacketGuiClient.openCustomColorScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_RAILWAY_SIGN_SCREEN, packet -> PacketGuiClient.openRailwaySignScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_RAILWAY_SIGN_DOUBLE_SCREEN, packet -> PacketGuiClient.openRailwaySignDoubleScreenS2C(Minecraft.getInstance(), packet));
+        RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_PIDS_TIANJIN_SCREEN, packet -> PacketGuiClient.openPIDSTianjinScreenS2C(Minecraft.getInstance(), packet));
     }
 
     /**

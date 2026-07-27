@@ -173,20 +173,21 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
             renderText(matrices, immediate, destinationFormatted, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM, LEFT_TEXT_X_CENTER, 45F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.3F, ARGB_WHITE);
 
             final long arrivalSeconds = (scheduleEntry.arrivalMillis - System.currentTimeMillis()) / 1000;
-            if (arrivalSeconds <= 15) {
+            if (arrivalSeconds <= 60) {
                 final String textKey = (arrivalSeconds < 0 ? "gui.tjmetro.arrived" : "gui.tjmetro.arriving") + (useChinese ? "_cjk" : "");
                 renderText(matrices, immediate, Text.translatable(textKey).getString(), HorizontalAlignment.CENTER, VerticalAlignment.TOP, LEFT_TEXT_X_CENTER, 21.5F + yOffset, LEFT_TEXT_MAX_WIDTH, 0.6F, 0xFFEFEF00);
             } else {
-                final boolean isMinute = arrivalSeconds > 60;
-                final String arrivalTime = String.valueOf(isMinute ? arrivalSeconds / 60 : arrivalSeconds);
-                final String arrivalUnit = Text.translatable(
-                        (isMinute ? "gui.tjmetro.minute" : "gui.tjmetro.second") + (useChinese ? "_cjk" : "")).getString();
+                final String arrivalTime = String.valueOf(arrivalSeconds / 60);
+                final String arrivalUnit = Text.translatable("gui.tjmetro.minute" + (useChinese ? "_cjk" : "")).getString();
 
                 final float arrivalTimeWidth = getStringWidth(Minecraft.getInstance().font, arrivalTime, 0.4F);
                 final float arrivalUnitWidth = getStringWidth(Minecraft.getInstance().font, arrivalUnit, 1.5F);
+                final float gap = 2F;
+                final float totalWidth = arrivalTimeWidth + gap + arrivalUnitWidth;
+                final float startX = LEFT_TEXT_X_CENTER - totalWidth / 2;
 
-                renderText(matrices, immediate, arrivalTime, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER - (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 0.4F, 0xFFEFEF00);
-                renderText(matrices, immediate, arrivalUnit, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER, LEFT_TEXT_X_CENTER + (arrivalTimeWidth + arrivalUnitWidth) / 2, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.5F, ARGB_WHITE);
+                renderText(matrices, immediate, arrivalTime, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, startX, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 0.4F, 0xFFEFEF00);
+                renderText(matrices, immediate, arrivalUnit, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, startX + arrivalTimeWidth + gap, 30F + yOffset, LEFT_TEXT_MAX_WIDTH, 1.5F, ARGB_WHITE);
             }
         }
     }
