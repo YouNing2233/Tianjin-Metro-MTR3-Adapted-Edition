@@ -21,4 +21,7 @@ public interface IPacket
     ResourceLocation PACKET_UPDATE_PIDS_TIANJIN_CONFIG = new ResourceLocation(Reference.MOD_ID, "packet_update_pids_tianjin_config");
     ResourceLocation PACKET_UPDATE_PIDS_ADS_CONFIG = new ResourceLocation(Reference.MOD_ID, "packet_update_pids_ads_config");
     ResourceLocation PACKET_OPEN_PIDS_TIANJIN_SCREEN = new ResourceLocation(Reference.MOD_ID, "packet_open_pids_tianjin_screen");
+
+    ResourceLocation PACKET_OPEN_STATION_NAVIGATOR_SCREEN = new ResourceLocation(Reference.MOD_ID, "packet_open_station_navigator_screen");
+    ResourceLocation PACKET_STATION_NAVIGATOR_CONFIG = new ResourceLocation(Reference.MOD_ID, "packet_station_navigator_config");
 }

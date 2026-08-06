@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import ziyue.tjmetro.block.BlockStationNavigator;
 import ziyue.tjmetro.block.base.BlockCustomColorBase;
 import ziyue.tjmetro.block.base.BlockCustomContentBlockBase;
 import ziyue.tjmetro.screen.ColorPickerScreen;
@@ -14,6 +15,7 @@ import ziyue.tjmetro.screen.CustomContentScreen;
 import ziyue.tjmetro.screen.PIDSTianjinConfigScreen;
 import ziyue.tjmetro.screen.RailwaySignDoubleScreen;
 import ziyue.tjmetro.screen.RailwaySignScreen;
+import ziyue.tjmetro.screen.StationNavigatorScreen;
 
 import static ziyue.tjmetro.packet.IPacket.*;
 
@@ -85,6 +87,18 @@ public class PacketGuiClient
         minecraftClient.execute(() -> {
             if (!(minecraftClient.screen instanceof PIDSTianjinConfigScreen)) {
                 UtilitiesClient.setScreen(minecraftClient, new PIDSTianjinConfigScreen(pos));
+            }
+        });
+    }
+
+    public static void openStationNavigatorScreenS2C(Minecraft minecraftClient, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        minecraftClient.execute(() -> {
+            if (minecraftClient.level != null && !(minecraftClient.screen instanceof StationNavigatorScreen)) {
+                final BlockEntity entity = minecraftClient.level.getBlockEntity(pos);
+                if (entity instanceof BlockStationNavigator.BlockEntity) {
+                    UtilitiesClient.setScreen(minecraftClient, new StationNavigatorScreen(pos));
+                }
             }
         });
     }

@@ -419,6 +419,7 @@ public class TianjinMetro
         mtr.Registry.registerNetworkReceiver(PACKET_SIGN_TYPES_DOUBLE, PacketGuiServer::receiveSignIdsDoubleC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_TIANJIN_CONFIG, PacketGuiServer::receivePIDSTianjinConfigC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_ADS_CONFIG, PacketGuiServer::receivePIDSAdsConfigC2S);
+        mtr.Registry.registerNetworkReceiver(PACKET_STATION_NAVIGATOR_CONFIG, PacketGuiServer::receiveStationNavigatorConfigC2S);
     }
 
     @FunctionalInterface

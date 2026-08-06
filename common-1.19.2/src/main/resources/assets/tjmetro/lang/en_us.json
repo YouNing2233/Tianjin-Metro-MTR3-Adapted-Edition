@@ -64,6 +64,7 @@
     "block.minecraft.mosaic_tile_slab":  "Mosaic Tile Slab",
     "block.minecraft.mosaic_tile_stairs":  "Mosaic Tile Stairs",
     "tooltip.tjmetro.station_navigator_pole":  "Place this block below \"Station Navigator\".",
+    "tooltip.tjmetro.railway_sign_tianjin_pole":  "Must be placed on a sign or PIDS.",
     "gui.tjmetro.service_corridor_sign":  "Service Corridor",
     "gui.tjmetro.contact_station_for_help_cjk":  "如需帮助请联系车站",
     "gui.tjmetro.contact_station_for_help":  "Please contact the station for help.",

@@ -206,6 +206,7 @@ public class ColorPickerScreen extends ScreenMapper implements IGui, IPacket
     }
 
     protected void textCallback(String text, int shift) {
+        if (text.isEmpty()) return;
         final boolean isHex = shift < 0;
         final int compare = Integer.parseInt(text, isHex ? 16 : 10);
         final int currentColor = Color.HSBtoRGB(hue, saturation, brightness) & RGB_WHITE;

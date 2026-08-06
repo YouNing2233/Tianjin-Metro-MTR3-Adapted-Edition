@@ -36,6 +36,7 @@ import static mtr.render.RenderRailwaySign.getSign;
 public class RenderRailwaySignBMTBase<T extends BlockRailwaySignBase.TileEntityRailwaySign> extends BlockEntityRendererMapper<T> implements IBlock, IGui, IDrawing
 {
     public static final int BACKGROUND_COLOR = 0xff00379c;
+    public static final int TEXT_COLOR = 0xffcc7b32;
 
     public RenderRailwaySignBMTBase(BlockEntityRenderDispatcher dispatcher) {
         super(dispatcher);
@@ -79,9 +80,9 @@ public class RenderRailwaySignBMTBase<T extends BlockRailwaySignBase.TileEntityR
         // Render each sign using the same logic as RenderRailwaySignTianjin
         for (int i = 0; i < signIds.length; i++) {
             if (signIds[i] != null) {
-                RenderRailwaySignTianjin.drawSign(matrices, vertexConsumers, storedMatrixTransformations, Minecraft.getInstance().font, pos, signIds[i], 0.5F * i, 0, 0.5F, getMaxWidth(signIds, i, false), getMaxWidth(signIds, i, true), entity.getSelectedIds(), facing, BACKGROUND_COLOR, (textureId, x, y, size, flipTexture) -> RenderTrains.scheduleRender(new ResourceLocation(textureId.toString()), true, RenderTrains.QueuedRenderLayer.LIGHT_TRANSLUCENT, (matricesNew, vertexConsumer) -> {
+                RenderRailwaySignTianjin.drawSign(matrices, vertexConsumers, storedMatrixTransformations, Minecraft.getInstance().font, pos, signIds[i], 0.5F * i, 0, 0.5F, getMaxWidth(signIds, i, false), getMaxWidth(signIds, i, true), entity.getSelectedIds(), facing, BACKGROUND_COLOR, TEXT_COLOR, (textureId, x, y, size, flipTexture) -> RenderTrains.scheduleRender(new ResourceLocation(textureId.toString()), true, RenderTrains.QueuedRenderLayer.LIGHT_TRANSLUCENT, (matricesNew, vertexConsumer) -> {
                     storedMatrixTransformations.transform(matricesNew);
-                    IDrawing.drawTexture(matricesNew, vertexConsumer, x, y, size, size, flipTexture ? 1 : 0, 0, flipTexture ? 0 : 1, 1, facing, -1, MAX_LIGHT_GLOWING);
+                    IDrawing.drawTexture(matricesNew, vertexConsumer, x, y, size, size, flipTexture ? 1 : 0, 0, flipTexture ? 0 : 1, 1, facing, TEXT_COLOR, MAX_LIGHT_GLOWING);
                     matricesNew.popPose();
                 }));
             }

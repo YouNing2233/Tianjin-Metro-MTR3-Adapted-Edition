@@ -50,14 +50,15 @@ public class MainForge
         ForgeUtilities.createCreativeModeTab(TianjinMetro.CREATIVE_MODE_TAB.resourceLocation, () -> new ItemStack(BlockList.LOGO.get()), "itemGroup.tjmetro.tjmetro_tab");
         ForgeUtilities.registerCreativeModeTabsToDeferredRegistry(CREATIVE_MODE_TABS);
 
-        // 初始化模组（填充 DeferredRegister 和 TAB_ITEMS）
-        // register 方法中不再立即调用 block.get()/item.get()，全部使用 Supplier 延迟求值
-        TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType);
-
+        // 先注册 DeferredRegisterHolder 到事件总线，确保 init() 中添加的条目能正确注册
         ITEMS.register();
         BLOCKS.register();
         BLOCK_ENTITY_TYPES.register();
         CREATIVE_MODE_TABS.register();
+
+        // 初始化模组（填充 DeferredRegister 和 TAB_ITEMS）
+        // register 方法中不再立即调用 block.get()/item.get()，全部使用 Supplier 延迟求值
+        TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType);
 
         eventBus.register(ForgeClientSetup.class);
         // 注册创造物品栏内容构建事件：在所有物品注册完成后将 TAB_ITEMS 添加到天津地铁标签页

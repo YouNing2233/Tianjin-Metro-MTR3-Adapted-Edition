@@ -7,8 +7,8 @@ import mtr.mappings.Text;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +33,7 @@ import ziyue.tjmetro.block.base.BlockRailwaySignBase;
 import ziyue.tjmetro.block.base.IRailwaySign;
 import ziyue.tjmetro.packet.PacketGuiServer;
 
-import java.util.List;
+import java.util.*;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
@@ -84,7 +84,7 @@ public class BlockStationNavigator extends BlockRailwaySignBase
             final BlockPos checkPos = findEndWithDirection(world, pos, hit.getDirection().getOpposite(), false);
             if (checkPos == null) return;
             if (item == ziyue.tjmetro.ItemList.WRENCH.get()) {
-                PacketGuiServer.openRailwaySignScreenS2C((net.minecraft.server.level.ServerPlayer) player, checkPos);
+                PacketGuiServer.openStationNavigatorScreenS2C((ServerPlayer) player, checkPos);
             } else {
                 world.setBlock(checkPos, world.getBlockState(checkPos).cycle(ARROW_LEFT), 3);
             }
@@ -141,6 +141,13 @@ public class BlockStationNavigator extends BlockRailwaySignBase
         public BlockEntity(int length, BlockPos pos, BlockState state) {
             super(getType(length), length, pos, state);
             this.length = length;
+        }
+
+        public void setData(Set<Long> selectedRoutes) {
+            selectedIds.clear();
+            selectedIds.addAll(selectedRoutes);
+            setChanged();
+            syncData();
         }
 
         public static net.minecraft.world.level.block.entity.BlockEntityType<?> getType(int length) {

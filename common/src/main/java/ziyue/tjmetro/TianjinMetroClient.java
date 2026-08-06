@@ -230,6 +230,7 @@ public class TianjinMetroClient
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_RAILWAY_SIGN_SCREEN, packet -> PacketGuiClient.openRailwaySignScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_RAILWAY_SIGN_DOUBLE_SCREEN, packet -> PacketGuiClient.openRailwaySignDoubleScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_PIDS_TIANJIN_SCREEN, packet -> PacketGuiClient.openPIDSTianjinScreenS2C(Minecraft.getInstance(), packet));
+        RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_STATION_NAVIGATOR_SCREEN, packet -> PacketGuiClient.openStationNavigatorScreenS2C(Minecraft.getInstance(), packet));
     }
 
     /**

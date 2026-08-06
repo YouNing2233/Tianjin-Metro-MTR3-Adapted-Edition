@@ -150,8 +150,8 @@ public class ClientCache extends DataCache implements IGui
         return getResource(String.format("tjmetro_exit_sign_letter_%s_%s", exitLetter, exitNumber), () -> RouteMapGenerator.generateExitSignLetter(exitLetter, exitNumber, backgroundColor), DefaultRenderingColor.TRANSPARENT);
     }
 
-    public DynamicResource getExitSignLetterTianjin(String exitLetter, String exitNumber, int backgroundColor, boolean forceMTRFont) {
-        return getResource(String.format("tjmetro_exit_sign_letter_tianjin_%s_%s_%s", exitLetter, exitNumber, forceMTRFont), () -> RouteMapGenerator.generateExitSignLetterTianjin(exitLetter, exitNumber, backgroundColor, forceMTRFont), DefaultRenderingColor.TRANSPARENT);
+    public DynamicResource getExitSignLetterTianjin(String exitLetter, String exitNumber, int backgroundColor, int textColor, boolean forceMTRFont) {
+        return getResource(String.format("tjmetro_exit_sign_letter_tianjin_%s_%s_%s_%s", exitLetter, exitNumber, textColor, forceMTRFont), () -> RouteMapGenerator.generateExitSignLetterTianjin(exitLetter, exitNumber, backgroundColor, textColor, forceMTRFont), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getBoundFor(long platformId, IGui.HorizontalAlignment horizontalAlignment, float aspectRatio, float paddingScale, int backgroundColor, boolean forceMTRFont) {

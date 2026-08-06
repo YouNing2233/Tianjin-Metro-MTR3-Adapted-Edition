@@ -62,6 +62,7 @@
     "block.minecraft.mosaic_tile_slab":  "马赛克瓷砖台阶",
     "block.minecraft.mosaic_tile_stairs":  "马赛克瓷砖楼梯",
     "tooltip.tjmetro.station_navigator_pole":  "将此方块放在“站外导向标志”下。",
+    "tooltip.tjmetro.railway_sign_tianjin_pole":  "必须放在指示牌或乘客咨询显示屏上",
     "gui.tjmetro.service_corridor_sign":  "暖行服务连廊",
     "gui.tjmetro.contact_station_for_help_cjk":  "如需帮助请联系车站",
     "gui.tjmetro.contact_station_for_help":  "如需帮助请联系车站。",

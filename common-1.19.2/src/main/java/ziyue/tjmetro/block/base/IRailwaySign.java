@@ -120,9 +120,9 @@ public interface IRailwaySign
         return stations.contains(signId);
     }
 
-    static ResourceLocation getExitSignResource(String signId, String exitLetter, String exitNumber, int backgroundColor, boolean forceMTRFont) {
+    static ResourceLocation getExitSignResource(String signId, String exitLetter, String exitNumber, int backgroundColor, int textColor, boolean forceMTRFont) {
         if (signId.equals(SignType.EXIT_LETTER_TEXT.signId) || signId.equals(SignType.EXIT_LETTER_TEXT_FLIPPED.signId)) {
-            return ClientCache.DATA_CACHE.getExitSignLetterTianjin(exitLetter, exitNumber, backgroundColor, forceMTRFont).resourceLocation;
+            return ClientCache.DATA_CACHE.getExitSignLetterTianjin(exitLetter, exitNumber, backgroundColor, textColor, forceMTRFont).resourceLocation;
         } else {
             if (forceMTRFont) {
                 return ClientData.DATA_CACHE.getExitSignLetter(exitLetter, exitNumber, backgroundColor).resourceLocation;

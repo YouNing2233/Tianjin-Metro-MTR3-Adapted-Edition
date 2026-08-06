@@ -683,7 +683,7 @@ public class RouteMapGenerator implements IGui
         return null;
     }
 
-    public static NativeImage generateExitSignLetterTianjin(String exitLetter, String exitNumber, int backgroundColor, boolean forceMTRFont) {
+    public static NativeImage generateExitSignLetterTianjin(String exitLetter, String exitNumber, int backgroundColor, int textColor, boolean forceMTRFont) {
         try {
             final int size = scale / 2;
             final boolean noNumber = exitNumber.isEmpty();
@@ -694,9 +694,9 @@ public class RouteMapGenerator implements IGui
 
             final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, size, size, false);
             nativeImage.fillRect(0, 0, size, size, backgroundColor);
-            drawString(nativeImage, letter, size / 2 - (noNumber ? 0 : textSize / 6 - size / 32), size / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, 0, ARGB_WHITE, false);
+            drawString(nativeImage, letter, size / 2 - (noNumber ? 0 : textSize / 6 - size / 32), size / 2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, 0, textColor, false);
             if (!noNumber) {
-                drawString(nativeImage, number, size / 2 + textSize / 3 - size / 32, size / 2 + textSize / 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, 0, ARGB_WHITE, false);
+                drawString(nativeImage, number, size / 2 + textSize / 3 - size / 32, size / 2 + textSize / 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, 0, textColor, false);
             }
             return nativeImage;
         } catch (Exception e) {

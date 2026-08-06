@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import ziyue.tjmetro.block.BlockRailwaySignTianjinDouble;
 import ziyue.tjmetro.block.BlockRailwaySignWallDouble;
 import ziyue.tjmetro.block.BlockStationNameEntranceTianjin;
+import ziyue.tjmetro.block.BlockStationNavigator;
 import ziyue.tjmetro.block.BlockPIDSTianjin;
 import ziyue.tjmetro.block.base.BlockCustomColorBase;
 import ziyue.tjmetro.block.base.BlockCustomContentBlockBase;
@@ -237,6 +238,36 @@ public class PacketGuiServer
             final BlockEntity entity = player.level().getBlockEntity(pos);
             if (entity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
                 pidsEntity.setCategories(categories);
+            }
+        });
+    }
+
+    public static void openStationNavigatorScreenS2C(ServerPlayer player, BlockPos pos) {
+        final FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+        packet.writeBlockPos(pos);
+        Registry.sendToPlayer(player, PACKET_OPEN_STATION_NAVIGATOR_SCREEN, packet);
+    }
+
+    public static void sendStationNavigatorConfigC2S(BlockPos pos, Set<Long> selectedRoutes) {
+        final FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+        packet.writeBlockPos(pos);
+        packet.writeInt(selectedRoutes.size());
+        selectedRoutes.forEach(packet::writeLong);
+        RegistryClient.sendToServer(PACKET_STATION_NAVIGATOR_CONFIG, packet);
+    }
+
+    public static void receiveStationNavigatorConfigC2S(MinecraftServer minecraftServer, ServerPlayer player, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        final int selectedRoutesLength = packet.readInt();
+        final Set<Long> selectedRoutes = new HashSet<>();
+        for (int i = 0; i < selectedRoutesLength; i++) {
+            selectedRoutes.add(packet.readLong());
+        }
+
+        minecraftServer.execute(() -> {
+            final BlockEntity entity = player.level().getBlockEntity(pos);
+            if (entity instanceof BlockStationNavigator.BlockEntity entity1) {
+                setTileEntityDataAndWriteUpdate(player, entity2 -> entity2.setData(selectedRoutes), entity1);
             }
         });
     }
