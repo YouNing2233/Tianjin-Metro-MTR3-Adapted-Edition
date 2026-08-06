@@ -32,8 +32,8 @@ A small mod for [Minecraft Transit Railway](https://github.com/jonafanho/Minecra
 **原模组链接**：https://github.com/ZiYueCommentary/Tianjin-Metro
 
 **本移植版作者**：泠惜i（__Lingxii__）
-**技术支持与测试**：江兴云鉴技术实验室（Jiangxing Yunjian Technology Lab）
+**技术支持与测试**：江兴云鉴技术实验室（Jiangxing Yunjian Technology Lab）、SinoRail Studio
 **所属服务器**：江兴城服务器（Jiangxing City Server）
 **特别致谢**：感谢江兴城服务器提出的问题反馈与测试支持
 
-本移植版基于 Architectury API 重构为多平台项目。使用 MIT 许可证发布。
+本移植版基于 Architectury API 重构为多平台项目。使用 GPL-3.0 许可证发布。
