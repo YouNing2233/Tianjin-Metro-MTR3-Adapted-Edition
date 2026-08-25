@@ -36,4 +36,4 @@ A small mod for [Minecraft Transit Railway](https://github.com/jonafanho/Minecra
 **所属服务器**：江兴城服务器（Jiangxing City Server）
 **特别致谢**：感谢江兴城服务器提出的问题反馈与测试支持
 
-本移植版基于 Architectury API 重构为多平台项目。使用 GPL-3.0 许可证发布。
+本移植版基于 Architectury API 重构为多平台项目。使用 MIT 许可证发布。
