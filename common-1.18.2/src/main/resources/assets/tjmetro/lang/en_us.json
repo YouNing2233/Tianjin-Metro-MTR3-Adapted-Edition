@@ -1,4 +1,4 @@
-{
+﻿{
     "modmenu.nameTranslation.tjmetro":  "天津地铁",
     "modmenu.descriptionTranslation.tjmetro":  "一个 Minecraft Transit Railway 的附属模组",
     "itemGroup.tjmetro.tab":  "Tianjin Metro",
@@ -344,5 +344,16 @@
     "block.tjmetro.psd_top_tianjin_jinjing":  "Platform Screen Doors Top (Tianjin, Jinjing Line)",
     "item.tjmetro.psd_top_tianjin_jinjing":  "Platform Screen Doors Top (Tianjin, Jinjing Line)",
 
-    "tooltip.tjmetro.psd_apg_tianjin":  "Use wrench to change its top's display content, and use brush to change its arrow direction."
+    "tooltip.tjmetro.psd_apg_tianjin":  "Use wrench to change its top's display content, and use brush to change its arrow direction.",
+
+    "block.tjmetro.smoke_alarm": "Smoke Alarm",
+    "tooltip.tjmetro.smoke_alarm": "Detects fire and smokes in a range and emits a redstone signal. You can change the range in game rule.",
+    "block.tjmetro.security_check_sign": "\"Security Check\" Sign",
+    "block.tjmetro.route_map_bmt": "Route Map (Line 9)",
+    "gui.tjmetro.route_map_bmt_routes": "%s - %s",
+    "block.tjmetro.station_name_plate": "Station Name Plate (Line 9)",
+    "tooltip.tjmetro.station_name_plate": "Use wrench to select a platform to display, and use brush to change its arrow direction.",
+    "block.tjmetro.pids_tianjin_single": "Passenger Information Display System (Tianjin, Single)",
+    "sign.tjmetro.security_check": "安全检查|Security Check",
+    "gui.tjmetro.accept_security_check_cjk": "请您接受安检"
 }

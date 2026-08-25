@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,6 +33,7 @@ public class MainForge
     public static final DeferredRegisterHolder<Block> BLOCKS = new DeferredRegisterHolder<>(Reference.MOD_ID, Registries.BLOCK);
     public static final DeferredRegisterHolder<BlockEntityType<?>> BLOCK_ENTITY_TYPES = new DeferredRegisterHolder<>(Reference.MOD_ID, Registries.BLOCK_ENTITY_TYPE);
     public static final DeferredRegisterHolder<CreativeModeTab> CREATIVE_MODE_TABS = new DeferredRegisterHolder<>(Reference.MOD_ID, Registries.CREATIVE_MODE_TAB);
+    public static final DeferredRegisterHolder<SoundEvent> SOUND_EVENTS = new DeferredRegisterHolder<>(Reference.MOD_ID, Registries.SOUND_EVENT);
     public static final ArrayList<RegistryObject<Item>> TAB_ITEMS = new ArrayList<>();
 
     // 注意：不使用 static 初始化块执行注册操作。
@@ -55,10 +57,13 @@ public class MainForge
         BLOCKS.register();
         BLOCK_ENTITY_TYPES.register();
         CREATIVE_MODE_TABS.register();
+        SOUND_EVENTS.register();
 
         // 初始化模组（填充 DeferredRegister 和 TAB_ITEMS）
         // register 方法中不再立即调用 block.get()/item.get()，全部使用 Supplier 延迟求值
         TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType);
+
+        registerSoundEvent("smoke_alarm");
 
         eventBus.register(ForgeClientSetup.class);
         // 注册创造物品栏内容构建事件：在所有物品注册完成后将 TAB_ITEMS 添加到天津地铁标签页
@@ -101,6 +106,11 @@ public class MainForge
 
     public static void registerBlockEntityType(String path, RegistryObject<? extends BlockEntityType<? extends BlockEntityMapper>> blockEntityType) {
         BLOCK_ENTITY_TYPES.register(path, blockEntityType::get);
+    }
+
+    public static void registerSoundEvent(String path) {
+        final net.minecraft.resources.ResourceLocation id = new net.minecraft.resources.ResourceLocation(Reference.MOD_ID, path);
+        SOUND_EVENTS.register(path, () -> mtr.mappings.RegistryUtilities.createSoundEvent(id));
     }
 
     public static class ForgeClientSetup

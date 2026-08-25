@@ -9,6 +9,7 @@ import mtr.mappings.RegistryUtilities;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +20,12 @@ public class MainFabric implements ModInitializer
     @Override
     public void onInitialize() {
         TianjinMetro.init(MainFabric::registerBlock, MainFabric::registerBlock, MainFabric::registerItem, MainFabric::registerEnchantedBlock, MainFabric::registerBlockEntityType);
+        registerSoundEvent("smoke_alarm");
+    }
+
+    public static void registerSoundEvent(String path) {
+        final ResourceLocation id = new ResourceLocation(Reference.MOD_ID, path);
+        Registry.register(RegistryUtilities.registryGetSoundEvent(), id, RegistryUtilities.createSoundEvent(id));
     }
 
     public static void registerBlock(String path, RegistryObject<Block> block) {

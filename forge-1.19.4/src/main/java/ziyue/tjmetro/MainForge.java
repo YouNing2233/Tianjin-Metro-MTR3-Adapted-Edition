@@ -7,6 +7,7 @@ import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.DeferredRegisterHolder;
 import mtr.mappings.ForgeUtilities;
 import mtr.mappings.RegistryUtilities;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -25,6 +26,7 @@ public class MainForge
     public static final DeferredRegisterHolder<Item> ITEMS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetItem());
     public static final DeferredRegisterHolder<Block> BLOCKS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetBlock());
     public static final DeferredRegisterHolder<BlockEntityType<?>> BLOCK_ENTITY_TYPES = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetBlockEntityType());
+    public static final DeferredRegisterHolder<SoundEvent> SOUND_EVENTS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetSoundEvent());
 
     public MainForge() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -40,6 +42,9 @@ public class MainForge
         BLOCK_ENTITY_TYPES.register();
 
         TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType);
+
+        SOUND_EVENTS.register();
+        registerSoundEvent("smoke_alarm");
 
         eventBus.register(ForgeClientSetup.class);
     }
@@ -64,6 +69,11 @@ public class MainForge
 
     public static void registerBlockEntityType(String path, RegistryObject<? extends BlockEntityType<? extends BlockEntityMapper>> blockEntityType) {
         BLOCK_ENTITY_TYPES.register(path, blockEntityType::get);
+    }
+
+    public static void registerSoundEvent(String path) {
+        final net.minecraft.resources.ResourceLocation id = new net.minecraft.resources.ResourceLocation(Reference.MOD_ID, path);
+        SOUND_EVENTS.register(path, () -> mtr.mappings.RegistryUtilities.createSoundEvent(id));
     }
 
     public static class ForgeClientSetup

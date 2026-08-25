@@ -1,7 +1,8 @@
-{
+﻿{
     "modmenu.nameTranslation.tjmetro":  "天津地铁",
     "modmenu.descriptionTranslation.tjmetro":  "一个 Minecraft Transit Railway 的附属模组",
     "itemGroup.tjmetro.tab":  "Tianjin Metro",
+    "itemGroup.tjmetro.tjmetro_tab":  "Tianjin Metro",
     "item.tjmetro.wrench":  "Wrench",
     "block.tjmetro.rolling":  "Rolling shutter",
     "block.tjmetro.logo":  "Tianjin Metro Logo",
@@ -63,6 +64,7 @@
     "block.minecraft.mosaic_tile_slab":  "Mosaic Tile Slab",
     "block.minecraft.mosaic_tile_stairs":  "Mosaic Tile Stairs",
     "tooltip.tjmetro.station_navigator_pole":  "Place this block below \"Station Navigator\".",
+    "tooltip.tjmetro.railway_sign_tianjin_pole":  "Must be placed on a sign or PIDS.",
     "gui.tjmetro.service_corridor_sign":  "Service Corridor",
     "gui.tjmetro.contact_station_for_help_cjk":  "如需帮助请联系车站",
     "gui.tjmetro.contact_station_for_help":  "Please contact the station for help.",
@@ -226,6 +228,8 @@
     "gui.tjmetro.second":  "seconds",
     "gui.tjmetro.next_train_cjk":  "下次列车",
     "gui.tjmetro.next_train":  "Next Train",
+    "gui.tjmetro.filter_platforms":  "Filter Platforms",
+    "gui.tjmetro.play_advertisements":  "Play Advertisements",
     "gui.tjmetro.filtered_ads":  "Filtered Advertisements (%s)",
     "gui.tjmetro.duplicated_route":  "%s (Duplicated)",
     "sign.tjmetro.to_subway":  "乘车|To Subway",
@@ -273,6 +277,8 @@
     "advertisement.tjmetro.banner":  "Tianjin Metro mod is an expanding mod for Minecraft Transit Railway, which contains various things from Tianjin Metro in real life.",
     "advertisement.tjmetro.weblate":  "Get involved in Tianjin Metro localization!",
     "advertisement.tjmetro.bde":  "Bomb Disposal Expert is a fun mod that allows you to dispose of bombs and Creepers!",
+    "gui.tjmetro.use_real_time":  "Use Real Time",
+    "chat.tjmetro.ad_link":  "Ad link: %s",
     "filter.tjmetro.tianjin_miscellaneous":  "Miscellaneous",
     "filter.tjmetro.tianjin_building":  "Buildings",
     "filter.tjmetro.tianjin_signs":  "Station Name Signs",
@@ -338,5 +344,16 @@
     "block.tjmetro.psd_top_tianjin_jinjing":  "Platform Screen Doors Top (Tianjin, Jinjing Line)",
     "item.tjmetro.psd_top_tianjin_jinjing":  "Platform Screen Doors Top (Tianjin, Jinjing Line)",
 
-    "tooltip.tjmetro.psd_apg_tianjin":  "Use wrench to change its top's display content, and use brush to change its arrow direction."
+    "tooltip.tjmetro.psd_apg_tianjin":  "Use wrench to change its top's display content, and use brush to change its arrow direction.",
+
+    "block.tjmetro.smoke_alarm": "Smoke Alarm",
+    "tooltip.tjmetro.smoke_alarm": "Detects fire and smokes in a range and emits a redstone signal. You can change the range in game rule.",
+    "block.tjmetro.security_check_sign": "\"Security Check\" Sign",
+    "block.tjmetro.route_map_bmt": "Route Map (Line 9)",
+    "gui.tjmetro.route_map_bmt_routes": "%s - %s",
+    "block.tjmetro.station_name_plate": "Station Name Plate (Line 9)",
+    "tooltip.tjmetro.station_name_plate": "Use wrench to select a platform to display, and use brush to change its arrow direction.",
+    "block.tjmetro.pids_tianjin_single": "Passenger Information Display System (Tianjin, Single)",
+    "sign.tjmetro.security_check": "安全检查|Security Check",
+    "gui.tjmetro.accept_security_check_cjk": "请您接受安检"
 }

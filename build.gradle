@@ -16,47 +16,47 @@ def minecraft_main_version = minecraft_version.split("\\.")[1] as int
 def minecraft_version_1192 = "1.19.2"
 def mtr_jar_1192 = "MTR-fabric-1.19.2-3.2.2-hotfix-1.jar"
 def mtr_forge_jar_1192 = "MTR-forge-1.19.2-3.2.2-hotfix-1.jar"
-def fabric_loader_version_1192 = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version_1192).toURL())[0]["loader"]["version"]
-def fabric_api_version_1192 = getModrinthVersion("fabric", minecraft_version_1192, "fabric-api")
-def mod_menu_version_1192 = getModrinthVersion("fabric", minecraft_version_1192, "modmenu")
+def fabric_loader_version_1192 = "0.19.3"
+def fabric_api_version_1192 = "0.77.0+1.19.2"
+def mod_menu_version_1192 = "4.2.0-beta.2"
 def cloth_config_fabric_version_1192 = "8.3.134"
-def forge_version_1192 = minecraft_version_1192 + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version_1192 + "-latest"]
+def forge_version_1192 = "1.19.2-43.5.2"
 def cloth_config_forge_version_1192 = "8.3.134"
-def architectury_version_1192 = getModrinthVersion("forge", minecraft_version_1192, "architectury-api").split("\\+")[0]
+def architectury_version_1192 = "6.6.92"
 
 // 1.19.4 子项目专用配置
 def minecraft_version_1194 = "1.19.4"
 def mtr_jar_1194 = "MTR-fabric-1.19.4-3.2.2-hotfix-1.jar"
 def mtr_forge_jar_1194 = "MTR-forge-1.19.4-3.2.2-hotfix-1.jar"
-def fabric_loader_version_1194 = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version_1194).toURL())[0]["loader"]["version"]
-def fabric_api_version_1194 = getModrinthVersion("fabric", minecraft_version_1194, "fabric-api")
-def mod_menu_version_1194 = getModrinthVersion("fabric", minecraft_version_1194, "modmenu")
+def fabric_loader_version_1194 = "0.19.3"
+def fabric_api_version_1194 = "0.87.2+1.19.4"
+def mod_menu_version_1194 = "6.3.1"
 def cloth_config_fabric_version_1194 = "8.3.134"
-def forge_version_1194 = minecraft_version_1194 + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version_1194 + "-latest"]
+def forge_version_1194 = "1.19.4-45.4.3"
 def cloth_config_forge_version_1194 = "8.3.134"
-def architectury_version_1194 = getModrinthVersion("forge", minecraft_version_1194, "architectury-api").split("\\+")[0]
+def architectury_version_1194 = "8.2.91"
 
 // 1.18.2 子项目专用配置
 def minecraft_version_1182 = "1.18.2"
 def mtr_jar_1182 = "MTR-fabric-1.18.2-3.2.2-hotfix-1.jar"
 def mtr_forge_jar_1182 = "MTR-forge-1.18.2-3.2.2-hotfix-1.jar"
-def fabric_loader_version_1182 = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version_1182).toURL())[0]["loader"]["version"]
-def fabric_api_version_1182 = getModrinthVersion("fabric", minecraft_version_1182, "fabric-api")
-def mod_menu_version_1182 = getModrinthVersion("fabric", minecraft_version_1182, "modmenu")
+def fabric_loader_version_1182 = "0.19.3"
+def fabric_api_version_1182 = "0.77.0+1.18.2"
+def mod_menu_version_1182 = "3.2.5"
 def cloth_config_fabric_version_1182 = "7.0.72"
-def forge_version_1182 = minecraft_version_1182 + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version_1182 + "-latest"]
+def forge_version_1182 = "1.18.2-40.3.12"
 def cloth_config_forge_version_1182 = "7.0.72"
-def architectury_version_1182 = getModrinthVersion("forge", minecraft_version_1182, "architectury-api").split("\\+")[0]
+def architectury_version_1182 = "4.12.94"
 
 
 
-rootProject.ext.fabric_loader_version = new JsonSlurper().parse(("https://meta.fabricmc.net/v2/versions/loader/" + minecraft_version).toURL())[0]["loader"]["version"]
-rootProject.ext.forge_version = minecraft_version + "-" + new JsonSlurper().parse(("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").toURL())["promos"][minecraft_version + "-latest"]
-rootProject.ext.fabric_api_version = getModrinthVersion("fabric", minecraft_version, "fabric-api")
-rootProject.ext.mod_menu_version = getModrinthVersion("fabric", minecraft_version, "modmenu")
+rootProject.ext.fabric_loader_version = "0.19.3"
+rootProject.ext.forge_version = "1.20.1-47.4.23"
+rootProject.ext.fabric_api_version = "0.92.11+1.20.1"
+rootProject.ext.mod_menu_version = "7.2.2"
 rootProject.ext.cloth_config_fabric_version = "11.1.136"
 rootProject.ext.cloth_config_forge_version = "11.1.136"
-rootProject.ext.architectury_version = getModrinthVersion("forge", minecraft_version, "architectury-api").split("\\+")[0]
+rootProject.ext.architectury_version = "9.2.14"
 rootProject.ext.architectury_id = minecraft_main_version == 16 ? "me.shedaniel" : "dev.architectury"
 
 architectury {
@@ -79,21 +79,21 @@ subprojects {
         if (isLegacy1194) {
             subMtrJar = "../${mtr_forge_jar_1194}"
         } else if (isLegacy1192) {
-            subMtrJar = "../${mtr_forge_jar_1192}"
+            subMtrJar = "E:/Project/MTRjars/${mtr_forge_jar_1192}"
         } else if (isLegacy1182) {
             subMtrJar = "../${mtr_forge_jar_1182}"
         } else {
-            subMtrJar = "../MTR-forge-1.20.1-3.5.9.jar"
+            subMtrJar = "E:/Project/MTRjars/MTR-forge-1.20.1-3.6.2.2.jar"
         }
     } else {
         if (isLegacy1194) {
             subMtrJar = "../${mtr_jar_1194}"
         } else if (isLegacy1192) {
-            subMtrJar = "../${mtr_jar_1192}"
+            subMtrJar = "E:/Project/MTRjars/${mtr_jar_1192}"
         } else if (isLegacy1182) {
             subMtrJar = "../${mtr_jar_1182}"
         } else {
-            subMtrJar = "../MTR-fabric-1.20.1-3.5.8-hotfix-1.jar"
+            subMtrJar = "E:/Project/MTRjars/MTR-fabric-1.20.1-3.6.2.2.jar"
         }
     }
     project.ext.subMinecraftVersion = subMcVersion
@@ -174,7 +174,7 @@ task setupFiles() {
 
     copy {
         outputs.upToDateWhen { false }
-        from "MTR-fabric-1.20.1-3.5.8-hotfix-1.jar"
+        from "E:/Project/MTRjars/MTR-fabric-1.20.1-3.6.2.2.jar"
         into "fabric/run/mods"
     }
 

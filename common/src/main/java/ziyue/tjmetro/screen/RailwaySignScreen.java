@@ -24,7 +24,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import ziyue.tjmetro.TianjinMetro;
+import ziyue.tjmetro.block.BlockRouteMapBMT;
 import ziyue.tjmetro.block.BlockStationNameEntranceTianjin;
+import ziyue.tjmetro.block.BlockStationNamePlate;
+import ziyue.tjmetro.block.BlockStationNameSignTianjin;
 import ziyue.tjmetro.block.base.BlockRailwaySignBase;
 import ziyue.tjmetro.block.base.IRailwaySign;
 import ziyue.tjmetro.packet.PacketGuiServer;
@@ -49,6 +52,7 @@ public class RailwaySignScreen extends ScreenMapper implements IGui
 
     protected final BlockPos signPos;
     protected final boolean isRailwaySign;
+    protected boolean isPlatformSign;
     protected final int length;
     protected final String[] signIds;
     protected final Set<Long> selectedIds;
@@ -112,12 +116,23 @@ public class RailwaySignScreen extends ScreenMapper implements IGui
                 signIds = entityRailwaySign.getSignIds();
                 selectedIds = entityRailwaySign.getSelectedIds();
                 isRailwaySign = true;
+                isPlatformSign = false;
             } else {
                 signIds = new String[0];
                 selectedIds = new HashSet<>();
                 isRailwaySign = false;
+                isPlatformSign = false;
                 if (entity instanceof BlockStationNameEntranceTianjin.TileEntityStationNameEntranceTianjin entityStationNameEntranceTianjin) {
                     selectedIds.add(entityStationNameEntranceTianjin.getSelectedId());
+                } else if (entity instanceof BlockStationNamePlate.TileEntityStationNamePlate entityStationNamePlate) {
+                    selectedIds.add(entityStationNamePlate.getPlatformId());
+                    isPlatformSign = true;
+                } else if (entity instanceof BlockStationNameSignTianjin.TileEntityStationNameSignTianjin entityStationNameSignTianjin) {
+                    selectedIds.add(entityStationNameSignTianjin.getPlatformId());
+                    isPlatformSign = true;
+                } else if (entity instanceof BlockRouteMapBMT.TileEntityRouteMapBMT entityRouteMapBMT) {
+                    selectedIds.add(entityRouteMapBMT.getPlatformId());
+                    isPlatformSign = true;
                 }
             }
             if (world.getBlockState(signPos).getBlock() instanceof BlockRailwaySignBase block) {
@@ -130,6 +145,7 @@ public class RailwaySignScreen extends ScreenMapper implements IGui
             signIds = new String[0];
             selectedIds = new HashSet<>();
             isRailwaySign = false;
+            isPlatformSign = false;
         }
 
         buttonsEdit = new Button[length];
@@ -185,7 +201,7 @@ public class RailwaySignScreen extends ScreenMapper implements IGui
         addDrawableChild(buttonNextPage);
 
         if (!isRailwaySign && minecraft != null) {
-            UtilitiesClient.setScreen(minecraft, new DashboardListSelectorScreen(this::onClose, exitsForList, selectedIds, true, false));
+            UtilitiesClient.setScreen(minecraft, new DashboardListSelectorScreen(this::onClose, isPlatformSign ? platformsForList : exitsForList, selectedIds, true, false));
         }
     }
 

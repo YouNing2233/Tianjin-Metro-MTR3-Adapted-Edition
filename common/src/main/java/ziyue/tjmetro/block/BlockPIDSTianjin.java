@@ -141,7 +141,15 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         public static final String USE_REAL_TIME_ID = "use_real_time";
 
         public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state) {
-            super(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
+            this(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
+        }
+
+        /**
+         * Constructor for subclasses (e.g. the single-row variant) that need their own
+         * registered block entity type.
+         */
+        protected TileEntityBlockPIDSTianjin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
             categories.add("tjmetro".hashCode());
             this.scrollingText = new ScrollingText(158F, 47F, 4, true);
         }

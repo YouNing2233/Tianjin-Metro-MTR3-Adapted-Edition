@@ -164,6 +164,7 @@ public interface BlockList
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_MIDDLE = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(0, false));
 
     RegistryObject<Block> STATION_NAVIGATOR_3 = new RegistryObject<>(() -> new BlockStationNavigator(3));
+    RegistryObject<Block> STATION_NAVIGATOR_4 = new RegistryObject<>(() -> new BlockStationNavigator(4));
     RegistryObject<Block> STATION_NAVIGATOR_5 = new RegistryObject<>(() -> new BlockStationNavigator(5));
     RegistryObject<Block> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> new BlockStationNavigator(0));
 
@@ -206,4 +207,25 @@ public interface BlockList
 
     /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
     RegistryObject<Block> PIDS_TIANJIN = new RegistryObject<>(BlockPIDSTianjin::new);
+    RegistryObject<Block> PIDS_TIANJIN_SINGLE = new RegistryObject<>(BlockPIDSTianjinSingle::new);
+
+    /* 1.1.8 - Ported from 4.0 - Smoke alarm */
+    RegistryObject<Block> SMOKE_ALARM = new RegistryObject<>(BlockSmokeAlarm::new);
+
+    /* 1.1.8 - Ported from 4.0 - Time display (even) */
+    RegistryObject<Block> TIME_DISPLAY_EVEN = new RegistryObject<>(BlockTimeDisplayEven::new);
+
+    /* 1.1.8 - Ported from 4.0 - Station name plate */
+    RegistryObject<Block> STATION_NAME_PLATE = new RegistryObject<>(BlockStationNamePlate::new);
+    RegistryObject<Block> STATION_NAME_PLATE_MIDDLE = new RegistryObject<>(BlockStationNamePlate::new);
+
+    /* 1.1.8 - Ported from 4.0 - Tianjin station name sign */
+    RegistryObject<Block> STATION_NAME_SIGN_TIANJIN = new RegistryObject<>(BlockStationNameSignTianjin::new);
+
+    /* 1.1.8 - Ported from 4.0 - BMT route map */
+    RegistryObject<Block> ROUTE_MAP_BMT = new RegistryObject<>(BlockRouteMapBMT::new);
+    RegistryObject<Block> ROUTE_MAP_BMT_MIDDLE = new RegistryObject<>(BlockRouteMapBMT::new);
+
+    /* 1.1.8 - Ported from 4.0 - Security check sign */
+    RegistryObject<Block> SECURITY_CHECK_SIGN = new RegistryObject<>(BlockSecurityCheckSign::new);
 }

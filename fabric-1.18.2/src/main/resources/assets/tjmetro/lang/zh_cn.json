@@ -1,4 +1,4 @@
-{
+﻿{
     "modmenu.nameTranslation.tjmetro":  "天津地铁",
     "modmenu.descriptionTranslation.tjmetro":  "一个 Minecraft Transit Railway 的附属模组",
     "itemGroup.tjmetro.tab":  "天津地铁",
@@ -62,6 +62,7 @@
     "block.minecraft.mosaic_tile_slab":  "马赛克瓷砖台阶",
     "block.minecraft.mosaic_tile_stairs":  "马赛克瓷砖楼梯",
     "tooltip.tjmetro.station_navigator_pole":  "将此方块放在“站外导向标志”下。",
+    "tooltip.tjmetro.railway_sign_tianjin_pole":  "必须放在指示牌或乘客咨询显示屏上",
     "gui.tjmetro.service_corridor_sign":  "暖行服务连廊",
     "gui.tjmetro.contact_station_for_help_cjk":  "如需帮助请联系车站",
     "gui.tjmetro.contact_station_for_help":  "如需帮助请联系车站。",
@@ -277,13 +278,14 @@
     "button.tjmetro.duplicate_siding_settings":  "复制设置到其他侧线",
     "config.tjmetro.dynamic_texture_max_size":  "动态纹理最大大小",
     "tooltip.tjmetro.dynamic_texture_max_size":  "超出该限制的动态纹理将被截断。如果你遇到此类问题，请谨慎调整此设置。",
+
+    "chat.tjmetro.ad_link":  "广告链接：%s",
+
     "tooltip.tjmetro.railway_sign_wall":  "你可以将其放在地上。使用扳手可以切换字体。",
     "gui.tjmetro.duplicated_route":  "%s（复制）",
     "button.tjmetro.duplicate_route":  "复制",
     "config.tjmetro.disable_filters":  "禁用筛选器",
     "tooltip.tjmetro.disable_filters":  "你将无法从物品栏打开设置界面",
-
-    "chat.tjmetro.ad_link":  "广告链接：%s",
 
     "block.tjmetro.apg_door_tianjin":  "低站台门（天津、1号线）",
     "item.tjmetro.apg_door_tianjin":  "低站台门（天津、1号线）",
@@ -343,5 +345,12 @@
     "block.tjmetro.psd_top_tianjin_jinjing":  "高站台门顶部（天津、津静线）",
     "item.tjmetro.psd_top_tianjin_jinjing":  "高站台门顶部（天津、津静线）",
 
-    "tooltip.tjmetro.psd_apg_tianjin":  "用扳手改变其顶部的显示内容，并用刷子改变其箭头方向。"
+    "tooltip.tjmetro.psd_apg_tianjin":  "用扳手改变其顶部的显示内容，并用刷子改变其箭头方向。",
+
+    "tooltip.tjmetro.smoke_alarm": "检测范围内的火，并放出红石信号。可在游戏规则内修改侦测范围。",
+    "block.tjmetro.security_check_sign": "“安全检查”标志",
+    "tooltip.tjmetro.station_name_plate": "用扳手选择显示的站台，并用刷子改变箭头的方向。",
+    "block.tjmetro.pids_tianjin_single": "乘客资讯显示屏（天津、单向）",
+    "sign.tjmetro.security_check": "安全检查|Security Check",
+    "gui.tjmetro.accept_security_check_cjk": "请您接受安检"
 }

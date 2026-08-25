@@ -79,6 +79,16 @@ public class TianjinMetro
         registerBlockItem.accept("metal_detection_door", BlockList.METAL_DETECTION_DOOR, BUILDING);
         registerBlockItem.accept("roadblock", BlockList.ROADBLOCK, BUILDING);
         registerBlockItem.accept("roadblock_sign", BlockList.ROADBLOCK_SIGN, BUILDING);
+        /* 1.1.8 - Ported from 4.0 - Station name plate */
+        registerBlockItem.accept("station_name_plate", BlockList.STATION_NAME_PLATE, SIGNS);
+        registerBlock.accept("station_name_plate_middle", BlockList.STATION_NAME_PLATE_MIDDLE);
+        /* 1.1.8 - Ported from 4.0 - Tianjin station name sign */
+        registerBlockItem.accept("station_name_sign_tianjin", BlockList.STATION_NAME_SIGN_TIANJIN, SIGNS);
+        /* 1.1.8 - Ported from 4.0 - BMT route map */
+        registerBlockItem.accept("route_map_bmt", BlockList.ROUTE_MAP_BMT, SIGNS);
+        registerBlock.accept("route_map_bmt_middle", BlockList.ROUTE_MAP_BMT_MIDDLE);
+        /* 1.1.8 - Ported from 4.0 - Security check sign */
+        registerBlockItem.accept("security_check_sign", BlockList.SECURITY_CHECK_SIGN, SIGNS);
         /* SIGNS */
         registerBlockItem.accept("station_name_sign_2", BlockList.STATION_NAME_SIGN_2, SIGNS);
         registerBlockItem.accept("station_name_wall_legacy", BlockList.STATION_NAME_WALL_LEGACY, SIGNS);
@@ -178,10 +188,13 @@ public class TianjinMetro
         registerBlockItem.accept("station_name_projector", BlockList.STATION_NAME_PROJECTOR, SIGNS);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockItem.accept("pids_tianjin", BlockList.PIDS_TIANJIN, DECORATION);
+        registerBlockItem.accept("pids_tianjin_single", BlockList.PIDS_TIANJIN_SINGLE, DECORATION);
         /* DECORATION - logo, furniture, signs, barriers, misc */
         registerBlockItem.accept("logo", BlockList.LOGO, DECORATION);
         registerBlockItem.accept("bench", BlockList.BENCH, DECORATION);
         registerBlockItem.accept("time_display", BlockList.TIME_DISPLAY, DECORATION);
+        registerBlockItem.accept("time_display_even", BlockList.TIME_DISPLAY_EVEN, DECORATION);
+        registerBlockItem.accept("smoke_alarm", BlockList.SMOKE_ALARM, DECORATION);
         registerBlockItem.accept("apg_corner", BlockList.APG_CORNER, DECORATION);
         registerBlockItem.accept("emergency_exit_sign", BlockList.EMERGENCY_EXIT_SIGN, DECORATION);
         registerBlockItem.accept("service_corridor_sign", BlockList.SERVICE_CORRIDOR_SIGN, DECORATION);
@@ -192,6 +205,7 @@ public class TianjinMetro
         /* 1.1.0 - Ported from 4.0 */
         registerBlockItem.accept("station_navigator_pole", BlockList.STATION_NAVIGATOR_POLE, DECORATION);
         registerBlockItem.accept("station_navigator_3", BlockList.STATION_NAVIGATOR_3, SIGNS);
+        registerBlockItem.accept("station_navigator_4", BlockList.STATION_NAVIGATOR_4, SIGNS);
         registerBlockItem.accept("station_navigator_5", BlockList.STATION_NAVIGATOR_5, SIGNS);
         /* 1.1.1 - Ported from 4.0 */
         registerBlockItem.accept("trash_can", BlockList.TRASH_CAN, DECORATION);
@@ -364,7 +378,6 @@ public class TianjinMetro
         registerBlockEntityType.accept("station_name_entrance_tianjin_bmt_pinyin", BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_BMT_PINYIN_TILE_ENTITY);
         registerBlockEntityType.accept("station_name_entrance_tianjin_jinjing", BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_JINJING_TILE_ENTITY);
         registerBlockEntityType.accept("station_name_entrance_tianjin_jinjing_pinyin", BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_JINJING_PINYIN_TILE_ENTITY);
-//        registerBlockEntityType.accept("station_name_plate", BlockEntityTypes.STATION_NAME_PLATE_TILE_ENTITY);
         /* 1.1.0 - Ported from 4.0 */
         registerBlockEntityType.accept("custom_color_mosaic_tile", BlockEntityTypes.CUSTOM_COLOR_MOSAIC_TILE_TILE_ENTITY);
         registerBlockEntityType.accept("custom_color_mosaic_tile_stairs", BlockEntityTypes.CUSTOM_COLOR_MOSAIC_TILE_STAIRS_TILE_ENTITY);
@@ -372,6 +385,7 @@ public class TianjinMetro
         /* 1.1.1 - Ported from 4.0 */
         registerBlockEntityType.accept("metal_pole_bmt", BlockEntityTypes.METAL_POLE_BMT);
         registerBlockEntityType.accept("station_navigator_3", BlockEntityTypes.STATION_NAVIGATOR_3);
+        registerBlockEntityType.accept("station_navigator_4", BlockEntityTypes.STATION_NAVIGATOR_4);
         registerBlockEntityType.accept("station_navigator_5", BlockEntityTypes.STATION_NAVIGATOR_5);
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_2_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_2_ODD);
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_3_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_3_ODD);
@@ -411,6 +425,19 @@ public class TianjinMetro
         registerBlockEntityType.accept("station_name_projector", BlockEntityTypes.STATION_NAME_PROJECTOR);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockEntityType.accept("pids_tianjin", BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY);
+        registerBlockEntityType.accept("pids_tianjin_single", BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY);
+
+        /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
+        registerBlockEntityType.accept("smoke_alarm", BlockEntityTypes.SMOKE_ALARM_TILE_ENTITY);
+        registerBlockEntityType.accept("time_display_even", BlockEntityTypes.TIME_DISPLAY_EVEN_TILE_ENTITY);
+        /* 1.1.8 - Ported from 4.0 - Station name plate */
+        registerBlockEntityType.accept("station_name_plate", BlockEntityTypes.STATION_NAME_PLATE_TILE_ENTITY);
+        /* 1.1.8 - Ported from 4.0 - Tianjin station name sign */
+        registerBlockEntityType.accept("station_name_sign_tianjin", BlockEntityTypes.STATION_NAME_SIGN_TIANJIN);
+        /* 1.1.8 - Ported from 4.0 - BMT route map */
+        registerBlockEntityType.accept("route_map_bmt", BlockEntityTypes.ROUTE_MAP_BMT);
+        /* 1.1.8 - Ported from 4.0 - Security check sign */
+        registerBlockEntityType.accept("security_check_sign", BlockEntityTypes.SECURITY_CHECK_SIGN_TILE_ENTITY);
 
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_CONTENT, PacketGuiServer::receiveCustomContentC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_TIANJIN_CONFIG, PacketGuiServer::receivePIDSTianjinConfigC2S);

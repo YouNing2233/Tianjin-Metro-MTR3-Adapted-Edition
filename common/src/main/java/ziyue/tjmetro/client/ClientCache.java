@@ -218,8 +218,8 @@ public class ClientCache extends DataCache implements IGui
         return getResource(String.format("tjmetro_station_name_plate_%s_%s_%s_%s_%s_%s_%s", platformId, arrowDirection, backgroundColor, paddingScale, aspectRatio, textColor, transparentColor), () -> RouteMapGenerator.generateStationNamePlate(platformId, arrowDirection, backgroundColor, paddingScale, aspectRatio, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
-    public DynamicResource getStationNameSignTianjin(long platformId, int aspectRatio, int transparentColor) {
-        return getResource(String.format("tjmetro_station_name_sign_tianjin_%s_%s", platformId, aspectRatio), () -> RouteMapGenerator.generateStationNameSignTianjin(platformId, aspectRatio, transparentColor), transparentColor == 0 ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+    public DynamicResource getStationNameSignTianjin(long platformId, float aspectRatio, int backgroundColor) {
+        return getResource(String.format("tjmetro_station_name_sign_tianjin_%s_%s_%s", platformId, aspectRatio, backgroundColor), () -> RouteMapGenerator.generateStationNameSignTianjin(platformId, aspectRatio, backgroundColor), DefaultRenderingColor.TRANSPARENT);
     }
 
     protected DynamicResource getResource(String key, Supplier<NativeImage> supplier, DefaultRenderingColor defaultRenderingColor) {

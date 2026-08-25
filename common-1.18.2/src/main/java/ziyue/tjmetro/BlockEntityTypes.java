@@ -108,6 +108,7 @@ public interface BlockEntityTypes
     RegistryObject<BlockEntityType<BlockRailwaySignTianjinBMT.BlockEntity>> RAILWAY_SIGN_TIANJIN_BMT_7_EVEN = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockRailwaySignTianjinBMT.BlockEntity(7, false, pos, state), BlockList.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN.get()));
 
     RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_3 = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(3, pos, state), BlockList.STATION_NAVIGATOR_3.get()));
+    RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_4 = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(4, pos, state), BlockList.STATION_NAVIGATOR_4.get()));
     RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_5 = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(5, pos, state), BlockList.STATION_NAVIGATOR_5.get()));
     RegistryObject<BlockEntityType<BlockStationNavigator.BlockEntity>> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType((pos, state) -> new BlockStationNavigator.BlockEntity(0, pos, state), BlockList.STATION_NAVIGATOR_MIDDLE.get()));
 
@@ -140,4 +141,23 @@ public interface BlockEntityTypes
 
     /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
     RegistryObject<BlockEntityType<BlockPIDSTianjin.TileEntityBlockPIDSTianjin>> PIDS_TIANJIN_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPIDSTianjin.TileEntityBlockPIDSTianjin::new, BlockList.PIDS_TIANJIN.get()));
+    RegistryObject<BlockEntityType<BlockPIDSTianjinSingle.TileEntityBlockPIDSTianjinSingle>> PIDS_TIANJIN_SINGLE_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPIDSTianjinSingle.TileEntityBlockPIDSTianjinSingle::new, BlockList.PIDS_TIANJIN_SINGLE.get()));
+
+    /* 1.1.8 - Ported from 4.0 - Smoke alarm */
+    RegistryObject<BlockEntityType<BlockSmokeAlarm.TileEntitySmokeAlarm>> SMOKE_ALARM_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockSmokeAlarm.TileEntitySmokeAlarm::new, BlockList.SMOKE_ALARM.get()));
+
+    /* 1.1.8 - Ported from 4.0 - Time display (even) */
+    RegistryObject<BlockEntityType<BlockTimeDisplayEven.TileEntityTimeDisplayEven>> TIME_DISPLAY_EVEN_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockTimeDisplayEven.TileEntityTimeDisplayEven::new, BlockList.TIME_DISPLAY_EVEN.get()));
+
+    /* 1.1.8 - Ported from 4.0 - Station name plate */
+    RegistryObject<BlockEntityType<BlockStationNamePlate.TileEntityStationNamePlate>> STATION_NAME_PLATE_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockStationNamePlate.TileEntityStationNamePlate::new, BlockList.STATION_NAME_PLATE.get()));
+
+    /* 1.1.8 - Ported from 4.0 - Tianjin station name sign */
+    RegistryObject<BlockEntityType<BlockStationNameSignTianjin.TileEntityStationNameSignTianjin>> STATION_NAME_SIGN_TIANJIN = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockStationNameSignTianjin.TileEntityStationNameSignTianjin::new, BlockList.STATION_NAME_SIGN_TIANJIN.get()));
+
+    /* 1.1.8 - Ported from 4.0 - BMT route map */
+    RegistryObject<BlockEntityType<BlockRouteMapBMT.TileEntityRouteMapBMT>> ROUTE_MAP_BMT = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockRouteMapBMT.TileEntityRouteMapBMT::new, BlockList.ROUTE_MAP_BMT.get()));
+
+    /* 1.1.8 - Ported from 4.0 - Security check sign */
+    RegistryObject<BlockEntityType<BlockSecurityCheckSign.TileEntitySecurityCheckSign>> SECURITY_CHECK_SIGN_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockSecurityCheckSign.TileEntitySecurityCheckSign::new, BlockList.SECURITY_CHECK_SIGN.get()));
 }

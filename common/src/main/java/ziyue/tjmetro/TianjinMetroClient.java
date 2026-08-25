@@ -5,9 +5,11 @@ import mtr.render.RenderAPGGlass;
 import mtr.render.RenderPSDTop;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
+import ziyue.tjmetro.block.BlockSmokeAlarm;
 import ziyue.tjmetro.packet.IPacket;
 import ziyue.tjmetro.packet.PacketGuiClient;
 import ziyue.tjmetro.render.*;
+import ziyue.tjmetro.sound.LoopingSoundInstance;
 
 /**
  * Client Entry of <b>Tianjin Metro Mod</b>.
@@ -18,6 +20,8 @@ import ziyue.tjmetro.render.*;
 
 public class TianjinMetroClient
 {
+    public static final LoopingSoundInstance SMOKE_ALARM_SOUND_INSTANCE = new LoopingSoundInstance("smoke_alarm");
+
     public static void init() {
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.LOGO.get());
 
@@ -181,7 +185,15 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_JINJING_TILE_ENTITY.get(), RenderStationNameEntranceTianjin::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_ENTRANCE_TIANJIN_JINJING_PINYIN_TILE_ENTITY.get(), RenderStationNameEntranceTianjin::new);
 
-//        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PLATE_TILE_ENTITY.get(), RenderStationNamePlate::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PLATE_TILE_ENTITY.get(), RenderStationNamePlate::new);
+        /* 1.1.8 - Ported from 4.0 - Tianjin station name sign */
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_SIGN_TIANJIN.get(), RenderStationNameSignTianjin::new);
+        /* 1.1.8 - Ported from 4.0 - BMT route map */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.ROUTE_MAP_BMT.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.ROUTE_MAP_BMT.get(), RenderRouteMapBMT::new);
+        /* 1.1.8 - Ported from 4.0 - Security check sign */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SECURITY_CHECK_SIGN.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.SECURITY_CHECK_SIGN_TILE_ENTITY.get(), RenderSecurityCheckSign::new);
         /* 1.1.1 - Ported from 4.0 */
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_2_ODD.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_3_ODD.get(), RenderRailwaySignBMTBase::new);
@@ -196,6 +208,7 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_ODD.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_7_EVEN.get(), RenderRailwaySignBMTBase::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_3.get(), RenderStationNavigator::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_4.get(), RenderStationNavigator::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_5.get(), RenderStationNavigator::new);
         /* 1.1.6 - Ported from 4.0 - APG doors (custom Tianjin renderer) */
         // TODO: Fix bugs in next version - commented out all variants except single doors
@@ -224,6 +237,15 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PROJECTOR.get(), RenderStationNameProjector::new);
         /* 1.1.6 - Ported from 4.0 - PIDS Tianjin */
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), RenderPIDSTianjin::new);
+        /* 1.1.8 - Ported from 4.0 - PIDS Tianjin (single) */
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_SINGLE.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get(), RenderPIDSTianjinSingle::new);
+
+        /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SMOKE_ALARM.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.TIME_DISPLAY_EVEN_TILE_ENTITY.get(), RenderTimeDisplayEven::new);
+
+        BlockSmokeAlarm.TileEntitySmokeAlarm.updateSoundSource = SMOKE_ALARM_SOUND_INSTANCE::setPos;
 
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_CUSTOM_CONTENT_SCREEN, packet -> PacketGuiClient.openCustomContentScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_CUSTOM_COLOR_SCREEN, packet -> PacketGuiClient.openCustomColorScreenS2C(Minecraft.getInstance(), packet));

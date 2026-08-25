@@ -72,7 +72,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
     }
 
-    private void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
+    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
         matrices.pushPose();
         matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ);
         matrices.mulPose(new Quaternionf().rotationY((float) Math.toRadians((rotate90 ? 90 : 0) - facing.toYRot())));
@@ -82,7 +82,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         matrices.mulPose(new Quaternionf().rotationX((float) Math.toRadians(22.5F)));
         matrices.translate(0, 0.05, 0);
 
-        final RenderType bgRenderType = MoreRenderLayers.getExterior(new ResourceLocation(Reference.MOD_ID, "textures/block/pids_tianjin.png"));
+        final RenderType bgRenderType = MoreRenderLayers.getLight(new ResourceLocation(Reference.MOD_ID, "textures/block/pids_tianjin.png"), false);
         final VertexConsumer bgConsumer = vertexConsumers.getBuffer(bgRenderType);
         IDrawing.drawTexture(matrices, bgConsumer, 0, 0, 251F, 115F, facing, MAX_LIGHT_GLOWING);
 
@@ -231,13 +231,13 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
                     "   " + advertisement.text().getString() + "   ", 0xFF1A1D46, ARGB_WHITE));
         }
 
-        final RenderType adRenderType = MoreRenderLayers.getExterior(advertisement.image());
+        final RenderType adRenderType = MoreRenderLayers.getLight(advertisement.image(), false);
         final VertexConsumer adVertexConsumer = vertexConsumers.getBuffer(adRenderType);
         IDrawing.drawTexture(matrices, adVertexConsumer, 0, 0, 161F, 88.3F, facing, MAX_LIGHT_GLOWING);
 
         if (advertisement.url() != null) {
             matrices.translate(0, 0, -0.1F);
-            final RenderType clickRenderType = MoreRenderLayers.getExterior(new ResourceLocation(Reference.MOD_ID, "textures/sign/click.png"));
+            final RenderType clickRenderType = MoreRenderLayers.getLight(new ResourceLocation(Reference.MOD_ID, "textures/sign/click.png"), false);
             final VertexConsumer clickVertexConsumer = vertexConsumers.getBuffer(clickRenderType);
             IDrawing.drawTexture(matrices, clickVertexConsumer, 0, 0, 15F, 15F, facing, MAX_LIGHT_GLOWING);
             matrices.translate(0, 0, 0.1F);
