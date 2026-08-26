@@ -100,7 +100,7 @@ public class RenderAPGGlassTianjinBMT extends RenderRouteBase<BlockAPGGlassTianj
                             resourceLocation = ClientCache.DATA_CACHE.getRouteMap(platformId, false, arrowDirection == 2, width / height, transparentWhite).resourceLocation;
                             break;
                         case STATION_NAME:
-                            resourceLocation = ClientCache.DATA_CACHE.getPSDStationName(platformId, IGui.HorizontalAlignment.CENTER, 0.25F, width / height, ARGB_WHITE, ARGB_BLACK, transparentWhite ? ARGB_WHITE : 0).resourceLocation;
+                            resourceLocation = ClientCache.DATA_CACHE.getStationName(platformId, true, IGui.HorizontalAlignment.CENTER, 0.25F, width / height, ARGB_WHITE, ARGB_BLACK, transparentWhite ? ARGB_WHITE : 0).resourceLocation;
                             break;
                         default:
                             resourceLocation = ClientCache.DATA_CACHE.getNextStation(platformId, arrowDirection, 0.25F, width / height, ARGB_WHITE, ARGB_BLACK, transparentWhite ? ARGB_WHITE : 0).resourceLocation;

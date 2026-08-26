@@ -34,7 +34,7 @@ import static mtr.render.RenderRouteBase.getShadingColor;
  * Renders the station name, direction arrows or the route map on top of the
  * {@link BlockPSDTopTianjin} plate, depending on the {@code style} block state.
  * <p>
- * Texture selection matches MTR 4.0: {@code getPSDStationName} for the station
+ * Texture selection matches MTR 4.0: {@code getStationName} for the station
  * name, and {@code getNextStation} / {@code getNextStationJinjing} for the
  * next station (picked by the tile entity's {@code jinjing} flag).
  *
@@ -97,7 +97,7 @@ public class RenderPSDTopTianjin extends RenderRouteBase<BlockPSDTopTianjin.Tile
                     final BlockPSDTopTianjin.EnumPSDType doorType = IBlock.getStatePropertySafe(state, BlockPSDTopTianjin.STYLE);
                     if (renderType == RenderType.ARROW) {
                         if (doorType == BlockPSDTopTianjin.EnumPSDType.STATION_NAME) {
-                            resourceLocation = ClientCache.DATA_CACHE.getPSDStationName(platformId, IGui.HorizontalAlignment.CENTER, 0.25F, width / height, ARGB_WHITE, ARGB_BLACK, transparentWhite ? ARGB_WHITE : 0).resourceLocation;
+                            resourceLocation = ClientCache.DATA_CACHE.getStationName(platformId, false, IGui.HorizontalAlignment.CENTER, 0.25F, width / height, ARGB_WHITE, ARGB_BLACK, transparentWhite ? ARGB_WHITE : 0).resourceLocation;
                         } else {
                             resourceLocation = ClientCache.DATA_CACHE.getDirectionArrow(platformId, (arrowDirection & 0b01) > 0, (arrowDirection & 0b10) > 0, IGui.HorizontalAlignment.CENTER, true, 0.25F, width / height, ARGB_WHITE, ARGB_BLACK, transparentWhite ? ARGB_WHITE : 0).resourceLocation;
                         }
