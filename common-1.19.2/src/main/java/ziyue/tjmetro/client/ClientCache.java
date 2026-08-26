@@ -289,10 +289,18 @@ public class ClientCache extends DataCache implements IGui
     }
 
     public Text getText(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment) {
-        return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, false);
+        return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, LINE_HEIGHT_MULTIPLIER, false);
     }
 
     public Text getText(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment, boolean forceMTRFont) {
+        return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, LINE_HEIGHT_MULTIPLIER, forceMTRFont);
+    }
+
+    public Text getText(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment, float lineHeightMultiply, boolean forceMTRFont) {
+        return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, lineHeightMultiply, forceMTRFont, false);
+    }
+
+    public Text getText(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment, float lineHeightMultiply, boolean forceMTRFont, boolean rotateNeg45Degree) {
         if (forceMTRFont) {
             final int[] dimensions = new int[2];
             final byte[] pixels = ClientData.DATA_CACHE.getTextPixels(text, dimensions, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment);
@@ -354,44 +362,85 @@ public class ClientCache extends DataCache implements IGui
                     width += padding;
                 }
                 width += textWidths[index];
-                height = Math.max(height, (int) (fontSizes[index] * LINE_HEIGHT_MULTIPLIER));
+                height = Math.max(height, (int) (fontSizes[index] * lineHeightMultiply));
             } else {
                 width = Math.max(width, Math.min(maxWidth, textWidths[index]));
-                height += (int) (fontSizes[index] * LINE_HEIGHT_MULTIPLIER);
+                height += (int) (fontSizes[index] * lineHeightMultiply);
             }
         }
 
         int textOffset = 0;
-        final int imageHeight = Math.min(height, maxHeight);
-        final BufferedImage image = new BufferedImage(width + (oneRow ? 0 : padding * 2), imageHeight + (oneRow ? 0 : padding * 2), BufferedImage.TYPE_BYTE_GRAY);
-        final Graphics2D graphics2D = image.createGraphics();
-        graphics2D.setColor(Color.WHITE);
-        graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         int realWidth = 0;
-        for (int index = 0; index < textSplit.length; index++) {
-            if (oneRow) {
-                graphics2D.drawString(attributedStrings[index].getIterator(), textOffset, height / LINE_HEIGHT_MULTIPLIER - (customFont ? height * 0.035F : 0));
-                textOffset += textWidths[index] + padding;
-            } else {
-                final float scaleY = (float) imageHeight / height;
-                final float textWidth = Math.min(maxWidth, textWidths[index] * scaleY);
-                final float scaleX = textWidth / textWidths[index];
-                final AffineTransform stretch = new AffineTransform();
-                stretch.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
-                graphics2D.setTransform(stretch);
-                graphics2D.drawString(attributedStrings[index].getIterator(), horizontalAlignment.getOffset(0, textWidth - width) / scaleY + padding / scaleX, textOffset + fontSizes[index] + padding / scaleY - (customFont ? height * 0.035F : 0));
-                textOffset += (int) (fontSizes[index] * LINE_HEIGHT_MULTIPLIER);
-                realWidth = Math.max(realWidth, (int) textWidth);
+        if (rotateNeg45Degree) {
+            // MTR 4.0: rotated station names on route maps (rotated_station_name config, default on).
+            maxWidth = (int) (maxHeight * Math.sqrt(2) - height);
+            for (int index = 0; index < textSplit.length; index++) {
+                if (!oneRow) {
+                    final float textWidth = Math.min(maxWidth, textWidths[index]);
+                    realWidth = Math.max(realWidth, (int) textWidth);
+                }
             }
-        }
-        realWidth += padding;
 
-        width = width + (oneRow ? 0 : padding * 2);
-        height = imageHeight + (oneRow ? 0 : padding * 2);
-        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        graphics2D.dispose();
-        image.flush();
-        return new Text(pixels, realWidth, height, width);
+            final double imageWidth = (realWidth + height) / Math.sqrt(2); // sin45deg
+            final BufferedImage image = new BufferedImage((int) imageWidth, (int) imageWidth, BufferedImage.TYPE_BYTE_GRAY);
+            final Graphics2D graphics2D = image.createGraphics();
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            for (int index = 0; index < textSplit.length; index++) {
+                if (oneRow) {
+                    graphics2D.drawString(attributedStrings[index].getIterator(), textOffset, height / lineHeightMultiply - (customFont ? height * 0.035F : 0));
+                    textOffset += textWidths[index] + padding;
+                } else {
+                    final float scaleY = 1;
+                    final float textWidth = Math.min(maxWidth, textWidths[index]);
+                    final float scaleX = textWidth / textWidths[index];
+                    final float rotatedWidth = (float) (realWidth / Math.sqrt(2));
+                    final AffineTransform stretch = new AffineTransform();
+                    stretch.rotate(Math.toRadians(-45), 0, rotatedWidth);
+                    stretch.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
+                    graphics2D.setTransform(stretch);
+                    graphics2D.drawString(attributedStrings[index].getIterator(), horizontalAlignment.getOffset(0, textWidth - width) / scaleY + padding / scaleX, rotatedWidth + textOffset + fontSizes[index] - (customFont ? height * 0.035F : 0));
+                    textOffset += (int) (fontSizes[index] * lineHeightMultiply);
+                }
+            }
+
+            final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+            graphics2D.dispose();
+            image.flush();
+            return new Text(pixels, (int) imageWidth, (int) imageWidth, (int) imageWidth);
+        } else {
+            final int imageHeight = Math.min(height, maxHeight);
+            final BufferedImage image = new BufferedImage(width + (oneRow ? 0 : padding * 2), imageHeight + (oneRow ? 0 : padding * 2), BufferedImage.TYPE_BYTE_GRAY);
+            final Graphics2D graphics2D = image.createGraphics();
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            for (int index = 0; index < textSplit.length; index++) {
+                if (oneRow) {
+                    graphics2D.drawString(attributedStrings[index].getIterator(), textOffset, height / lineHeightMultiply - (customFont ? height * 0.035F : 0));
+                    textOffset += textWidths[index] + padding;
+                } else {
+                    final float scaleY = (float) imageHeight / height;
+                    final float textWidth = Math.min(maxWidth, textWidths[index] * scaleY);
+                    final float scaleX = textWidth / textWidths[index];
+                    final AffineTransform stretch = new AffineTransform();
+                    stretch.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
+                    graphics2D.setTransform(stretch);
+                    graphics2D.drawString(attributedStrings[index].getIterator(), horizontalAlignment.getOffset(0, textWidth - width) / scaleY + padding / scaleX, textOffset + fontSizes[index] + padding / scaleY - (customFont ? height * 0.035F : 0));
+                    textOffset += (int) (fontSizes[index] * lineHeightMultiply);
+                    realWidth = Math.max(realWidth, (int) textWidth);
+                }
+            }
+            realWidth += padding;
+
+            width = width + (oneRow ? 0 : padding * 2);
+            height = imageHeight + (oneRow ? 0 : padding * 2);
+            final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+            graphics2D.dispose();
+            image.flush();
+            return new Text(pixels, realWidth, height, width);
+        }
     }
 
     protected static <U extends SavedRailBase> void mapPosToSavedRails(Map<BlockPos, List<U>> posToSavedRails, Set<U> savedRails, TransportMode transportMode) {

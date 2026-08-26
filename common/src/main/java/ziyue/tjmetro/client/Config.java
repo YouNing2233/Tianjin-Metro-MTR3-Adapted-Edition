@@ -34,6 +34,7 @@ public class Config
         }
     };
     public static final Key<Boolean> USE_TIANJIN_METRO_FONT = new Key<>("use_tianjin_metro_font", true);
+    public static final Key<Boolean> ROTATED_STATION_NAME = new Key<>("rotated_station_name", true);
 
     protected static final Path CONFIG_FILE_PATH = Minecraft.getInstance().gameDirectory.toPath().resolve("config").resolve("tjmetro.json");
     public static final List<Supplier<MutableComponent>> FOOTERS = Arrays.asList(
@@ -50,9 +51,11 @@ public class Config
             try {
                 ENABLE_MTR_FILTERS.set(jsonConfig.get(ENABLE_MTR_FILTERS.getId()).getAsBoolean());
                 USE_TIANJIN_METRO_FONT.set(jsonConfig.get(USE_TIANJIN_METRO_FONT.getId()).getAsBoolean());
+                ROTATED_STATION_NAME.set(jsonConfig.get(ROTATED_STATION_NAME.getId()).getAsBoolean());
             } catch (Exception ignored) {
                 ENABLE_MTR_FILTERS.set(ENABLE_MTR_FILTERS.getDefault());
                 USE_TIANJIN_METRO_FONT.set(USE_TIANJIN_METRO_FONT.getDefault());
+                ROTATED_STATION_NAME.set(ROTATED_STATION_NAME.getDefault());
             }
         } catch (Exception e) {
             writeToFile();
@@ -65,6 +68,7 @@ public class Config
         final JsonObject jsonConfig = new JsonObject();
         jsonConfig.addProperty(ENABLE_MTR_FILTERS.getId(), ENABLE_MTR_FILTERS.get());
         jsonConfig.addProperty(USE_TIANJIN_METRO_FONT.getId(), USE_TIANJIN_METRO_FONT.get());
+        jsonConfig.addProperty(ROTATED_STATION_NAME.getId(), ROTATED_STATION_NAME.get());
 
         try {
             Files.write(CONFIG_FILE_PATH, Collections.singleton(RailwayData.prettyPrint(jsonConfig)));

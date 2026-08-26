@@ -16,6 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import ziyue.tjmetro.BlockEntityTypes;
 import ziyue.tjmetro.ItemList;
 import ziyue.tjmetro.block.flag.BlockFlagDoorSingle;
+import ziyue.tjmetro.block.flag.BlockFlagPSDTianjin;
 
 /**
  * Tianjin single-leaf PSD door.
@@ -24,7 +25,7 @@ import ziyue.tjmetro.block.flag.BlockFlagDoorSingle;
  * @author ZiYueCommentary
  * @since 1.1.6 - Ported from 4.0
  */
-public class BlockPSDDoorSingle extends BlockPSDAPGDoorBase implements BlockFlagDoorSingle
+public class BlockPSDDoorSingle extends BlockPSDAPGDoorBase implements BlockFlagPSDTianjin, BlockFlagDoorSingle
 {
     public final boolean isLeft;
 

@@ -5,7 +5,6 @@ import mtr.block.BlockPSDAPGBase;
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.BlockPSDAPGGlassEndBase;
 import mtr.block.BlockPSDAPGGlassBase;
-import mtr.block.BlockPSDTop;
 import mtr.block.IBlock;
 import mtr.item.ItemPSDAPGBase;
 import mtr.item.ItemWithCreativeTabBase;
@@ -93,21 +92,11 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
             }
 
             if (!isAPG()) {
-                BlockState topState;
                 if (block instanceof BlockFlagPSDTianjinBMT) {
-                    topState = BlockPSDTopTianjinBMT.getActualState(world, newPos.above(2)).setValue(BlockPSDTopTianjinBMT.STYLE, BlockPSDTopTianjinBMT.EnumPSDType.BMT);
+                    world.setBlockAndUpdate(newPos.above(2), BlockPSDTopTianjinBMT.getActualState(world, newPos.above(2)).setValue(BlockPSDTopTianjinBMT.STYLE, BlockPSDTopTianjinBMT.EnumPSDType.BMT));
                 } else if (block instanceof BlockFlagPSDTianjin) {
-                    topState = BlockPSDTopTianjin.getActualState(world, newPos.above(2), block instanceof BlockFlagPSDTianjinJinjing).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME);
-                } else {
-                    // 显式将吊板方向设置为玩家面对的方向
-                    // MTR 的 BlockPSDTop.getActualState 仅识别 BlockPSDGlass/BlockPSDDoor/BlockPSDGlassEnd,
-                    // 无法识别 BlockPSDDoorSingle, 因此需要手动覆盖 FACING
-                    topState = BlockPSDTop.getActualState(world, newPos.above(2));
-                    if (topState.getBlock() instanceof BlockPSDTop) {
-                        topState = topState.setValue(BlockPSDAPGBase.FACING, playerFacing);
-                    }
+                    world.setBlockAndUpdate(newPos.above(2), BlockPSDTopTianjin.getActualState(world, newPos.above(2), block instanceof BlockFlagPSDTianjinJinjing).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME));
                 }
-                world.setBlockAndUpdate(newPos.above(2), topState);
             }
         }
 

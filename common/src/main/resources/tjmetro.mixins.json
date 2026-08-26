@@ -15,5 +15,5 @@
 		"RenderRailwaySignMixin",
 		"SidingScreenMixin"
 	],
-	"refmap": "tjmetro-refmap.json"
+	"refmap": "common-common-refmap.json"
 }
