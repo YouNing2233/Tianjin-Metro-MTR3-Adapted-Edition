@@ -102,7 +102,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         protected int advertisementIndex;
         public BlockPIDSTianjin.Advertisement advertisement;
         public final ScrollingText scrollingText;
-        protected boolean useRealTime;
+        protected boolean useRealTime = true;
 
         public static final String CATEGORIES_ID = "categories";
         public static final String CATEGORY_INDEX_ID = "category_index";
@@ -150,7 +150,9 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             }
             categoryIndex = compoundTag.getInt(CATEGORY_INDEX_ID);
             advertisementIndex = compoundTag.getInt(ADVERTISEMENT_INDEX_ID);
-            useRealTime = compoundTag.getBoolean(USE_REAL_TIME_ID);
+            if (compoundTag.contains(USE_REAL_TIME_ID)) {
+                useRealTime = compoundTag.getBoolean(USE_REAL_TIME_ID);
+            }
         }
 
         @Override

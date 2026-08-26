@@ -1,0 +1,19 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "ziyue.tjmetro.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"ClientDataMixin",
+		"CustomResourcesMixin",
+		"PacketTrainDataGuiClientMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"client": [
+		"RenderRailwaySignMixin",
+		"SidingScreenMixin"
+	],
+	"refmap": "tjmetro-refmap.json"
+}

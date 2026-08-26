@@ -345,6 +345,7 @@
     "item.tjmetro.psd_top_tianjin_jinjing":  "Platform Screen Doors Top (Tianjin, Jinjing Line)",
 
     "tooltip.tjmetro.psd_apg_tianjin":  "Use wrench to change its top's display content, and use brush to change its arrow direction.",
+
     "block.tjmetro.smoke_alarm": "Smoke Alarm",
     "tooltip.tjmetro.smoke_alarm": "Detects fire and smokes in a range and emits a redstone signal. You can change the range in game rule.",
     "block.tjmetro.security_check_sign": "\"Security Check\" Sign",

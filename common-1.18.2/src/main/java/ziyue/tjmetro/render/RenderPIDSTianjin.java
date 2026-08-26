@@ -276,10 +276,18 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         }
 
         final Set<Long> platformIds = entity.getPlatformIds();
+        final Set<Long> effectivePlatformIds;
+        if (platformIds.isEmpty()) {
+            // Auto mode: only show the schedules of the single nearest platform.
+            final long nearestPlatformId = RailwayData.getClosePlatformId(new HashSet<>(platforms.values()), ClientData.DATA_CACHE, pos);
+            effectivePlatformIds = nearestPlatformId != 0 ? Collections.singleton(nearestPlatformId) : Collections.emptySet();
+        } else {
+            effectivePlatformIds = platformIds;
+        }
         final Set<ScheduleEntry> schedules = new HashSet<>();
 
         platforms.values().forEach(platform -> {
-            if (platformIds.isEmpty() || platformIds.contains(platform.id)) {
+            if (effectivePlatformIds.contains(platform.id)) {
                 final Set<ScheduleEntry> scheduleForPlatform = ClientData.SCHEDULES_FOR_PLATFORM.get(platform.id);
                 if (scheduleForPlatform != null) {
                     scheduleForPlatform.forEach(scheduleEntry -> {

@@ -12,7 +12,8 @@
 		"defaultRequire": 1
 	},
 	"client": [
-		"RenderRailwaySignMixin"
+		"RenderRailwaySignMixin",
+		"SidingScreenMixin"
 	],
 	"refmap": "tjmetro-refmap.json"
 }

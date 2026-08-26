@@ -346,6 +346,7 @@
     "item.tjmetro.psd_top_tianjin_jinjing":  "高站台门顶部（天津、津静线）",
 
     "tooltip.tjmetro.psd_apg_tianjin":  "用扳手改变其顶部的显示内容，并用刷子改变其箭头方向。",
+
     "tooltip.tjmetro.smoke_alarm": "检测范围内的火，并放出红石信号。可在游戏规则内修改侦测范围。",
     "block.tjmetro.security_check_sign": "“安全检查”标志",
     "tooltip.tjmetro.station_name_plate": "用扳手选择显示的站台，并用刷子改变箭头的方向。",

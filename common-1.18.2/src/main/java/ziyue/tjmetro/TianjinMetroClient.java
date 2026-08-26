@@ -64,33 +64,33 @@ public class TianjinMetroClient
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.METAL_POLE_BMT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_TIANJIN_ENTRANCE.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_TIANJIN_EXIT.get());
-        /* 1.1.6 - Ported from 4.0 - APG/PSD/PIDS */
-        // TODO: Fix bugs in next version - commented out all variants except single doors
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_TRT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_BMT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_JINJING.get());
+        /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_TRT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_JINJING.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_SINGLE_LEFT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_SINGLE_RIGHT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN_TRT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN_BMT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN_JINJING.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN_TRT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN_BMT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN_JINJING.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN_BMT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN_JINJING.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN_TRT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_TIANJIN_JINJING.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN_TRT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_GLASS_END_TIANJIN_JINJING.get());
+        /* 1.1.6 - Ported from 4.0 - PSD (full-height platform doors) */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN_JINJING.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_SINGLE_LEFT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_SINGLE_RIGHT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN_BMT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN_JINJING.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN_BMT.get());
-        // RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN_JINJING.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN_JINJING.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN_JINJING.get());
 
         RegistryClient.registerBlockColors(BlockList.STATION_COLOR_CEILING.get());
         RegistryClient.registerBlockColors(BlockList.STATION_COLOR_CEILING_LIGHT.get());
@@ -213,28 +213,26 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_4.get(), RenderStationNavigator::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAVIGATOR_5.get(), RenderStationNavigator::new);
         /* 1.1.6 - Ported from 4.0 - APG doors (custom Tianjin renderer) */
-        // TODO: Fix bugs in next version - commented out all variants except single doors
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin", "apg_door_tianjin", false));
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_TRT_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin_trt", null, true));
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_BMT_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin", "apg_door_tianjin", false));
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_JINJING_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin", "apg_door_tianjin_jinjing", false));
-        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_SINGLE_LEFT_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin", "apg_door_tianjin", false));
-        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_SINGLE_RIGHT_TILE_ENTITY.get(), dispatcher -> new RenderTianjinAPGDoor<>(dispatcher, "apg_door_tianjin", "apg_door_tianjin", false));
-        /* 1.1.6 - Ported from 4.0 - APG glass (RenderAPGGlass) */
-        // registerRouteRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_TILE_ENTITY.get(), RenderAPGGlass::new);
-        // registerRouteRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_TRT_TILE_ENTITY.get(), RenderAPGGlass::new);
-        // registerRouteRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_BMT_TILE_ENTITY.get(), RenderAPGGlass::new);
-        // registerRouteRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_JINJING_TILE_ENTITY.get(), RenderAPGGlass::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_TILE_ENTITY.get(), RenderAPGDoorTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_TRT_TILE_ENTITY.get(), RenderAPGDoorTianjinTRT::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_BMT_TILE_ENTITY.get(), RenderAPGDoorTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_JINJING_TILE_ENTITY.get(), RenderAPGDoorTianjinJinjing::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_SINGLE_LEFT_TILE_ENTITY.get(), RenderAPGDoorTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_SINGLE_RIGHT_TILE_ENTITY.get(), RenderAPGDoorTianjin::new);
+        /* 1.1.6 - Ported from 4.0 - APG glass (custom Tianjin renderers) */
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_TRT_TILE_ENTITY.get(), RenderAPGGlassTianjinTRT::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_BMT_TILE_ENTITY.get(), RenderAPGGlassTianjinBMT::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_GLASS_TIANJIN_JINJING_TILE_ENTITY.get(), RenderAPGGlassTianjinJinjing::new);
         /* 1.1.6 - Ported from 4.0 - PSD doors (custom Tianjin renderer) */
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_TILE_ENTITY.get(), RenderTianjinPSDDoor::new);
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_BMT_TILE_ENTITY.get(), RenderTianjinPSDDoorBMT::new);
-        // RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_JINJING_TILE_ENTITY.get(), RenderTianjinPSDDoor::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_TILE_ENTITY.get(), RenderPSDDoorTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_BMT_TILE_ENTITY.get(), RenderPSDDoorTianjinBMT::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_JINJING_TILE_ENTITY.get(), RenderPSDDoorTianjin::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_SINGLE_LEFT_TILE_ENTITY.get(), RenderTianjinPSDDoor::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_SINGLE_RIGHT_TILE_ENTITY.get(), RenderTianjinPSDDoor::new);
-        /* 1.1.6 - Ported from 4.0 - PSD top (RenderPSDTop) */
-        // registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_TILE_ENTITY.get(), RenderPSDTop::new);
-        // registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_JINJING_TILE_ENTITY.get(), RenderPSDTop::new);
-        // registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY.get(), RenderPSDTop::new);
+        /* 1.1.6 - Ported from 4.0 - PSD top (custom Tianjin top plate renderer) */
+        registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_TILE_ENTITY.get(), RenderPSDTopTianjin::new);
+        registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_JINJING_TILE_ENTITY.get(), RenderPSDTopTianjin::new);
+        registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY.get(), RenderPSDTopTianjinBMT::new);
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PROJECTOR.get(), RenderStationNameProjector::new);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */

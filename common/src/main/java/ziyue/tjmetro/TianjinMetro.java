@@ -120,72 +120,70 @@ public class TianjinMetro
         registerBlockItem.accept("station_navigator_4", BlockList.STATION_NAVIGATOR_4, SIGNS);
         registerBlockItem.accept("station_navigator_5", BlockList.STATION_NAVIGATOR_5, SIGNS);
         /* PLATFORM GATES - grouped by line style (TRT/default, BMT, Jinjing) */
-        /* APG (half-height platform doors) - Single doors only (others commented due to bugs) */
-        // TODO: Fix bugs in next version - commented out all variants except single doors
-        /* APG - TRT/default (commented) */
-        // registerBlock.accept("apg_door_tianjin", BlockList.APG_DOOR_TIANJIN);
-        // registerItem.accept("apg_door_tianjin", ItemList.APG_DOOR_TIANJIN, GATES);
-        // registerBlock.accept("apg_door_tianjin_trt", BlockList.APG_DOOR_TIANJIN_TRT);
-        // registerItem.accept("apg_door_tianjin_trt", ItemList.APG_DOOR_TIANJIN_TRT, GATES);
-        // registerBlock.accept("apg_glass_tianjin", BlockList.APG_GLASS_TIANJIN);
-        // registerItem.accept("apg_glass_tianjin", ItemList.APG_GLASS_TIANJIN, GATES);
-        // registerBlock.accept("apg_glass_tianjin_trt", BlockList.APG_GLASS_TIANJIN_TRT);
-        // registerItem.accept("apg_glass_tianjin_trt", ItemList.APG_GLASS_TIANJIN_TRT, GATES);
-        // registerBlock.accept("apg_glass_end_tianjin", BlockList.APG_GLASS_END_TIANJIN);
-        // registerItem.accept("apg_glass_end_tianjin", ItemList.APG_GLASS_END_TIANJIN, GATES);
-        // registerBlock.accept("apg_glass_end_tianjin_trt", BlockList.APG_GLASS_END_TIANJIN_TRT);
-        // registerItem.accept("apg_glass_end_tianjin_trt", ItemList.APG_GLASS_END_TIANJIN_TRT, GATES);
-        /* APG - Single doors (keep) */
+        /* APG (half-height platform doors) */
+        /* APG - TRT/default */
+        registerBlock.accept("apg_door_tianjin", BlockList.APG_DOOR_TIANJIN);
+        registerItem.accept("apg_door_tianjin", ItemList.APG_DOOR_TIANJIN, GATES);
+        registerBlock.accept("apg_door_tianjin_trt", BlockList.APG_DOOR_TIANJIN_TRT);
+        registerItem.accept("apg_door_tianjin_trt", ItemList.APG_DOOR_TIANJIN_TRT, GATES);
+        registerBlock.accept("apg_glass_tianjin", BlockList.APG_GLASS_TIANJIN);
+        registerItem.accept("apg_glass_tianjin", ItemList.APG_GLASS_TIANJIN, GATES);
+        registerBlock.accept("apg_glass_tianjin_trt", BlockList.APG_GLASS_TIANJIN_TRT);
+        registerItem.accept("apg_glass_tianjin_trt", ItemList.APG_GLASS_TIANJIN_TRT, GATES);
+        registerBlock.accept("apg_glass_end_tianjin", BlockList.APG_GLASS_END_TIANJIN);
+        registerItem.accept("apg_glass_end_tianjin", ItemList.APG_GLASS_END_TIANJIN, GATES);
+        registerBlock.accept("apg_glass_end_tianjin_trt", BlockList.APG_GLASS_END_TIANJIN_TRT);
+        registerItem.accept("apg_glass_end_tianjin_trt", ItemList.APG_GLASS_END_TIANJIN_TRT, GATES);
+        /* APG - Single doors */
         registerBlock.accept("apg_door_single_left", BlockList.APG_DOOR_SINGLE_LEFT);
         registerItem.accept("apg_door_single_left", ItemList.APG_DOOR_SINGLE_LEFT, GATES);
         registerBlock.accept("apg_door_single_right", BlockList.APG_DOOR_SINGLE_RIGHT);
         registerItem.accept("apg_door_single_right", ItemList.APG_DOOR_SINGLE_RIGHT, GATES);
-        /* APG - BMT (commented) */
-        // registerBlock.accept("apg_door_tianjin_bmt", BlockList.APG_DOOR_TIANJIN_BMT);
-        // registerItem.accept("apg_door_tianjin_bmt", ItemList.APG_DOOR_TIANJIN_BMT, GATES);
-        // registerBlock.accept("apg_glass_tianjin_bmt", BlockList.APG_GLASS_TIANJIN_BMT);
-        // registerItem.accept("apg_glass_tianjin_bmt", ItemList.APG_GLASS_TIANJIN_BMT, GATES);
-        // registerBlock.accept("apg_glass_end_tianjin_bmt", BlockList.APG_GLASS_END_TIANJIN_BMT);
-        // registerItem.accept("apg_glass_end_tianjin_bmt", ItemList.APG_GLASS_END_TIANJIN_BMT, GATES);
-        /* APG - Jinjing (commented) */
-        // registerBlock.accept("apg_door_tianjin_jinjing", BlockList.APG_DOOR_TIANJIN_JINJING);
-        // registerItem.accept("apg_door_tianjin_jinjing", ItemList.APG_DOOR_TIANJIN_JINJING, GATES);
-        // registerBlock.accept("apg_glass_tianjin_jinjing", BlockList.APG_GLASS_TIANJIN_JINJING);
-        // registerItem.accept("apg_glass_tianjin_jinjing", ItemList.APG_GLASS_TIANJIN_JINJING, GATES);
-        // registerBlock.accept("apg_glass_end_tianjin_jinjing", BlockList.APG_GLASS_END_TIANJIN_JINJING);
-        // registerItem.accept("apg_glass_end_tianjin_jinjing", ItemList.APG_GLASS_END_TIANJIN_JINJING, GATES);
+        /* APG - BMT */
+        registerBlock.accept("apg_door_tianjin_bmt", BlockList.APG_DOOR_TIANJIN_BMT);
+        registerItem.accept("apg_door_tianjin_bmt", ItemList.APG_DOOR_TIANJIN_BMT, GATES);
+        registerBlock.accept("apg_glass_tianjin_bmt", BlockList.APG_GLASS_TIANJIN_BMT);
+        registerItem.accept("apg_glass_tianjin_bmt", ItemList.APG_GLASS_TIANJIN_BMT, GATES);
+        registerBlock.accept("apg_glass_end_tianjin_bmt", BlockList.APG_GLASS_END_TIANJIN_BMT);
+        registerItem.accept("apg_glass_end_tianjin_bmt", ItemList.APG_GLASS_END_TIANJIN_BMT, GATES);
+        /* APG - Jinjing */
+        registerBlock.accept("apg_door_tianjin_jinjing", BlockList.APG_DOOR_TIANJIN_JINJING);
+        registerItem.accept("apg_door_tianjin_jinjing", ItemList.APG_DOOR_TIANJIN_JINJING, GATES);
+        registerBlock.accept("apg_glass_tianjin_jinjing", BlockList.APG_GLASS_TIANJIN_JINJING);
+        registerItem.accept("apg_glass_tianjin_jinjing", ItemList.APG_GLASS_TIANJIN_JINJING, GATES);
+        registerBlock.accept("apg_glass_end_tianjin_jinjing", BlockList.APG_GLASS_END_TIANJIN_JINJING);
+        registerItem.accept("apg_glass_end_tianjin_jinjing", ItemList.APG_GLASS_END_TIANJIN_JINJING, GATES);
 
-        /* PSD (full-height platform doors) - Single doors only (others commented due to bugs) */
-        // TODO: Fix bugs in next version - commented out all variants except single doors
-        /* PSD - TRT/default (commented) */
-        // registerBlock.accept("psd_door_tianjin", BlockList.PSD_DOOR_TIANJIN);
-        // registerItem.accept("psd_door_tianjin", ItemList.PSD_DOOR_TIANJIN, GATES);
-        // registerBlock.accept("psd_glass_tianjin", BlockList.PSD_GLASS_TIANJIN);
-        // registerItem.accept("psd_glass_tianjin", ItemList.PSD_GLASS_TIANJIN, GATES);
-        // registerBlock.accept("psd_glass_end_tianjin", BlockList.PSD_GLASS_END_TIANJIN);
-        // registerItem.accept("psd_glass_end_tianjin", ItemList.PSD_GLASS_END_TIANJIN, GATES);
-        // registerBlock.accept("psd_top_tianjin", BlockList.PSD_TOP_TIANJIN);
-        /* PSD - Single doors (keep) */
+        /* PSD (full-height platform doors) */
+        /* PSD - TRT/default */
+        registerBlock.accept("psd_door_tianjin", BlockList.PSD_DOOR_TIANJIN);
+        registerItem.accept("psd_door_tianjin", ItemList.PSD_DOOR_TIANJIN, GATES);
+        registerBlock.accept("psd_glass_tianjin", BlockList.PSD_GLASS_TIANJIN);
+        registerItem.accept("psd_glass_tianjin", ItemList.PSD_GLASS_TIANJIN, GATES);
+        registerBlock.accept("psd_glass_end_tianjin", BlockList.PSD_GLASS_END_TIANJIN);
+        registerItem.accept("psd_glass_end_tianjin", ItemList.PSD_GLASS_END_TIANJIN, GATES);
+        registerBlock.accept("psd_top_tianjin", BlockList.PSD_TOP_TIANJIN);
+        /* PSD - Single doors */
         registerBlock.accept("psd_door_single_left", BlockList.PSD_DOOR_SINGLE_LEFT);
         registerItem.accept("psd_door_single_left", ItemList.PSD_DOOR_SINGLE_LEFT, GATES);
         registerBlock.accept("psd_door_single_right", BlockList.PSD_DOOR_SINGLE_RIGHT);
         registerItem.accept("psd_door_single_right", ItemList.PSD_DOOR_SINGLE_RIGHT, GATES);
-        /* PSD - BMT (commented) */
-        // registerBlock.accept("psd_door_tianjin_bmt", BlockList.PSD_DOOR_TIANJIN_BMT);
-        // registerItem.accept("psd_door_tianjin_bmt", ItemList.PSD_DOOR_TIANJIN_BMT, GATES);
-        // registerBlock.accept("psd_glass_tianjin_bmt", BlockList.PSD_GLASS_TIANJIN_BMT);
-        // registerItem.accept("psd_glass_tianjin_bmt", ItemList.PSD_GLASS_TIANJIN_BMT, GATES);
-        // registerBlock.accept("psd_glass_end_tianjin_bmt", BlockList.PSD_GLASS_END_TIANJIN_BMT);
-        // registerItem.accept("psd_glass_end_tianjin_bmt", ItemList.PSD_GLASS_END_TIANJIN_BMT, GATES);
-        // registerBlock.accept("psd_top_tianjin_bmt", BlockList.PSD_TOP_TIANJIN_BMT);
-        /* PSD - Jinjing (commented) */
-        // registerBlock.accept("psd_door_tianjin_jinjing", BlockList.PSD_DOOR_TIANJIN_JINJING);
-        // registerItem.accept("psd_door_tianjin_jinjing", ItemList.PSD_DOOR_TIANJIN_JINJING, GATES);
-        // registerBlock.accept("psd_glass_tianjin_jinjing", BlockList.PSD_GLASS_TIANJIN_JINJING);
-        // registerItem.accept("psd_glass_tianjin_jinjing", ItemList.PSD_GLASS_TIANJIN_JINJING, GATES);
-        // registerBlock.accept("psd_glass_end_tianjin_jinjing", BlockList.PSD_GLASS_END_TIANJIN_JINJING);
-        // registerItem.accept("psd_glass_end_tianjin_jinjing", ItemList.PSD_GLASS_END_TIANJIN_JINJING, GATES);
-        // registerBlock.accept("psd_top_tianjin_jinjing", BlockList.PSD_TOP_TIANJIN_JINJING);
+        /* PSD - BMT */
+        registerBlock.accept("psd_door_tianjin_bmt", BlockList.PSD_DOOR_TIANJIN_BMT);
+        registerItem.accept("psd_door_tianjin_bmt", ItemList.PSD_DOOR_TIANJIN_BMT, GATES);
+        registerBlock.accept("psd_glass_tianjin_bmt", BlockList.PSD_GLASS_TIANJIN_BMT);
+        registerItem.accept("psd_glass_tianjin_bmt", ItemList.PSD_GLASS_TIANJIN_BMT, GATES);
+        registerBlock.accept("psd_glass_end_tianjin_bmt", BlockList.PSD_GLASS_END_TIANJIN_BMT);
+        registerItem.accept("psd_glass_end_tianjin_bmt", ItemList.PSD_GLASS_END_TIANJIN_BMT, GATES);
+        registerBlock.accept("psd_top_tianjin_bmt", BlockList.PSD_TOP_TIANJIN_BMT);
+        /* PSD - Jinjing */
+        registerBlock.accept("psd_door_tianjin_jinjing", BlockList.PSD_DOOR_TIANJIN_JINJING);
+        registerItem.accept("psd_door_tianjin_jinjing", ItemList.PSD_DOOR_TIANJIN_JINJING, GATES);
+        registerBlock.accept("psd_glass_tianjin_jinjing", BlockList.PSD_GLASS_TIANJIN_JINJING);
+        registerItem.accept("psd_glass_tianjin_jinjing", ItemList.PSD_GLASS_TIANJIN_JINJING, GATES);
+        registerBlock.accept("psd_glass_end_tianjin_jinjing", BlockList.PSD_GLASS_END_TIANJIN_JINJING);
+        registerItem.accept("psd_glass_end_tianjin_jinjing", ItemList.PSD_GLASS_END_TIANJIN_JINJING, GATES);
+        registerBlock.accept("psd_top_tianjin_jinjing", BlockList.PSD_TOP_TIANJIN_JINJING);
 
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         registerBlockItem.accept("station_name_projector", BlockList.STATION_NAME_PROJECTOR, SIGNS);
@@ -400,27 +398,25 @@ public class TianjinMetro
         registerBlockEntityType.accept("station_navigator_4", BlockEntityTypes.STATION_NAVIGATOR_4);
         registerBlockEntityType.accept("station_navigator_5", BlockEntityTypes.STATION_NAVIGATOR_5);
         /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
-        // TODO: Fix bugs in next version - commented out all variants except single doors
-        // registerBlockEntityType.accept("apg_door_tianjin", BlockEntityTypes.APG_DOOR_TIANJIN_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_door_tianjin_trt", BlockEntityTypes.APG_DOOR_TIANJIN_TRT_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_door_tianjin_bmt", BlockEntityTypes.APG_DOOR_TIANJIN_BMT_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_door_tianjin_jinjing", BlockEntityTypes.APG_DOOR_TIANJIN_JINJING_TILE_ENTITY);
+        registerBlockEntityType.accept("apg_door_tianjin", BlockEntityTypes.APG_DOOR_TIANJIN_TILE_ENTITY);
+        registerBlockEntityType.accept("apg_door_tianjin_trt", BlockEntityTypes.APG_DOOR_TIANJIN_TRT_TILE_ENTITY);
+        registerBlockEntityType.accept("apg_door_tianjin_bmt", BlockEntityTypes.APG_DOOR_TIANJIN_BMT_TILE_ENTITY);
+        registerBlockEntityType.accept("apg_door_tianjin_jinjing", BlockEntityTypes.APG_DOOR_TIANJIN_JINJING_TILE_ENTITY);
         registerBlockEntityType.accept("apg_door_single_left", BlockEntityTypes.APG_DOOR_SINGLE_LEFT_TILE_ENTITY);
         registerBlockEntityType.accept("apg_door_single_right", BlockEntityTypes.APG_DOOR_SINGLE_RIGHT_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_glass_tianjin", BlockEntityTypes.APG_GLASS_TIANJIN_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_glass_tianjin_trt", BlockEntityTypes.APG_GLASS_TIANJIN_TRT_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_glass_tianjin_bmt", BlockEntityTypes.APG_GLASS_TIANJIN_BMT_TILE_ENTITY);
-        // registerBlockEntityType.accept("apg_glass_tianjin_jinjing", BlockEntityTypes.APG_GLASS_TIANJIN_JINJING_TILE_ENTITY);
+        // The default APG glass panel (BlockAPGGlassTianjin) has no tile entity (matches MTR 4.0).
+        registerBlockEntityType.accept("apg_glass_tianjin_trt", BlockEntityTypes.APG_GLASS_TIANJIN_TRT_TILE_ENTITY);
+        registerBlockEntityType.accept("apg_glass_tianjin_bmt", BlockEntityTypes.APG_GLASS_TIANJIN_BMT_TILE_ENTITY);
+        registerBlockEntityType.accept("apg_glass_tianjin_jinjing", BlockEntityTypes.APG_GLASS_TIANJIN_JINJING_TILE_ENTITY);
         /* 1.1.6 - Ported from 4.0 - PSD (full-height platform doors) */
-        // TODO: Fix bugs in next version - commented out all variants except single doors
-        // registerBlockEntityType.accept("psd_door_tianjin", BlockEntityTypes.PSD_DOOR_TIANJIN_TILE_ENTITY);
-        // registerBlockEntityType.accept("psd_door_tianjin_bmt", BlockEntityTypes.PSD_DOOR_TIANJIN_BMT_TILE_ENTITY);
-        // registerBlockEntityType.accept("psd_door_tianjin_jinjing", BlockEntityTypes.PSD_DOOR_TIANJIN_JINJING_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_door_tianjin", BlockEntityTypes.PSD_DOOR_TIANJIN_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_door_tianjin_bmt", BlockEntityTypes.PSD_DOOR_TIANJIN_BMT_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_door_tianjin_jinjing", BlockEntityTypes.PSD_DOOR_TIANJIN_JINJING_TILE_ENTITY);
         registerBlockEntityType.accept("psd_door_single_left", BlockEntityTypes.PSD_DOOR_SINGLE_LEFT_TILE_ENTITY);
         registerBlockEntityType.accept("psd_door_single_right", BlockEntityTypes.PSD_DOOR_SINGLE_RIGHT_TILE_ENTITY);
-        // registerBlockEntityType.accept("psd_top_tianjin", BlockEntityTypes.PSD_TOP_TIANJIN_TILE_ENTITY);
-        // registerBlockEntityType.accept("psd_top_tianjin_jinjing", BlockEntityTypes.PSD_TOP_TIANJIN_JINJING_TILE_ENTITY);
-        // registerBlockEntityType.accept("psd_top_tianjin_bmt", BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_top_tianjin", BlockEntityTypes.PSD_TOP_TIANJIN_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_top_tianjin_jinjing", BlockEntityTypes.PSD_TOP_TIANJIN_JINJING_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_top_tianjin_bmt", BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY);
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         registerBlockEntityType.accept("station_name_projector", BlockEntityTypes.STATION_NAME_PROJECTOR);
 

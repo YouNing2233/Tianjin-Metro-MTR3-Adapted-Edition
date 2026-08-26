@@ -25,7 +25,15 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import ziyue.tjmetro.TianjinMetro;
+import ziyue.tjmetro.block.BlockPSDTopTianjin;
+import ziyue.tjmetro.block.BlockPSDTopTianjinBMT;
+import ziyue.tjmetro.block.flag.BlockFlagAPGTianjin;
+import ziyue.tjmetro.block.flag.BlockFlagAPGTianjinBMT;
+import ziyue.tjmetro.block.flag.BlockFlagAPGTianjinTRT;
 import ziyue.tjmetro.block.flag.BlockFlagDoorSingle;
+import ziyue.tjmetro.block.flag.BlockFlagPSDTianjin;
+import ziyue.tjmetro.block.flag.BlockFlagPSDTianjinBMT;
+import ziyue.tjmetro.block.flag.BlockFlagPSDTianjinJinjing;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
@@ -85,12 +93,19 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
             }
 
             if (!isAPG()) {
-                // 显式将吊板方向设置为玩家面对的方向
-                // MTR 的 BlockPSDTop.getActualState 仅识别 BlockPSDGlass/BlockPSDDoor/BlockPSDGlassEnd,
-                // 无法识别 BlockPSDDoorSingle, 因此需要手动覆盖 FACING
-                BlockState topState = BlockPSDTop.getActualState(world, newPos.above(2));
-                if (topState.getBlock() instanceof BlockPSDTop) {
-                    topState = topState.setValue(BlockPSDAPGBase.FACING, playerFacing);
+                BlockState topState;
+                if (block instanceof BlockFlagPSDTianjinBMT) {
+                    topState = BlockPSDTopTianjinBMT.getActualState(world, newPos.above(2)).setValue(BlockPSDTopTianjinBMT.STYLE, BlockPSDTopTianjinBMT.EnumPSDType.BMT);
+                } else if (block instanceof BlockFlagPSDTianjin) {
+                    topState = BlockPSDTopTianjin.getActualState(world, newPos.above(2), block instanceof BlockFlagPSDTianjinJinjing).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME);
+                } else {
+                    // 显式将吊板方向设置为玩家面对的方向
+                    // MTR 的 BlockPSDTop.getActualState 仅识别 BlockPSDGlass/BlockPSDDoor/BlockPSDGlassEnd,
+                    // 无法识别 BlockPSDDoorSingle, 因此需要手动覆盖 FACING
+                    topState = BlockPSDTop.getActualState(world, newPos.above(2));
+                    if (topState.getBlock() instanceof BlockPSDTop) {
+                        topState = topState.setValue(BlockPSDAPGBase.FACING, playerFacing);
+                    }
                 }
                 world.setBlockAndUpdate(newPos.above(2), topState);
             }
@@ -102,7 +117,7 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
 
     public boolean isAPG() {
         final Block block = getBlock();
-        return block instanceof ziyue.tjmetro.block.BlockAPGDoorSingle;
+        return block instanceof BlockFlagAPGTianjin || block instanceof BlockFlagAPGTianjinBMT || block instanceof BlockFlagAPGTianjinTRT;
     }
 
     @Override

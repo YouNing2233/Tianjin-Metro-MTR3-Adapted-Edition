@@ -170,38 +170,36 @@ public interface BlockList
     RegistryObject<Block> STATION_NAVIGATOR_MIDDLE = new RegistryObject<>(() -> new BlockStationNavigator(0));
 
     /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
-    // TODO: Fix bugs in next version - commented out all variants except single doors
-    // RegistryObject<Block> APG_DOOR_TIANJIN = new RegistryObject<>(BlockAPGDoorTianjin::new);
-    // RegistryObject<Block> APG_DOOR_TIANJIN_TRT = new RegistryObject<>(BlockAPGDoorTianjinTRT::new);
-    // RegistryObject<Block> APG_DOOR_TIANJIN_BMT = new RegistryObject<>(BlockAPGDoorTianjinBMT::new);
-    // RegistryObject<Block> APG_DOOR_TIANJIN_JINJING = new RegistryObject<>(BlockAPGDoorTianjinJinjing::new);
+    RegistryObject<Block> APG_DOOR_TIANJIN = new RegistryObject<>(BlockAPGDoorTianjin::new);
+    RegistryObject<Block> APG_DOOR_TIANJIN_TRT = new RegistryObject<>(BlockAPGDoorTianjinTRT::new);
+    RegistryObject<Block> APG_DOOR_TIANJIN_BMT = new RegistryObject<>(BlockAPGDoorTianjinBMT::new);
+    RegistryObject<Block> APG_DOOR_TIANJIN_JINJING = new RegistryObject<>(BlockAPGDoorTianjinJinjing::new);
     RegistryObject<Block> APG_DOOR_SINGLE_LEFT = new RegistryObject<>(() -> new BlockAPGDoorSingle(true));
     RegistryObject<Block> APG_DOOR_SINGLE_RIGHT = new RegistryObject<>(() -> new BlockAPGDoorSingle(false));
-    // RegistryObject<Block> APG_GLASS_TIANJIN = new RegistryObject<>(BlockAPGGlassTianjin::new);
-    // RegistryObject<Block> APG_GLASS_TIANJIN_TRT = new RegistryObject<>(BlockAPGGlassTianjinTRT::new);
-    // RegistryObject<Block> APG_GLASS_TIANJIN_BMT = new RegistryObject<>(BlockAPGGlassTianjinBMT::new);
-    // RegistryObject<Block> APG_GLASS_TIANJIN_JINJING = new RegistryObject<>(BlockAPGGlassTianjinJinjing::new);
-    // RegistryObject<Block> APG_GLASS_END_TIANJIN = new RegistryObject<>(BlockAPGGlassEndTianjin::new);
-    // RegistryObject<Block> APG_GLASS_END_TIANJIN_TRT = new RegistryObject<>(BlockAPGGlassEndTianjinTRT::new);
-    // RegistryObject<Block> APG_GLASS_END_TIANJIN_BMT = new RegistryObject<>(BlockAPGGlassEndTianjinBMT::new);
-    // RegistryObject<Block> APG_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockAPGGlassEndTianjinJinjing::new);
+    RegistryObject<Block> APG_GLASS_TIANJIN = new RegistryObject<>(BlockAPGGlassTianjin::new);
+    RegistryObject<Block> APG_GLASS_TIANJIN_TRT = new RegistryObject<>(BlockAPGGlassTianjinTRT::new);
+    RegistryObject<Block> APG_GLASS_TIANJIN_BMT = new RegistryObject<>(BlockAPGGlassTianjinBMT::new);
+    RegistryObject<Block> APG_GLASS_TIANJIN_JINJING = new RegistryObject<>(BlockAPGGlassTianjinJinjing::new);
+    RegistryObject<Block> APG_GLASS_END_TIANJIN = new RegistryObject<>(BlockAPGGlassEndTianjin::new);
+    RegistryObject<Block> APG_GLASS_END_TIANJIN_TRT = new RegistryObject<>(BlockAPGGlassEndTianjinTRT::new);
+    RegistryObject<Block> APG_GLASS_END_TIANJIN_BMT = new RegistryObject<>(BlockAPGGlassEndTianjinBMT::new);
+    RegistryObject<Block> APG_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockAPGGlassEndTianjinJinjing::new);
 
     /* 1.1.6 - Ported from 4.0 - PSD (full-height platform doors) */
-    // TODO: Fix bugs in next version - commented out all variants except single doors
-    // RegistryObject<Block> PSD_DOOR_TIANJIN = new RegistryObject<>(BlockPSDDoorTianjin::new);
-    // RegistryObject<Block> PSD_DOOR_TIANJIN_BMT = new RegistryObject<>(BlockPSDDoorTianjinBMT::new);
-    // RegistryObject<Block> PSD_DOOR_TIANJIN_JINJING = new RegistryObject<>(BlockPSDDoorTianjinJinjing::new);
+    RegistryObject<Block> PSD_DOOR_TIANJIN = new RegistryObject<>(BlockPSDDoorTianjin::new);
+    RegistryObject<Block> PSD_DOOR_TIANJIN_BMT = new RegistryObject<>(BlockPSDDoorTianjinBMT::new);
+    RegistryObject<Block> PSD_DOOR_TIANJIN_JINJING = new RegistryObject<>(BlockPSDDoorTianjinJinjing::new);
     RegistryObject<Block> PSD_DOOR_SINGLE_LEFT = new RegistryObject<>(() -> new BlockPSDDoorSingle(true));
     RegistryObject<Block> PSD_DOOR_SINGLE_RIGHT = new RegistryObject<>(() -> new BlockPSDDoorSingle(false));
-    // RegistryObject<Block> PSD_GLASS_TIANJIN = new RegistryObject<>(BlockPSDGlassTianjin::new);
-    // RegistryObject<Block> PSD_GLASS_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassTianjinBMT::new);
-    // RegistryObject<Block> PSD_GLASS_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassTianjinJinjing::new);
-    // RegistryObject<Block> PSD_GLASS_END_TIANJIN = new RegistryObject<>(BlockPSDGlassEndTianjin::new);
-    // RegistryObject<Block> PSD_GLASS_END_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassEndTianjinBMT::new);
-    // RegistryObject<Block> PSD_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassEndTianjinJinjing::new);
-    // RegistryObject<Block> PSD_TOP_TIANJIN = new RegistryObject<>(() -> new BlockPSDTopTianjin(false));
-    // RegistryObject<Block> PSD_TOP_TIANJIN_JINJING = new RegistryObject<>(() -> new BlockPSDTopTianjin(true));
-    // RegistryObject<Block> PSD_TOP_TIANJIN_BMT = new RegistryObject<>(BlockPSDTopTianjinBMT::new);
+    RegistryObject<Block> PSD_GLASS_TIANJIN = new RegistryObject<>(BlockPSDGlassTianjin::new);
+    RegistryObject<Block> PSD_GLASS_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassTianjinBMT::new);
+    RegistryObject<Block> PSD_GLASS_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassTianjinJinjing::new);
+    RegistryObject<Block> PSD_GLASS_END_TIANJIN = new RegistryObject<>(BlockPSDGlassEndTianjin::new);
+    RegistryObject<Block> PSD_GLASS_END_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassEndTianjinBMT::new);
+    RegistryObject<Block> PSD_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassEndTianjinJinjing::new);
+    RegistryObject<Block> PSD_TOP_TIANJIN = new RegistryObject<>(() -> new BlockPSDTopTianjin(false));
+    RegistryObject<Block> PSD_TOP_TIANJIN_JINJING = new RegistryObject<>(() -> new BlockPSDTopTianjin(true));
+    RegistryObject<Block> PSD_TOP_TIANJIN_BMT = new RegistryObject<>(BlockPSDTopTianjinBMT::new);
 
     /* 1.1.6 - Ported from 4.0 - Station Name Projector */
     RegistryObject<Block> STATION_NAME_PROJECTOR = new RegistryObject<>(BlockStationNameProjector::new);
