@@ -59,8 +59,13 @@ public class RenderAPGDoorTianjinTRT<T extends BlockPSDAPGDoorBase.TileEntityPSD
     }
 
     private void tryUpdateLightState(Level world, BlockPos pos, BlockAPGDoorTianjinTRT.LightProperty lightProperty) {
-        if (IBlock.getStatePropertySafe(world, pos, BlockAPGDoorTianjinTRT.LIGHT) != lightProperty) {
-            world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(BlockAPGDoorTianjinTRT.LIGHT, lightProperty));
+        final net.minecraft.world.level.block.state.BlockState state = world.getBlockState(pos);
+        // The block may already be replaced by air (e.g. while breaking); air has no LIGHT property.
+        if (!(state.getBlock() instanceof BlockAPGDoorTianjinTRT)) {
+            return;
+        }
+        if (IBlock.getStatePropertySafe(state, BlockAPGDoorTianjinTRT.LIGHT) != lightProperty) {
+            world.setBlockAndUpdate(pos, state.setValue(BlockAPGDoorTianjinTRT.LIGHT, lightProperty));
         }
     }
 }

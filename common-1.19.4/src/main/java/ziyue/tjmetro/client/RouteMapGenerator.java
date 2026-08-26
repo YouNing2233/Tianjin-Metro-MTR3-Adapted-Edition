@@ -287,16 +287,15 @@ public class RouteMapGenerator implements IGui
         try {
             final List<Tuple<Route, Integer>> routeDetails = new ArrayList<>();
             getRouteStream(platformId, (route, currentStationIndex) -> {
-                if (!route.name.isEmpty()) {
-                    routeDetails.add(new Tuple<>(route, currentStationIndex));
-                }
+                // A route with an empty name still carries valid geometry (line/color/platform
+                // list): never drop it here, or a nameless route would blank the whole map
+                // (MTR 3.2.2 can sync routes whose name data has not arrived yet).
+                routeDetails.add(new Tuple<>(route, currentStationIndex));
             });
             if (routeDetails.isEmpty()) {
                 ClientData.ROUTES.stream().filter(route -> route.containsPlatformId(platformId) && !route.isHidden).sorted((a, b) -> a.color == b.color ? a.compareTo(b) : a.color - b.color).forEach(route -> {
                     final int currentStationIndex = route.getPlatformIdIndex(platformId);
-                    if (!route.name.isEmpty()) {
-                        routeDetails.add(new Tuple<>(route, currentStationIndex));
-                    }
+                    routeDetails.add(new Tuple<>(route, currentStationIndex));
                 });
             }
             final int routeCount = routeDetails.size();
@@ -379,7 +378,7 @@ public class RouteMapGenerator implements IGui
                 }
 
                 if (width <= 0 || height <= 0) {
-                    return null;
+                    return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
                 }
 
                 final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, width, height, false);
@@ -479,7 +478,7 @@ public class RouteMapGenerator implements IGui
             TianjinMetro.LOGGER.error(e.getMessage(), e);
         }
 
-        return null;
+        return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
     }
 
     public static NativeImage generateRouteMapBMT(long platformId, boolean arrowLeft, float aspectRatio, int backgroundColor) {
@@ -490,9 +489,12 @@ public class RouteMapGenerator implements IGui
             final List<Tuple<Route, Integer>> routeDetails = new ArrayList<>();
             final List<Integer> routeColors = new ArrayList<>();
             getRouteStream(platformId, (route, currentStationIndex) -> {
-                if (!route.name.isEmpty()) {
-                    routeDetails.add(new Tuple<>(route, currentStationIndex));
+                // A route with an empty name still carries valid geometry (line/color/platform
+                // list): never drop it here, or a nameless route would blank the whole map
+                // (MTR 3.2.2 can sync routes whose name data has not arrived yet).
+                routeDetails.add(new Tuple<>(route, currentStationIndex));
 
+                if (!route.name.isEmpty()) {
                     final String tempMarker = switch (route.circularState) {
                         case CLOCKWISE -> TEMP_CIRCULAR_MARKER_CLOCKWISE;
                         case ANTICLOCKWISE -> TEMP_CIRCULAR_MARKER_ANTICLOCKWISE;
@@ -513,9 +515,9 @@ public class RouteMapGenerator implements IGui
                             destinations.add(tempMarker + destination);
                         }
                     }
-                    if (!routeColors.contains(route.color)) {
-                        routeColors.add(route.color);
-                    }
+                }
+                if (!routeColors.contains(route.color)) {
+                    routeColors.add(route.color);
                 }
             });
             if (routeDetails.isEmpty()) {
@@ -596,7 +598,7 @@ public class RouteMapGenerator implements IGui
                     widthScale = width / rawWidth / scale;
                 }
 
-                if (width <= 0 || height <= 0) return null;
+                if (width <= 0 || height <= 0) return generateRouteMapFallback(platformId, aspectRatio, backgroundColor);
 
                 final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, width, height, false);
                 nativeImage.fillRect(0, 0, width, height, invertColor(backgroundColor));
@@ -728,7 +730,7 @@ public class RouteMapGenerator implements IGui
             TianjinMetro.LOGGER.error(e.getMessage(), e);
         }
 
-        return null;
+        return generateRouteMapFallback(platformId, aspectRatio, backgroundColor);
     }
 
     public static NativeImage generateRouteSquare(int color, String routeName, HorizontalAlignment horizontalAlignment) {
@@ -1052,7 +1054,58 @@ public class RouteMapGenerator implements IGui
     }
 
     protected static Map<Integer, mtr.client.ClientCache.ColorNameTuple> getInterchangeRoutes(long stationId) {
-        return ClientData.DATA_CACHE.stationIdToRoutes.get(stationId);
+        final Map<Integer, mtr.client.ClientCache.ColorNameTuple> interchangeRoutes = ClientData.DATA_CACHE.stationIdToRoutes.get(stationId);
+        // MTR 3.2.2's station lookups can miss (e.g. platformIdToStation gaps on 1.18.2),
+        // leaving stationIdToRoutes without an entry for this station: treat it as "no
+        // interchanges" instead of NPE-ing the whole route map generation.
+        return interchangeRoutes == null ? Collections.emptyMap() : interchangeRoutes;
+    }
+
+    /**
+     * Never leave a configured route map blank: when the route/station data needed for the full
+     * map is missing (e.g. MTR 3.2.2 station lookups miss and return blank data on 1.18.2) or the
+     * generation threw, draw at least the station name and a placeholder line so the door never
+     * falls back to the bare transparent/white default texture.
+     */
+    protected static NativeImage generateRouteMapFallback(long platformId, float aspectRatio, boolean transparentWhite) {
+        return generateRouteMapFallback(platformId, aspectRatio, transparentWhite, -1);
+    }
+
+    protected static NativeImage generateRouteMapFallback(long platformId, float aspectRatio, int backgroundColor) {
+        return generateRouteMapFallback(platformId, aspectRatio, false, backgroundColor);
+    }
+
+    private static NativeImage generateRouteMapFallback(long platformId, float aspectRatio, boolean transparentWhite, int backgroundColor) {
+        try {
+            final int height = Math.max(1, scale);
+            final int width = Math.max(1, Math.round(height * aspectRatio));
+            final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, width, height, false);
+            if (backgroundColor != -1) {
+                nativeImage.fillRect(0, 0, width, height, invertColor(backgroundColor));
+            } else {
+                nativeImage.fillRect(0, 0, width, height, transparentWhite ? 0 : ARGB_WHITE);
+            }
+
+            // Placeholder route line so the map is never visually empty even when no route data
+            // could be resolved for this platform.
+            drawLine(nativeImage, width / 2 - scale, height / 2, 1, 0, scale * 2, backgroundColor != -1 ? ARGB_WHITE : ARGB_BLACK);
+            if (backgroundColor != -1) {
+                drawStationRouteMapBMT(nativeImage, width / 2, height / 2, 1, 0, false, true);
+            } else {
+                drawStation(nativeImage, width / 2, height / 2, 1, 0, false);
+            }
+
+            final String stationName = getStationName(platformId);
+            if (!stationName.isEmpty()) {
+                final int padding = scale / 8;
+                final ClientCache.Text text = ClientCache.DATA_CACHE.getText(stationName, width - padding * 2, Math.max(1, height - padding * 2), fontSizeBig, fontSizeSmall, fontSizeSmall / 4, HorizontalAlignment.CENTER);
+                drawString(nativeImage, text, width / 2, height / 2 - lineSize * 5 / 4, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM, 0, backgroundColor != -1 ? ARGB_WHITE : ARGB_BLACK, false);
+            }
+            return nativeImage;
+        } catch (Exception e) {
+            TianjinMetro.LOGGER.error(e.getMessage(), e);
+        }
+        return null;
     }
 
     protected static void drawLine(NativeImage nativeImage, StationPosition stationPosition1, StationPosition stationPosition2, float widthScale, float heightScale, float xOffset, float yOffset, int color) {
@@ -1362,16 +1415,15 @@ public class RouteMapGenerator implements IGui
         try {
             final List<Tuple<Route, Integer>> routeDetails = new ArrayList<>();
             getRouteStream(platformId, (route, currentStationIndex) -> {
-                if (!route.name.isEmpty()) {
-                    routeDetails.add(new Tuple<>(route, currentStationIndex));
-                }
+                // A route with an empty name still carries valid geometry (line/color/platform
+                // list): never drop it here, or a nameless route would blank the whole map
+                // (MTR 3.2.2 can sync routes whose name data has not arrived yet).
+                routeDetails.add(new Tuple<>(route, currentStationIndex));
             });
             if (routeDetails.isEmpty()) {
                 ClientData.ROUTES.stream().filter(route -> route.containsPlatformId(platformId) && !route.isHidden).sorted((a, b) -> a.color == b.color ? a.compareTo(b) : a.color - b.color).forEach(route -> {
                     final int currentStationIndex = route.getPlatformIdIndex(platformId);
-                    if (!route.name.isEmpty()) {
-                        routeDetails.add(new Tuple<>(route, currentStationIndex));
-                    }
+                    routeDetails.add(new Tuple<>(route, currentStationIndex));
                 });
             }
             final int routeCount = routeDetails.size();
@@ -1452,7 +1504,7 @@ public class RouteMapGenerator implements IGui
                     widthScale = width / rawWidth / scale;
                 }
 
-                if (width <= 0 || height <= 0) return null;
+                if (width <= 0 || height <= 0) return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
 
                 final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, width, height, false);
                 nativeImage.fillRect(0, 0, width, height, 0);
@@ -1549,7 +1601,7 @@ public class RouteMapGenerator implements IGui
             TianjinMetro.LOGGER.error(e.getMessage(), e);
         }
 
-        return null;
+        return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
     }
 
     public static NativeImage generateRouteMapPSDBMT(long platformId, boolean flip, float aspectRatio, boolean transparentWhite) {
@@ -1558,16 +1610,15 @@ public class RouteMapGenerator implements IGui
         try {
             final List<Tuple<Route, Integer>> routeDetails = new ArrayList<>();
             getRouteStream(platformId, (route, currentStationIndex) -> {
-                if (!route.name.isEmpty()) {
-                    routeDetails.add(new Tuple<>(route, currentStationIndex));
-                }
+                // A route with an empty name still carries valid geometry (line/color/platform
+                // list): never drop it here, or a nameless route would blank the whole map
+                // (MTR 3.2.2 can sync routes whose name data has not arrived yet).
+                routeDetails.add(new Tuple<>(route, currentStationIndex));
             });
             if (routeDetails.isEmpty()) {
                 ClientData.ROUTES.stream().filter(route -> route.containsPlatformId(platformId) && !route.isHidden).sorted((a, b) -> a.color == b.color ? a.compareTo(b) : a.color - b.color).forEach(route -> {
                     final int currentStationIndex = route.getPlatformIdIndex(platformId);
-                    if (!route.name.isEmpty()) {
-                        routeDetails.add(new Tuple<>(route, currentStationIndex));
-                    }
+                    routeDetails.add(new Tuple<>(route, currentStationIndex));
                 });
             }
             final int routeCount = routeDetails.size();
@@ -1637,7 +1688,7 @@ public class RouteMapGenerator implements IGui
                     widthScale = width / rawWidth / scale;
                 }
 
-                if (width <= 0 || height <= 0) return null;
+                if (width <= 0 || height <= 0) return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
 
                 final NativeImage nativeImage = new NativeImage(NativeImage.Format.RGBA, width, height, false);
                 nativeImage.fillRect(0, 0, width, height, ARGB_WHITE);
@@ -1737,7 +1788,7 @@ public class RouteMapGenerator implements IGui
             TianjinMetro.LOGGER.error(e.getMessage(), e);
         }
 
-        return null;
+        return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
     }
 
     public static NativeImage generateRouteMapJinjing(long platformId, int arrowDirection, float aspectRatio, boolean transparentWhite) {
@@ -1748,9 +1799,12 @@ public class RouteMapGenerator implements IGui
             final List<String> nextStations = new ArrayList<>();
             final List<Tuple<Route, Integer>> routeDetails = new ArrayList<>();
             getRouteStream(platformId, (route, currentStationIndex) -> {
-                if (!route.name.isEmpty()) {
-                    routeDetails.add(new Tuple<>(route, currentStationIndex));
+                // A route with an empty name still carries valid geometry (line/color/platform
+                // list): never drop it here, or a nameless route would blank the whole map
+                // (MTR 3.2.2 can sync routes whose name data has not arrived yet).
+                routeDetails.add(new Tuple<>(route, currentStationIndex));
 
+                if (!route.name.isEmpty()) {
                     final String tempMarker = switch (route.circularState) {
                         case CLOCKWISE -> TEMP_CIRCULAR_MARKER_CLOCKWISE;
                         case ANTICLOCKWISE -> TEMP_CIRCULAR_MARKER_ANTICLOCKWISE;
@@ -1780,9 +1834,7 @@ public class RouteMapGenerator implements IGui
             if (routeDetails.isEmpty()) {
                 ClientData.ROUTES.stream().filter(route -> route.containsPlatformId(platformId) && !route.isHidden).sorted((a, b) -> a.color == b.color ? a.compareTo(b) : a.color - b.color).forEach(route -> {
                     final int currentStationIndex = route.getPlatformIdIndex(platformId);
-                    if (!route.name.isEmpty()) {
-                        routeDetails.add(new Tuple<>(route, currentStationIndex));
-                    }
+                    routeDetails.add(new Tuple<>(route, currentStationIndex));
                 });
             }
             final boolean isTerminating = destinations.isEmpty();
@@ -1854,7 +1906,7 @@ public class RouteMapGenerator implements IGui
                     widthScale = width / rawWidth / scale;
                 }
 
-                if (width <= 0 || height <= 0) return null;
+                if (width <= 0 || height <= 0) return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
 
                 final int padding = Math.round(height * 0.25F);
 
@@ -2014,7 +2066,7 @@ public class RouteMapGenerator implements IGui
             TianjinMetro.LOGGER.error(e.getMessage(), e);
         }
 
-        return null;
+        return generateRouteMapFallback(platformId, aspectRatio, transparentWhite);
     }
 
     public static NativeImage generateStationNameBMT(long platformId, boolean flip, HorizontalAlignment horizontalAlignment, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
