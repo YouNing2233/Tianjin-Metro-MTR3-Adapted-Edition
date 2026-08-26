@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ziyue.tjmetro.TianjinMetro;
 
 /**
  * Port of the MTR4 "one-click copy siding settings" feature ({@code ziyue.tjmetro.mod.mixin.SidingScreenMixin})
@@ -118,30 +119,35 @@ public abstract class SidingScreenMixin extends SavedRailScreenBase<Siding> impl
 		final String trainId = savedRailBase.getTrainId();
 		final TrainProperties trainProperties = trainId.isEmpty() ? null : TrainClientRegistry.getTrainProperties(trainId);
 
-		ClientData.DATA_CACHE.sidingIdMap.values().stream().filter(siding -> depot.equals(ClientData.DATA_CACHE.sidingIdToDepot.get(siding.id))).forEach(siding -> {
-			if (trainProperties != null && siding.isValidVehicle(TrainType.getSpacing(trainProperties.baseTrainType))) {
-				siding.setTrainIdAndBaseType(trainId, trainProperties.baseTrainType, packet -> PacketTrainDataGuiClient.sendUpdate(IPacket.PACKET_UPDATE_SIDING, packet));
-			}
-
-			int maxTrains;
+		ClientData.DATA_CACHE.requestDepotIdToSidings(depot.id).values().forEach(siding -> {
 			try {
-				maxTrains = Math.max(0, Integer.parseInt(textFieldMaxTrains.getValue()) - 1);
+				if (trainProperties != null && !trainId.isEmpty() && trainProperties.baseTrainType != null
+						&& siding.isValidVehicle(TrainType.getSpacing(trainProperties.baseTrainType))) {
+					siding.setTrainIdAndBaseType(trainId, trainProperties.baseTrainType, packet -> PacketTrainDataGuiClient.sendUpdate(IPacket.PACKET_UPDATE_SIDING, packet));
+				}
+
+				int maxTrains;
+				try {
+					maxTrains = Math.max(0, Integer.parseInt(textFieldMaxTrains.getValue()) - 1);
+				} catch (Exception ignored) {
+					maxTrains = 0;
+				}
+
+				final float accelerationConstant = Mth.clamp(sliderAccelerationConstant.getIntValue() / 1000.0F + 0.001F, 0.001F, 0.05F);
+
+				siding.setUnlimitedTrains(
+						buttonUnlimitedTrains.selected(),
+						maxTrains,
+						buttonIsManual.selected(),
+						sliderMaxManualSpeed.getIntValue(),
+						accelerationConstant,
+						savedRailBase.getDwellTime(),
+						true,
+						packet -> PacketTrainDataGuiClient.sendUpdate(IPacket.PACKET_UPDATE_SIDING, packet)
+				);
 			} catch (Exception ignored) {
-				maxTrains = 0;
+				TianjinMetro.LOGGER.warn("Failed to duplicate siding settings to siding {}: {}", siding.id, ignored.toString());
 			}
-
-			final float accelerationConstant = Mth.clamp(sliderAccelerationConstant.getIntValue() / 1000.0F + 0.001F, 0.001F, 0.05F);
-
-			siding.setUnlimitedTrains(
-					buttonUnlimitedTrains.selected(),
-					maxTrains,
-					buttonIsManual.selected(),
-					sliderMaxManualSpeed.getIntValue(),
-					accelerationConstant,
-					savedRailBase.getDwellTime(),
-					true,
-					packet -> PacketTrainDataGuiClient.sendUpdate(IPacket.PACKET_UPDATE_SIDING, packet)
-			);
 		});
 
 		this.onClose();
