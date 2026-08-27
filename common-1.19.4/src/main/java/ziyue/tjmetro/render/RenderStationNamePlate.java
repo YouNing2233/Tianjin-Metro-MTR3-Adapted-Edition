@@ -3,7 +3,6 @@ package ziyue.tjmetro.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mtr.block.BlockStationNameBase;
 import mtr.block.IBlock;
-import mtr.client.ClientData;
 import mtr.client.IDrawing;
 import mtr.data.IGui;
 import mtr.mappings.BlockEntityRendererMapper;
@@ -49,10 +48,14 @@ public class RenderStationNamePlate<T extends BlockStationNamePlate.TileEntitySt
         final Direction facing = IBlock.getStatePropertySafe(state, BlockStationNameBase.FACING);
         final int arrowDirection = IBlock.getStatePropertySafe(state, BlockStationNamePlate.ARROW_DIRECTION);
 
-        // Do not render anything when the platform is not (or no longer) available.
-        // The check is done before pushing the pose stack, so an early return can never
-        // leave the stack unbalanced (unlike the MTR4 original, which returned after push()).
-        if (ClientData.DATA_CACHE.platformIdMap.get(entity.getPlatformId()) == null) return;
+        // Do not render anything while no platform is selected yet (platformId == 0); an
+        // unconfigured plate intentionally shows the bare (light metal) block. Once a platform
+        // is configured, always render: when MTR 3.2.2's client-side station/platform data is
+        // missing (legacy versions can drop the platform lookup even right after configuring),
+        // the never-blank fallback inside generateStationNamePlate still draws at least the
+        // station name instead of leaving the plate as a blank white block. The check stays
+        // before the pose push, so an early return can never leave the stack unbalanced.
+        if (entity.getPlatformId() == 0) return;
 
         final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations();
         storedMatrixTransformations.add(matricesNew -> {

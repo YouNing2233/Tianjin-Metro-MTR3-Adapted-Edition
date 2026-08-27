@@ -36,7 +36,9 @@
         "tjmetro-fabric.mixins.json"
     ],
     "depends": {
-        "fabric": "*",
+        "fabricloader": ">=0.14.0",
+        "fabric-api": "*",
+        "architectury": "*",
         "minecraft": "*",
         "mtr": "*",
         "java": ">=16"
