@@ -2141,7 +2141,10 @@ public class RouteMapGenerator implements IGui
                     }
                 }
                 final ClientCache.Text textBoundFor = ClientCache.DATA_CACHE.getText(destinationString, width / 2 - tilePadding * 4, height, fontSizeBig / 2, fontSizeSmall / 2, tilePadding, HorizontalAlignment.CENTER);
-                final ClientCache.Text textNextStation = ClientCache.DATA_CACHE.getText(nextStationString, width / 2 - tilePadding * 4, height, fontSizeBig / 2, fontSizeSmall / 2, tilePadding, HorizontalAlignment.CENTER);
+                // The next-station row always shows both the CJK and the English station name(s),
+                // regardless of the MTR language display option (a CJK-only display used to drop
+                // the English segments, leaving two Chinese names and no English on the plate).
+                final ClientCache.Text textNextStation = ClientCache.DATA_CACHE.getTextBothLanguages(nextStationString, width / 2 - tilePadding * 4, height, fontSizeBig / 2, fontSizeSmall / 2, tilePadding, HorizontalAlignment.CENTER);
                 drawString(nativeImage, flip ? textBoundFor : textNextStation, tilePadding, height, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, textColor, false);
                 drawString(nativeImage, flip ? textNextStation : textBoundFor, width - tilePadding, height, HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM, 0, textColor, false);
             }
@@ -2229,7 +2232,10 @@ public class RouteMapGenerator implements IGui
                 }
 
                 final ClientCache.Text textDestination = ClientCache.DATA_CACHE.getText(destinationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), tileSize, tileSize / 2, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT);
-                final ClientCache.Text textNextStations = ClientCache.DATA_CACHE.getText(nextStationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
+                // The next-station row always shows both the CJK and the English station name(s),
+                // regardless of the MTR language display option (a CJK-only display used to drop
+                // the English segments, leaving two Chinese names and no English on the plate).
+                final ClientCache.Text textNextStations = ClientCache.DATA_CACHE.getTextBothLanguages(nextStationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
                 final ClientCache.Text textNextStationSign = ClientCache.DATA_CACHE.getText(IGuiExtends.mergeTranslation("gui.tjmetro.next_station_cjk", "gui.tjmetro.next_station"), width, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, HorizontalAlignment.CENTER);
                 int renderWidth = Math.max(width, leftSize + arrowSizeAndPadding + textDestination.width() + textNextStationSign.width() + tilePadding + textNextStations.width() + leftSize);
                 final boolean renderNextStation = (width - leftSize - arrowSizeAndPadding - textDestination.width() - leftSize) > textNextStations.width();
@@ -2352,7 +2358,10 @@ public class RouteMapGenerator implements IGui
                 }
 
                 final ClientCache.Text textDestination = ClientCache.DATA_CACHE.getText(destinationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), tileSize, tileSize / 2, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT);
-                final ClientCache.Text textNextStations = ClientCache.DATA_CACHE.getText(nextStationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
+                // The next-station row always shows both the CJK and the English station name(s),
+                // regardless of the MTR language display option (a CJK-only display used to drop
+                // the English segments, leaving two Chinese names and no English on the plate).
+                final ClientCache.Text textNextStations = ClientCache.DATA_CACHE.getTextBothLanguages(nextStationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
                 final ClientCache.Text textNextStationSign = ClientCache.DATA_CACHE.getText(IGuiExtends.mergeTranslation("gui.tjmetro.next_station_cjk", "gui.tjmetro.next_station"), width, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, HorizontalAlignment.CENTER);
                 int renderWidth = Math.max(width, nonNextStationWidth + arrowSizeAndPadding + textDestination.width() + textNextStationSign.width() + tilePadding + textNextStations.width() + leftSize);
                 final boolean renderNextStation = (width - leftSize - arrowSizeAndPadding - textDestination.width() - leftSize) > textNextStations.width();

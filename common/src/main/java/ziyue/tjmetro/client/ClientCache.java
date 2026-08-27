@@ -300,7 +300,24 @@ public class ClientCache extends DataCache implements IGui
         return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, lineHeightMultiply, forceMTRFont, false);
     }
 
+    /**
+     * Renders every language segment of {@code text} (e.g. the {@code "中文||English"} station
+     * names) regardless of the MTR language display option, so a sign can always show both the
+     * CJK and the English variants of the station name(s).
+     *
+     * @author ZiYueCommentary
+     * @see mtr.client.Config#languageOptions()
+     * @since 1.1.2-hotfix-1
+     */
+    public Text getTextBothLanguages(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment) {
+        return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, LINE_HEIGHT_MULTIPLIER, false, false, true);
+    }
+
     public Text getText(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment, float lineHeightMultiply, boolean forceMTRFont, boolean rotateNeg45Degree) {
+        return getText(text, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment, lineHeightMultiply, forceMTRFont, rotateNeg45Degree, false);
+    }
+
+    private Text getText(String text, int maxWidth, int maxHeight, int fontSizeCjk, int fontSize, int padding, IGui.HorizontalAlignment horizontalAlignment, float lineHeightMultiply, boolean forceMTRFont, boolean rotateNeg45Degree, boolean showAllLanguages) {
         if (forceMTRFont) {
             final int[] dimensions = new int[2];
             final byte[] pixels = ClientData.DATA_CACHE.getTextPixels(text, dimensions, maxWidth, maxHeight, fontSizeCjk, fontSize, padding, horizontalAlignment);
@@ -315,7 +332,7 @@ public class ClientCache extends DataCache implements IGui
         final boolean oneRow = horizontalAlignment == null;
         final String[] defaultTextSplit = IGui.textOrUntitled(text).split("\\|");
         final String[] textSplit;
-        if (mtr.client.Config.languageOptions() == 0) {
+        if (showAllLanguages || mtr.client.Config.languageOptions() == 0) {
             textSplit = defaultTextSplit;
         } else {
             final String[] tempTextSplit = Arrays.stream(IGui.textOrUntitled(text).split("\\|")).filter(textPart -> IGui.isCjk(textPart) == (mtr.client.Config.languageOptions() == 1)).toArray(String[]::new);

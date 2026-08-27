@@ -5,7 +5,7 @@
 ### 修复
 - **1.18.2 打掉 1号线低站台门(APG/TRT)崩溃**:`RenderAPGDoorTianjinTRT.tryUpdateLightState` 在方块被打掉变成空气后仍尝试设置 `light` 属性导致崩溃,已加方块类型判断。
 - **1.18.2 1号线低站台门 / 9号线高站台门线路图空白**:MTR 3.2.2 站点数据缺失时线路图生成器 NPE → 返回透明纹理;已加 `getInterchangeRoutes` null 安全 + `generateRouteMapFallback` 兜底(空数据时显示占位线路+站名,数据到位后自动刷新为完整线路图)。
-- **津静线高站台门玻璃吊板「下一站」语言**:修复中英文切换(不再出现两个中文、无英文)。
+- **津静线高站台门玻璃吊板「下一站」语言**:「下一站」站名不再跟随 MTR 语言显示选项——中文模式下此前只剩两个中文站名、英文被过滤掉;现在该行始终同时显示中文与英文站名(新增 `ClientCache.getTextBothLanguages`,`generateNextStation` / `generateNextStationJinjing` / `generateStationNameBMT` 的下一站文字均改用它)。
 - **1.18.2 站名牌(9号线)选中线路后白板**:`RenderStationNamePlate` 在 `platformIdMap` 查不到平台时过早 return(露出浅金属贴图≈白);改为仅未配置(`platformId == 0`)才不渲染,配置后始终渲染,由生成器兜底显示站名。
 - **依赖强制**:fabric 端补全 `fabricloader`/`fabric-api`/`architectury` 强制依赖;forge 端 mtr/architectury 均已 mandatory。
 
