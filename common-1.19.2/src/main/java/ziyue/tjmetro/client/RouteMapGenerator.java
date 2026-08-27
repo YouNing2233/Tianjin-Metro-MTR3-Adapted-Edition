@@ -2236,7 +2236,9 @@ public class RouteMapGenerator implements IGui
                 // regardless of the MTR language display option (a CJK-only display used to drop
                 // the English segments, leaving two Chinese names and no English on the plate).
                 final ClientCache.Text textNextStations = ClientCache.DATA_CACHE.getTextBothLanguages(nextStationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
-                final ClientCache.Text textNextStationSign = ClientCache.DATA_CACHE.getText(IGuiExtends.mergeTranslation("gui.tjmetro.next_station_cjk", "gui.tjmetro.next_station"), width, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, HorizontalAlignment.CENTER);
+                // The "next station" label is bilingual too (下一站 / Next Station), always showing
+                // both languages like the station names, regardless of the MTR language display option.
+                final ClientCache.Text textNextStationSign = ClientCache.DATA_CACHE.getTextBothLanguages(Text.translatable("gui.tjmetro.next_station_cjk").getString() + "|" + Text.translatable("gui.tjmetro.next_station").getString(), width, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, HorizontalAlignment.CENTER);
                 int renderWidth = Math.max(width, leftSize + arrowSizeAndPadding + textDestination.width() + textNextStationSign.width() + tilePadding + textNextStations.width() + leftSize);
                 final boolean renderNextStation = (width - leftSize - arrowSizeAndPadding - textDestination.width() - leftSize) > textNextStations.width();
                 if (!renderNextStation)
@@ -2362,7 +2364,9 @@ public class RouteMapGenerator implements IGui
                 // regardless of the MTR language display option (a CJK-only display used to drop
                 // the English segments, leaving two Chinese names and no English on the plate).
                 final ClientCache.Text textNextStations = ClientCache.DATA_CACHE.getTextBothLanguages(nextStationString, width - leftSize - padding * 2, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, (arrowDirection == 2) ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
-                final ClientCache.Text textNextStationSign = ClientCache.DATA_CACHE.getText(IGuiExtends.mergeTranslation("gui.tjmetro.next_station_cjk", "gui.tjmetro.next_station"), width, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, HorizontalAlignment.CENTER);
+                // The "next station" label is bilingual too (下一站 / Next Station), always showing
+                // both languages like the station names, regardless of the MTR language display option.
+                final ClientCache.Text textNextStationSign = ClientCache.DATA_CACHE.getTextBothLanguages(Text.translatable("gui.tjmetro.next_station_cjk").getString() + "|" + Text.translatable("gui.tjmetro.next_station").getString(), width, (int) (tileSize * LINE_HEIGHT_MULTIPLIER), fontSizeBig, fontSizeSmall, tilePadding, HorizontalAlignment.CENTER);
                 int renderWidth = Math.max(width, nonNextStationWidth + arrowSizeAndPadding + textDestination.width() + textNextStationSign.width() + tilePadding + textNextStations.width() + leftSize);
                 final boolean renderNextStation = (width - leftSize - arrowSizeAndPadding - textDestination.width() - leftSize) > textNextStations.width();
                 if (!renderNextStation)
