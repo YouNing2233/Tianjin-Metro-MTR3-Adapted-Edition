@@ -1,13 +1,19 @@
 # 更新日志
 
-## [1.1.2-hotfix-1] — 2026-08-26
+## [1.1.2-hotfix-1] — 2026-08-27
 
 ### 修复
+- **1.18.2 / 1.19.2 / 1.19.4 侧线一键复制崩溃**:`SidingScreen` 复制侧线时发送更新包会刷新客户端数据、导致迭代的侧线集合被修改,抛出 `ConcurrentModificationException` 崩溃;已加固(同车辆段侧线改用 `requestDepotIdToSidings`,逐侧线操作包 try-catch 容错)。
 - **1.18.2 打掉 1号线低站台门(APG/TRT)崩溃**:`RenderAPGDoorTianjinTRT.tryUpdateLightState` 在方块被打掉变成空气后仍尝试设置 `light` 属性导致崩溃,已加方块类型判断。
 - **1.18.2 1号线低站台门 / 9号线高站台门线路图空白**:MTR 3.2.2 站点数据缺失时线路图生成器 NPE → 返回透明纹理;已加 `getInterchangeRoutes` null 安全 + `generateRouteMapFallback` 兜底(空数据时显示占位线路+站名,数据到位后自动刷新为完整线路图)。
-- **津静线高站台门玻璃吊板「下一站」语言**:「下一站」站名不再跟随 MTR 语言显示选项——中文模式下此前只剩两个中文站名、英文被过滤掉;现在该行始终同时显示中文与英文站名(新增 `ClientCache.getTextBothLanguages`,`generateNextStation` / `generateNextStationJinjing` / `generateStationNameBMT` 的下一站文字均改用它)。
 - **1.18.2 站名牌(9号线)选中线路后白板**:`RenderStationNamePlate` 在 `platformIdMap` 查不到平台时过早 return(露出浅金属贴图≈白);改为仅未配置(`platformId == 0`)才不渲染,配置后始终渲染,由生成器兜底显示站名。
-- **依赖强制**:fabric 端补全 `fabricloader`/`fabric-api`/`architectury` 强制依赖;forge 端 mtr/architectury 均已 mandatory。
+- **津静线高站台门玻璃吊板「下一站」中英文显示**:
+  - 修正 `zh_cn.json` 中 `next_station` / `terminus` / `contact_station_for_help` 等**英文键误填中文**的问题(否则 `mergeTranslation` 会拼出「下一站|下一站」两个重复中文)。
+  - 「下一站」标签与站名行改用 `ClientCache.getTextBothLanguages`(`generateNextStation` / `generateNextStationJinjing` / `generateStationNameBMT`),**任何语言选项下都同时显示中文与英文**(一个「下一站」+ 下面英文「Next Station」)。
+
+### 其他
+- **依赖强制**:fabric 端补全 `fabric-api` / `architectury` 强制依赖(移除冗余的 `fabricloader`;architectury 为必需运行依赖);forge 端 mtr / architectury 均已 `mandatory`。
+- **作者署名**:新增「厦航在拍车的无名机长」。
 
 ---
 
