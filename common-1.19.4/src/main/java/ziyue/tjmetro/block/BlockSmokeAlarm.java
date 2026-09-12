@@ -16,6 +16,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,6 +29,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 import ziyue.tjmetro.BlockEntityTypes;
+import ziyue.tjmetro.TianjinMetro;
 import ziyue.tjmetro.data.IGuiExtends;
 
 import java.util.List;
@@ -110,7 +112,27 @@ public class BlockSmokeAlarm extends Block implements EntityBlockMapper
 
     @Override
     public <T extends BlockEntityMapper> void tick(Level level, BlockPos pos, T blockEntity) {
+        if (!level.isClientSide) {
+            final BlockState state = level.getBlockState(pos);
+            final boolean activated = isFireNearby(level, pos);
+            if (activated != state.getValue(ACTIVATED)) {
+                level.setBlock(pos, state.setValue(ACTIVATED, activated), 3);
+                level.updateNeighborsAt(pos, state.getBlock());
+            }
+        }
         TileEntitySmokeAlarm.tick(level, pos);
+    }
+
+    private static boolean isFireNearby(Level level, BlockPos pos) {
+        final int range = level.getGameRules().getInt(TianjinMetro.SMOKE_ALARM_RANGE);
+        for (final BlockPos checkPos : BlockPos.betweenClosed(pos.offset(-range, -range, -range), pos.offset(range, range, range))) {
+            final BlockState checkState = level.getBlockState(checkPos);
+            final Block block = checkState.getBlock();
+            if (block == Blocks.FIRE || block == Blocks.SOUL_FIRE || block == Blocks.CAMPFIRE || block == Blocks.SOUL_CAMPFIRE || block == Blocks.LAVA || block == Blocks.MAGMA_BLOCK) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class TileEntitySmokeAlarm extends BlockEntityMapper

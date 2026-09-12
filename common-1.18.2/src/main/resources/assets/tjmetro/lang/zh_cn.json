@@ -165,6 +165,8 @@
     "gamerule.preventBlockFalling.description":  "阻止可下落的方块下落，例如沙子和铁砧。该规则由天津地铁模组添加。",
     "gamerule.playerDetectRange":  "玩家侦测范围",
     "gamerule.playerDetectRange.description":  "设置玩家侦测器的侦测半径。此规则由天津地铁模组添加。",
+    "gamerule.smokeAlarmRange":  "烟雾报警器侦测范围",
+    "gamerule.smokeAlarmRange.description":  "设置烟雾报警器的侦测半径。此规则由天津地铁模组添加。",
 
     "block.tjmetro.railway_sign_tianjin_bmt":  "指示牌（天津、9号线）",
     "block.mtr.ceiling_not_lit":  "天花板 （未亮起）",

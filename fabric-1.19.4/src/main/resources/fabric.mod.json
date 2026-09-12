@@ -38,7 +38,7 @@
     "depends": {
         "fabric-api": "*",
         "architectury": "*",
-        "minecraft": "*",
+        "minecraft": "1.19.4",
         "mtr": "*",
         "java": ">=16"
     }

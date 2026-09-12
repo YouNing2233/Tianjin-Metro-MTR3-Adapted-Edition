@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import ziyue.tjmetro.BlockEntityTypes;
+import ziyue.tjmetro.TianjinMetro;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -92,12 +93,9 @@ public class BlockPlayerDetector extends Block implements SimpleWaterloggedBlock
     public <T extends BlockEntityMapper> void tick(Level level, BlockPos pos, T blockEntity) {
         if (level.isClientSide) return;
         final BlockState state = level.getBlockState(pos);
-        boolean[] hasPlayer = {
-                level.hasNearbyAlivePlayer(pos.getX(), pos.getY(), pos.getZ(), 2),
-                level.hasNearbyAlivePlayer(pos.getX(), pos.below().getY(), pos.getZ(), 2),
-                level.hasNearbyAlivePlayer(pos.getX(), pos.above().getY(), pos.getZ(), 2)
-        };
-        boolean powered = hasPlayer[0] || hasPlayer[1] || hasPlayer[2];
+        final int detectRange = level.getGameRules().getInt(TianjinMetro.PLAYER_DETECT_RANGE);
+        final net.minecraft.world.entity.player.Player player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, detectRange, false);
+        final boolean powered = player != null;
         if (powered != state.getValue(POWERED)) {
             level.setBlock(pos, state.setValue(POWERED, powered), 3);
             level.updateNeighborsAt(pos, state.getBlock());

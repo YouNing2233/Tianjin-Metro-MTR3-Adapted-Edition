@@ -15,21 +15,6 @@
 			"model": "tjmetro:block/ticket_barrier_tianjin_exit_closed",
 			"y": 270
 		},
-		"facing=north,open=pending": {
-			"model": "tjmetro:block/ticket_barrier_tianjin_exit_closed"
-		},
-		"facing=east,open=pending": {
-			"model": "tjmetro:block/ticket_barrier_tianjin_exit_closed",
-			"y": 90
-		},
-		"facing=south,open=pending": {
-			"model": "tjmetro:block/ticket_barrier_tianjin_exit_closed",
-			"y": 180
-		},
-		"facing=west,open=pending": {
-			"model": "tjmetro:block/ticket_barrier_tianjin_exit_closed",
-			"y": 270
-		},
 		"facing=north,open=open": {
 			"model": "tjmetro:block/ticket_barrier_tianjin_exit_open"
 		},

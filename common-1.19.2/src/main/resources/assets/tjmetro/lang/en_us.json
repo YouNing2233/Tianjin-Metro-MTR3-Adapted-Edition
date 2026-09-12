@@ -167,6 +167,8 @@
     "gamerule.preventBlockFalling.description":  "Prevent blocks to fall, such as sands and anvils. This rule was added by Tianjin Metro mod.",
     "gamerule.playerDetectRange":  "Player Detect Range",
     "gamerule.playerDetectRange.description":  "The detection radius of Player Detector. This rule was added by Tianjin Metro mod.",
+    "gamerule.smokeAlarmRange":  "Smoke Alarm Detect Range",
+    "gamerule.smokeAlarmRange.description":  "The detection radius of Smoke Alarm. This rule was added by Tianjin Metro mod.",
 
     "itemGroup.tjmetro.tianjin_metro":  "Tianjin Metro",
     "block.tjmetro.railway_sign_tianjin_bmt":  "Railway Sign (Tianjin, Line 9)",

@@ -32,6 +32,7 @@ public class TianjinMetro
     public static final CreativeModeTabs.Wrapper CREATIVE_MODE_TAB = new CreativeModeTabs.Wrapper(new ResourceLocation(Reference.MOD_ID, "tjmetro_tab"), () -> new ItemStack(BlockList.LOGO.get()));
     public static final GameRules.Key<GameRules.BooleanValue> PREVENT_BLOCK_FALLING = Registry.registerBooleanGameRule("preventBlockFalling", false);
     public static final GameRules.Key<GameRules.IntegerValue> PLAYER_DETECT_RANGE = Registry.registerIntegerGameRule("playerDetectRange", 3);
+    public static final GameRules.Key<GameRules.IntegerValue> SMOKE_ALARM_RANGE = Registry.registerIntegerGameRule("smokeAlarmRange", 8);
 
 
     public static void init(

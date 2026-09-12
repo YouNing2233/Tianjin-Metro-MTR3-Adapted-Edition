@@ -55,7 +55,7 @@ public class BlockRailwaySignTianjin extends BlockRailwaySignBase
         if (state.is(BlockList.RAILWAY_SIGN_TIANJIN_MIDDLE.get())) {
             return IBlock.getVoxelShapeByDirection(0, 0, 7, 16, 9, 9, facing);
         } else {
-            final VoxelShape main = IBlock.getVoxelShapeByDirection(getXStart() - 0.5, 0, 7, 16, 9, 9, facing);
+            final VoxelShape main = IBlock.getVoxelShapeByDirection(getXStart() - 0.5, 0, 7, getXStart() - 0.5 + 0.5 * length, 9, 9, facing);
             final VoxelShape pole = IBlock.getVoxelShapeByDirection(getXStart() + 3, 0, 7.5, getXStart() + 4, 16, 8.5, facing);
             return Shapes.or(main, pole);
         }

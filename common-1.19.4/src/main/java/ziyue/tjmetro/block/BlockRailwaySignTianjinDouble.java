@@ -60,7 +60,7 @@ public class BlockRailwaySignTianjinDouble extends BlockRailwaySignTianjin
         if (state.is(BlockList.RAILWAY_SIGN_TIANJIN_DOUBLE_MIDDLE.get()))
             return IBlock.getVoxelShapeByDirection(0, 0, 7, 16, 16, 9, facing);
         else
-            return IBlock.getVoxelShapeByDirection(getXStart() - 0.5, 0, 7, 16, 16, 9, facing);
+            return IBlock.getVoxelShapeByDirection(getXStart() - 0.5, 0, 7, getXStart() - 0.5 + 0.5 * length, 16, 9, facing);
     }
 
     @Override

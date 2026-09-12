@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ziyue.tjmetro.TianjinMetro;
 
 /**
@@ -94,7 +95,7 @@ public abstract class SidingScreenMixin extends SavedRailScreenBase<Siding> impl
 	}
 
 	@Inject(at = @At("TAIL"), method = "shouldRenderExtra", remap = false)
-	private void afterShouldRenderExtra(CallbackInfo ci) {
+	private void afterShouldRenderExtra(CallbackInfoReturnable<Boolean> cir) {
 		if (showScheduleControls && !buttonDuplicateSettingsAdded) {
 			addDrawableChild(buttonDuplicateSettings);
 			buttonDuplicateSettingsAdded = true;
