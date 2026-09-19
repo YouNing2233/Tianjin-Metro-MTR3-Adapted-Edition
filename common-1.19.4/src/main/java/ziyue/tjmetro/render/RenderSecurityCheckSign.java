@@ -44,7 +44,7 @@ public class RenderSecurityCheckSign<T extends BlockSecurityCheckSign.TileEntity
         final BlockPos pos = entity.getBlockPos();
         final BlockState state = world.getBlockState(pos);
         final Direction facing = IBlock.getStatePropertySafe(state, BlockStationNameBase.FACING);
-        if (RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, facing)) return;
+        if (RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, null)) return;
 
         matrices.pushPose();
         matrices.translate(0.5, 0.5 + entity.yOffset, 0.5);

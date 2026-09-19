@@ -115,7 +115,6 @@
     "sign.tjmetro.tickets_bmt":  "Tickets",
     "button.tjmetro.tianjin_metro_options":  "Tianjin Metro Options",
     "config.category.tjmetro":  "Tianjin Metro",
-    "config.tjmetro.enable_mtr_filters":  "Enable MTR Filters",
     "config.tjmetro.use_tianjin_metro_font":  "Enable Tianjin Metro Font",
     "tooltip.tjmetro.not_suggest":  "This feature is not suggested.",
     "tooltip.tjmetro.mtr_config_screen":  "Use the new config screen instead of the original.",
@@ -167,6 +166,8 @@
     "gamerule.preventBlockFalling.description":  "Prevent blocks to fall, such as sands and anvils. This rule was added by Tianjin Metro mod.",
     "gamerule.playerDetectRange":  "Player Detect Range",
     "gamerule.playerDetectRange.description":  "The detection radius of Player Detector. This rule was added by Tianjin Metro mod.",
+    "gamerule.smokeAlarmRange":  "Smoke Alarm Detect Range",
+    "gamerule.smokeAlarmRange.description":  "The detection radius of Smoke Alarm. This rule was added by Tianjin Metro mod.",
 
     "itemGroup.tjmetro.tianjin_metro":  "Tianjin Metro",
     "block.tjmetro.railway_sign_tianjin_bmt":  "Railway Sign (Tianjin, Line 9)",
@@ -355,5 +356,7 @@
     "tooltip.tjmetro.station_name_plate": "Use wrench to select a platform to display, and use brush to change its arrow direction.",
     "block.tjmetro.pids_tianjin_single": "Passenger Information Display System (Tianjin, Single)",
     "sign.tjmetro.security_check": "安全检查|Security Check",
-    "gui.tjmetro.accept_security_check_cjk": "请您接受安检"
+    "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
+    "tooltip.tjmetro.disable_train_rendering": "Skip rendering trains to improve performance. Trains will become invisible.",
+    "config.tjmetro.cloth_config_hint": "Press ESC to go back."
 }

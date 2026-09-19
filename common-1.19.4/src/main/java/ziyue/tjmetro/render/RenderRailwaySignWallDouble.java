@@ -128,7 +128,7 @@ public class RenderRailwaySignWallDouble<T extends BlockRailwaySignWallDouble.Ti
     }
 
     public static void drawSign(PoseStack matrices, MultiBufferSource vertexConsumers, StoredMatrixTransformations storedMatrixTransformations, Font textRenderer, BlockPos pos, String signId, float x, float y, float size, float maxWidthLeft, float maxWidthRight, Set<Long> selectedIds, Direction facing, int backgroundColor, RenderRailwaySign.DrawTexture drawTexture) {
-        if (RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, facing)) return;
+        if (RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, null)) return;
 
         final CustomResources.CustomSign sign = getSign(signId);
         if (sign == null) return;

@@ -23,6 +23,9 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 //    modApi "ziyue:filters-fabric:${rootProject.filters_api_version}"
+    // Mod Menu integration (optional at runtime; entrypoint is only used when Mod Menu is present)
+    modCompileOnly "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
+
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }

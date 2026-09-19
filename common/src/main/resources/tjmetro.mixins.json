@@ -6,6 +6,7 @@
 	"mixins": [
 		"ClientDataMixin",
 		"CustomResourcesMixin",
+		"BlockRailwaySignPoleMixin",
 		"PacketTrainDataGuiClientMixin"
 	],
 	"injectors": {
@@ -13,6 +14,7 @@
 	},
 	"client": [
 		"RenderRailwaySignMixin",
+		"RenderTrainsMixin",
 		"SidingScreenMixin"
 	],
 	"refmap": "common-common-refmap.json"

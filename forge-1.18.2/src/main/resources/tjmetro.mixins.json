@@ -6,14 +6,16 @@
     "mixins": [
         "ClientDataMixin",
         "CustomResourcesMixin",
-        "PacketTrainDataGuiClientMixin"
+        "BlockRailwaySignPoleMixin",
+		"PacketTrainDataGuiClientMixin"
     ],
     "injectors": {
         "defaultRequire": 1
     },
     "client": [
         "RenderRailwaySignMixin",
-        "SidingScreenMixin"
+        "RenderTrainsMixin",
+		"SidingScreenMixin"
     ],
     "refmap": "forge-forge-refmap.json"
 }

@@ -113,7 +113,6 @@
     "sign.tjmetro.tickets_bmt":  "Tickets",
     "button.tjmetro.tianjin_metro_options":  "天津地铁设置",
     "config.category.tjmetro":  "天津地铁",
-    "config.tjmetro.enable_mtr_filters":  "启用 MTR 筛选器",
     "config.tjmetro.use_tianjin_metro_font":  "启用天津地铁字体",
     "tooltip.tjmetro.not_suggest":  "此功能不推荐使用。",
     "tooltip.tjmetro.mtr_config_screen":  "使用新的设置界面替代原版。",
@@ -165,6 +164,8 @@
     "gamerule.preventBlockFalling.description":  "阻止可下落的方块下落，例如沙子和铁砧。该规则由天津地铁模组添加。",
     "gamerule.playerDetectRange":  "玩家侦测范围",
     "gamerule.playerDetectRange.description":  "设置玩家侦测器的侦测半径。此规则由天津地铁模组添加。",
+    "gamerule.smokeAlarmRange":  "烟雾报警器侦测范围",
+    "gamerule.smokeAlarmRange.description":  "设置烟雾报警器的侦测半径。此规则由天津地铁模组添加。",
 
     "block.tjmetro.railway_sign_tianjin_bmt":  "指示牌（天津、9号线）",
     "block.mtr.ceiling_not_lit":  "天花板 （未亮起）",
@@ -351,5 +352,7 @@
     "tooltip.tjmetro.station_name_plate": "用扳手选择显示的站台，并用刷子改变箭头的方向。",
     "block.tjmetro.pids_tianjin_single": "乘客资讯显示屏（天津、单向）",
     "sign.tjmetro.security_check": "安全检查|Security Check",
-    "gui.tjmetro.accept_security_check_cjk": "请您接受安检"
+    "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
+    "tooltip.tjmetro.disable_train_rendering": "跳过列车渲染以提升性能，列车将不可见。",
+    "config.tjmetro.cloth_config_hint": "按 ESC 返回。"
 }

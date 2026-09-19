@@ -32,4 +32,14 @@ public class RegistryImpl
     public static GameRules.Key<GameRules.IntegerValue> registerIntegerGameRule(String name, GameRules.Category category, int defaultValue) {
         return GameRules.register(name, category, GameRulesIntegerValueAccessor.invokeCreate(defaultValue));
     }
+
+    /**
+     * Whether Cloth Config API is available on the client.
+     *
+     * @return true if Cloth Config API is loaded
+     * @since 1.1.2.1
+     */
+    public static boolean isClothConfigLoaded() {
+        return net.minecraftforge.fml.ModList.get().isLoaded("cloth_config");
+    }
 }

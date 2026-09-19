@@ -7,6 +7,8 @@ import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.DeferredRegisterHolder;
 import mtr.mappings.ForgeUtilities;
 import mtr.mappings.RegistryUtilities;
+import net.minecraftforge.fml.ModLoadingContext;
+import ziyue.tjmetro.client.ConfigScreenOpener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -29,6 +31,9 @@ public class MainForge
     public MainForge() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         EventBuses.registerModEventBus(Reference.MOD_ID, eventBus);
+
+        ModLoadingContext.get().registerExtensionPoint(net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory.class,
+                () -> new net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory((client, parent) -> ConfigScreenOpener.getConfigScreen(parent)));
 
         ForgeUtilities.createCreativeModeTab(TianjinMetro.CREATIVE_MODE_TAB.resourceLocation, () -> new net.minecraft.world.item.ItemStack(BlockList.LOGO.get()), "itemGroup.tjmetro.tjmetro_tab");
 

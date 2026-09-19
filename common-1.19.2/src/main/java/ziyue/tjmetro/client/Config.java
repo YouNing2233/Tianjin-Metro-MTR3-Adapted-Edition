@@ -26,19 +26,14 @@ import java.util.function.Supplier;
 
 public class Config
 {
-    public static final Key<Boolean> ENABLE_MTR_FILTERS = new Key<>("enable_mtr_filters", false)
-    {
-        @Override
-        public void set(Boolean value) {
-            super.set(value);
-        }
-    };
     public static final Key<Boolean> USE_TIANJIN_METRO_FONT = new Key<>("use_tianjin_metro_font", true);
     public static final Key<Boolean> ROTATED_STATION_NAME = new Key<>("rotated_station_name", true);
+    public static final Key<Boolean> DISABLE_TRAIN_RENDERING = new Key<>("disable_train_rendering", false);
+    public static final Key<Integer> DYNAMIC_TEXTURE_MAX_SIZE = new Key<>("dynamic_texture_max_size", 2048);
 
     protected static final Path CONFIG_FILE_PATH = Minecraft.getInstance().gameDirectory.toPath().resolve("config").resolve("tjmetro.json");
     public static final List<Supplier<MutableComponent>> FOOTERS = Arrays.asList(
-            () -> IGuiExtends.format(Text.translatable("footer.tjmetro.sources"), IGuiExtends.LINK_STYLE.apply(Reference.GITHUB_REPO)),
+            () -> IGuiExtends.format(Text.translatable("footer.tjmetro.sources"), IGuiExtends.LINK_STYLE.apply(Reference.SOURCE_REPO)),
             () -> IGuiExtends.format(Text.translatable("footer.tjmetro.contributors"), IGuiExtends.LINK_STYLE.apply(Reference.CONTRIBUTORS)),
             () -> IGuiExtends.format(Text.translatable("footer.tjmetro.forum"), IGuiExtends.LINK_STYLE.apply(Reference.FORUM).withColor(TextColor.fromRgb(15946322))),
             () -> IGuiExtends.format(Text.translatable("footer.tjmetro.weblate"), IGuiExtends.LINK_STYLE.apply(Reference.WEBLATE))
@@ -48,27 +43,50 @@ public class Config
         TianjinMetro.LOGGER.info("Refreshed Tianjin Metro config");
         try {
             final JsonObject jsonConfig = new JsonParser().parse(String.join("", Files.readAllLines(CONFIG_FILE_PATH))).getAsJsonObject();
-            try {
-                ENABLE_MTR_FILTERS.set(jsonConfig.get(ENABLE_MTR_FILTERS.getId()).getAsBoolean());
-                USE_TIANJIN_METRO_FONT.set(jsonConfig.get(USE_TIANJIN_METRO_FONT.getId()).getAsBoolean());
-                ROTATED_STATION_NAME.set(jsonConfig.get(ROTATED_STATION_NAME.getId()).getAsBoolean());
-            } catch (Exception ignored) {
-                ENABLE_MTR_FILTERS.set(ENABLE_MTR_FILTERS.getDefault());
-                USE_TIANJIN_METRO_FONT.set(USE_TIANJIN_METRO_FONT.getDefault());
-                ROTATED_STATION_NAME.set(ROTATED_STATION_NAME.getDefault());
-            }
+            USE_TIANJIN_METRO_FONT.set(getBoolean(jsonConfig, USE_TIANJIN_METRO_FONT));
+            ROTATED_STATION_NAME.set(getBoolean(jsonConfig, ROTATED_STATION_NAME));
+            DISABLE_TRAIN_RENDERING.set(getBoolean(jsonConfig, DISABLE_TRAIN_RENDERING));
+            DYNAMIC_TEXTURE_MAX_SIZE.set(getInteger(jsonConfig, DYNAMIC_TEXTURE_MAX_SIZE));
         } catch (Exception e) {
             writeToFile();
             TianjinMetro.LOGGER.error(e);
         }
     }
 
+
+    /**
+     * Reads a boolean setting, falling back to its default when the config file predates the option.
+     *
+     * @since 1.1.2.1
+     */
+    private static boolean getBoolean(JsonObject jsonConfig, Key<Boolean> key) {
+        try {
+            return jsonConfig.get(key.getId()).getAsBoolean();
+        } catch (Exception e) {
+            return key.getDefault();
+        }
+    }
+
+    /**
+     * Reads an integer setting, falling back to its default when the config file predates the option.
+     *
+     * @since 1.1.2.1
+     */
+    private static int getInteger(JsonObject jsonConfig, Key<Integer> key) {
+        try {
+            return jsonConfig.get(key.getId()).getAsInt();
+        } catch (Exception e) {
+            return key.getDefault();
+        }
+    }
+
     protected static void writeToFile() {
         TianjinMetro.LOGGER.info("Wrote Tianjin Metro config to file");
         final JsonObject jsonConfig = new JsonObject();
-        jsonConfig.addProperty(ENABLE_MTR_FILTERS.getId(), ENABLE_MTR_FILTERS.get());
         jsonConfig.addProperty(USE_TIANJIN_METRO_FONT.getId(), USE_TIANJIN_METRO_FONT.get());
         jsonConfig.addProperty(ROTATED_STATION_NAME.getId(), ROTATED_STATION_NAME.get());
+        jsonConfig.addProperty(DISABLE_TRAIN_RENDERING.getId(), DISABLE_TRAIN_RENDERING.get());
+        jsonConfig.addProperty(DYNAMIC_TEXTURE_MAX_SIZE.getId(), DYNAMIC_TEXTURE_MAX_SIZE.get());
 
         try {
             Files.write(CONFIG_FILE_PATH, Collections.singleton(RailwayData.prettyPrint(jsonConfig)));

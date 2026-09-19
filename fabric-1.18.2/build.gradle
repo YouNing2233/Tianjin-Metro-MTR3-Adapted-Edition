@@ -32,6 +32,9 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.subClothConfigVersion}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+    // Mod Menu integration (optional at runtime; entrypoint is only used when Mod Menu is present)
+    modCompileOnly "com.terraformersmc:modmenu:${project.subModMenuVersion}"
+
     modImplementation files(project.subMtrJar)
 
     common(project(path: ":common-1.18.2", configuration: "namedElements")) { transitive false }

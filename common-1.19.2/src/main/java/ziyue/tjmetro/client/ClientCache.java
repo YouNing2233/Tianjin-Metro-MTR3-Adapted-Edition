@@ -263,7 +263,21 @@ public class ClientCache extends DataCache implements IGui
             if (nativeImage == null) {
                 dynamicResourceNew = defaultRenderingColor.dynamicResource;
             } else {
-                final DynamicTexture dynamicTexture = new DynamicTexture(nativeImage);
+                final NativeImage newNativeImage;
+                final int newMaxImageSize = Config.DYNAMIC_TEXTURE_MAX_SIZE.get();
+                if (nativeImage.getWidth() > newMaxImageSize || nativeImage.getHeight() > newMaxImageSize) {
+                    final int clampedWidth = Math.min(newMaxImageSize, nativeImage.getWidth());
+                    final int clampedHeight = Math.min(newMaxImageSize, nativeImage.getHeight());
+                    newNativeImage = new NativeImage(NativeImage.Format.RGBA, clampedWidth, clampedHeight, false);
+                    for (int x = 0; x < clampedWidth; x++) {
+                        for (int y = 0; y < clampedHeight; y++) {
+                            newNativeImage.setPixelRGBA(x, y, nativeImage.getPixelRGBA(x, y));
+                        }
+                    }
+                } else {
+                    newNativeImage = nativeImage;
+                }
+                final DynamicTexture dynamicTexture = new DynamicTexture(newNativeImage);
                 String newKey = key;
                 try {
                     newKey = URLEncoder.encode(key, StandardCharsets.UTF_8);

@@ -21,7 +21,8 @@
     "environment": "*",
     "entrypoints": {
         "modmenu": [
-    ],
+            "ziyue.tjmetro.fabric.ModMenuConfig"
+        ],
         "main": [
             "ziyue.tjmetro.MainFabric"
         ],
@@ -33,7 +34,10 @@
         "tjmetro.mixins.json",
         "tjmetro-fabric.mixins.json"
     ],
-    "depends": {
+    "suggests": {
+    "cloth-config": "*"
+},
+"depends": {
         "fabric-api": "*",
         "architectury": "*",
         "minecraft": "1.20.1",

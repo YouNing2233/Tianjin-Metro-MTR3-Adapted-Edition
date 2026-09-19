@@ -49,7 +49,7 @@ public class RenderStationNameSign<T extends BlockStationNameSignBase.TileEntity
         final BlockPos pos = entity.getBlockPos();
         final BlockState state = world.getBlockState(pos);
         final Direction facing = IBlock.getStatePropertySafe(state, BlockStationNameBase.FACING);
-        if (RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, facing)) return;
+        if (RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, null)) return;
 
         final int color = switch (IBlock.getStatePropertySafe(state, BlockStationNameBase.COLOR)) {
             case 1 -> ARGB_LIGHT_GRAY;

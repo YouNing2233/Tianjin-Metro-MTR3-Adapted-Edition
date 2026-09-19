@@ -22,7 +22,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import ziyue.tjmetro.client.ConfigScreen;
+import ziyue.tjmetro.client.ConfigScreenOpener;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,7 @@ public class MainForge
         EventBuses.registerModEventBus(Reference.MOD_ID, eventBus);
 
         ModLoadingContext.get().registerExtensionPoint(net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory((client, parent) -> ConfigScreen.getConfigScreen(parent)));
+                () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory((client, parent) -> ConfigScreenOpener.getConfigScreen(parent)));
 
         // 创建天津地铁创造物品栏（图标为 LOGO，翻译键为 itemGroup.tjmetro.tjmetro_tab）
         ForgeUtilities.createCreativeModeTab(TianjinMetro.CREATIVE_MODE_TAB.resourceLocation, () -> new ItemStack(BlockList.LOGO.get()), "itemGroup.tjmetro.tjmetro_tab");

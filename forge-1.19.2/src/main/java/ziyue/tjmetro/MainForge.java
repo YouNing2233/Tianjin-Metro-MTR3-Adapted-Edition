@@ -18,7 +18,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import ziyue.tjmetro.client.ConfigScreen;
+import ziyue.tjmetro.client.ConfigScreenOpener;
 
 @Mod(Reference.MOD_ID)
 public class MainForge
@@ -33,7 +33,7 @@ public class MainForge
         EventBuses.registerModEventBus(Reference.MOD_ID, eventBus);
 
         ModLoadingContext.get().registerExtensionPoint(net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory((client, parent) -> ConfigScreen.getConfigScreen(parent)));
+                () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory((client, parent) -> ConfigScreenOpener.getConfigScreen(parent)));
 
         ForgeUtilities.createCreativeModeTab(TianjinMetro.CREATIVE_MODE_TAB.resourceLocation, () -> new net.minecraft.world.item.ItemStack(BlockList.LOGO.get()), "itemGroup.tjmetro.tjmetro_tab");
 

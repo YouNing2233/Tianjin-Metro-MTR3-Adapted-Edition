@@ -2,6 +2,7 @@ package ziyue.tjmetro.fabric;
 
 import mtr.client.ClientData;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraft.world.item.Item;
@@ -41,5 +42,15 @@ public class RegistryImpl
 
     public static GameRules.Key<GameRules.IntegerValue> registerIntegerGameRule(String name, GameRules.Category category, int defaultValue) {
         return GameRuleRegistry.register(name, category, GameRuleFactory.createIntRule(defaultValue));
+    }
+
+    /**
+     * Whether Cloth Config API is available on the client.
+     *
+     * @return true if Cloth Config API is loaded
+     * @since 1.1.2.1
+     */
+    public static boolean isClothConfigLoaded() {
+        return FabricLoader.getInstance().isModLoaded("cloth-config");
     }
 }

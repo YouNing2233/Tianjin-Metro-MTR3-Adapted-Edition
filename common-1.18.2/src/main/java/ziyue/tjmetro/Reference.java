@@ -10,9 +10,10 @@ public interface Reference
 {
     String MOD_ID = "tjmetro";
     String NAME = "Tianjin Metro";
-    String VERSION = "beta-1";
+    String VERSION = "1.1.2.1";
 
-    String GITHUB_REPO = "https://github.com/ZiYueCommentary/Tianjin-Metro";
+    /** Source code of this MTR3 adapted edition. */
+    String SOURCE_REPO = "https://gitee.com/lingxii/tianjin-metro-mtr3-adapted-edition";
     String CONTRIBUTORS = "https://github.com/ZiYueCommentary/Tianjin-Metro/graphs/contributors";
     String FORUM = "https://forum.ziyuesinicization.site/t/tianjin-metro";
     String WEBLATE = "https://weblate.ziyuesinicization.site/engage/tianjin-metro/";

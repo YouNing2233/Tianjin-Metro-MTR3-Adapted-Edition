@@ -83,4 +83,15 @@ public class Registry
     public static GameRules.Key<GameRules.IntegerValue> registerIntegerGameRule(String name, int defaultValue) {
         return registerIntegerGameRule(name, GameRules.Category.MISC, defaultValue);
     }
+
+    /**
+     * Whether Cloth Config API is available on the client.
+     *
+     * @return true if Cloth Config API is loaded
+     * @since 1.1.2.1
+     */
+    @ExpectPlatform
+    public static boolean isClothConfigLoaded() {
+        throw new AssertionError();
+    }
 }
