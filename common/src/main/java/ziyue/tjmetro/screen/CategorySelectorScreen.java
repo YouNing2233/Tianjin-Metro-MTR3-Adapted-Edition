@@ -58,7 +58,7 @@ public class CategorySelectorScreen extends ScreenMapper implements IGui {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         renderBackground(guiGraphics);
-        guiGraphics.drawCenteredString(font, Component.translatable("gui.mtr.select").getString(), width / 2, SQUARE_SIZE / 2, ARGB_WHITE);
+        guiGraphics.drawCenteredString(font, Component.translatable("gui.tjmetro.select_advertisements").getString(), width / 2, SQUARE_SIZE / 2, ARGB_WHITE);
         super.render(guiGraphics, mouseX, mouseY, delta);
     }
 

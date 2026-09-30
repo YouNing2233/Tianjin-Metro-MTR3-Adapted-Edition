@@ -54,8 +54,8 @@ public class RenderTimeDisplayEven<T extends BlockTimeDisplayEven.TileEntityTime
         matrices.mulPose(Vector3f.ZP.rotationDegrees(180));
         final MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         matrices.pushPose();
-        matrices.translate(0.516, 0, 0.5 - entity.zOffset - SMALL_OFFSET);
-        IDrawingExtends.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, RenderTimeDisplay.getFormattedTime(entity.getLevel().getDayTime()), HorizontalAlignment.CENTER, VerticalAlignment.CENTER, HorizontalAlignment.CENTER, 0, 0, -1, -1, 30, -3276781, false, light, false, null);
+        matrices.translate(0.516, -0.04, 0.5 - entity.zOffset - SMALL_OFFSET);
+        IDrawingExtends.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, RenderTimeDisplay.getFormattedTime(entity.getLevel().getDayTime()), HorizontalAlignment.CENTER, VerticalAlignment.CENTER, HorizontalAlignment.CENTER, 0, 0.03F, -1, -1, 30, -3276781, false, light, true, null);
         matrices.popPose();
         immediate.endBatch();
         matrices.popPose();

@@ -264,7 +264,7 @@ public class ClientCache extends DataCache implements IGui
                 dynamicResourceNew = defaultRenderingColor.dynamicResource;
             } else {
                 final NativeImage newNativeImage;
-                final int newMaxImageSize = Config.DYNAMIC_TEXTURE_MAX_SIZE.get();
+                final int newMaxImageSize = Config.DYNAMIC_TEXTURE_MAX_SIZE.get() * (int) Math.pow(2, mtr.client.Config.dynamicTextureResolution());
                 if (nativeImage.getWidth() > newMaxImageSize || nativeImage.getHeight() > newMaxImageSize) {
                     final int clampedWidth = Math.min(newMaxImageSize, nativeImage.getWidth());
                     final int clampedHeight = Math.min(newMaxImageSize, nativeImage.getHeight());

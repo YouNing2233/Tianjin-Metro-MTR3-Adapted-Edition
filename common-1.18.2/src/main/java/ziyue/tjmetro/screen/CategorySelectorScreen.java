@@ -60,7 +60,7 @@ public class CategorySelectorScreen extends ScreenMapper implements IGui {
     @Override
     public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        final String selectText = Text.translatable("gui.mtr.select").getString();
+        final String selectText = Text.translatable("gui.tjmetro.select_advertisements").getString();
         font.draw(matrices, selectText, width / 2 - font.width(selectText) / 2, SQUARE_SIZE / 2, ARGB_WHITE);
         super.render(matrices, mouseX, mouseY, delta);
     }

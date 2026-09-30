@@ -354,5 +354,6 @@
     "sign.tjmetro.security_check": "安全检查|Security Check",
     "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
     "tooltip.tjmetro.disable_train_rendering": "跳过列车渲染以提升性能，列车将不可见。",
-    "config.tjmetro.cloth_config_hint": "按 ESC 返回。"
+    "config.tjmetro.cloth_config_hint": "按 ESC 返回。",
+    "gui.tjmetro.select_advertisements": "选择广告"
 }

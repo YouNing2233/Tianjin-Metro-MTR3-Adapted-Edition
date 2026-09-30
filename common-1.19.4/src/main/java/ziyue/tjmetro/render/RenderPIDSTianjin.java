@@ -106,10 +106,9 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
     private String getFormattedTime(T entity) {
         if (entity.isUseRealTime()) {
             final java.util.Calendar calendar = java.util.Calendar.getInstance();
-            return String.format("%02d:%02d:%02d",
+            return String.format("%02d:%02d",
                     calendar.get(java.util.Calendar.HOUR_OF_DAY),
-                    calendar.get(java.util.Calendar.MINUTE),
-                    calendar.get(java.util.Calendar.SECOND));
+                    calendar.get(java.util.Calendar.MINUTE));
         } else {
             final BlockGetter world = entity.getLevel();
             if (world == null) return "";
@@ -118,8 +117,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
             final long totalSeconds = ticks * 36 / 10;
             final long hours = (totalSeconds / 3600 + 6) % 24;
             final long minutes = totalSeconds / 60 % 60;
-            final long seconds = totalSeconds % 60;
-            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+            return String.format("%02d:%02d", hours, minutes);
         }
     }
 

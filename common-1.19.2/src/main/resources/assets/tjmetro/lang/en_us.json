@@ -358,5 +358,6 @@
     "sign.tjmetro.security_check": "安全检查|Security Check",
     "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
     "tooltip.tjmetro.disable_train_rendering": "Skip rendering trains to improve performance. Trains will become invisible.",
-    "config.tjmetro.cloth_config_hint": "Press ESC to go back."
+    "config.tjmetro.cloth_config_hint": "Press ESC to go back.",
+    "gui.tjmetro.select_advertisements": "Select Advertisements"
 }

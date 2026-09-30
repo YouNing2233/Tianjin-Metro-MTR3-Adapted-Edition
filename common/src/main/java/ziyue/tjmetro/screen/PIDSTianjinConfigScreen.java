@@ -14,6 +14,7 @@ import mtr.mappings.UtilitiesClient;
 import mtr.RegistryClient;
 import mtr.screen.DashboardListSelectorScreen;
 import mtr.screen.WidgetBetterCheckbox;
+import mtr.screen.WidgetBetterTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,6 +34,24 @@ import java.util.stream.Collectors;
 
 import static ziyue.tjmetro.packet.IPacket.PACKET_UPDATE_PIDS_TIANJIN_CONFIG;
 
+/**
+ * PIDS (Tianjin Metro) configuration screen.
+ *
+ * <p>Layout is a row-by-row port of the upstream Mapping API
+ * {@code ziyue.tjmetro.mod.screen.PIDSTianjinConfigScreen}: every widget uses the same
+ * {@code SQUARE_SIZE} / {@code TEXT_PADDING} / {@code TEXT_FIELD_PADDING} row formulas and the
+ * same two-column split for the page number field and the advertisement button.</p>
+ *
+ * <p>Two intentional differences from upstream (see the porting report):</p>
+ * <ul>
+ *     <li>The two button labels keep this fork's descriptive translation keys
+ *     ({@code gui.tjmetro.filter_platforms} / {@code gui.tjmetro.play_advertisements}) instead of
+ *     upstream's copy-pasted vanilla {@code selectWorld.edit} placeholder.</li>
+ *     <li>The fork-only "use real time" checkbox (no upstream equivalent: upstream's block entity
+ *     has no such field) is appended on its own row below the upstream block, so every upstream
+ *     control stays at its exact upstream coordinates.</li>
+ * </ul>
+ */
 public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
 
     private final BlockPos blockPos;
@@ -40,7 +59,10 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
     private final WidgetBetterCheckbox useRealTimeCheckbox;
     private final Button filterButton;
     private final Button categoryButton;
+    private final WidgetBetterTextField displayPageInput;
     private final Set<Long> filterPlatformIds;
+    private final int displayPage;
+    private final int filteredAdsCount;
     private boolean useRealTime;
 
     public PIDSTianjinConfigScreen(BlockPos blockPos) {
@@ -48,11 +70,17 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         this.blockPos = blockPos;
         this.filterPlatformIds = new HashSet<>();
 
+        int displayPage = 0;
+        int filteredAdsCount = 0;
         final BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(blockPos);
         if (blockEntity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
             filterPlatformIds.addAll(pidsEntity.getPlatformIds());
             useRealTime = pidsEntity.isUseRealTime();
+            displayPage = pidsEntity.getDisplayPage();
+            filteredAdsCount = pidsEntity.getCategories().size();
         }
+        this.displayPage = displayPage;
+        this.filteredAdsCount = filteredAdsCount;
 
         selectAllCheckbox = new WidgetBetterCheckbox(0, 0, PANEL_WIDTH, SQUARE_SIZE, Text.translatable("gui.mtr.automatically_detect_nearby_platform"), selected -> {
             if (selected) {
@@ -64,8 +92,9 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
             useRealTime = selected;
         });
 
-        filterButton = Button.builder(Component.translatable("gui.tjmetro.filter_platforms"), button -> openPlatformSelector()).size(PANEL_WIDTH, SQUARE_SIZE).build();
-        categoryButton = Button.builder(Component.translatable("gui.tjmetro.play_advertisements"), button -> openCategorySelector()).size(PANEL_WIDTH, SQUARE_SIZE).build();
+        filterButton = Button.builder(Component.translatable("gui.tjmetro.filter_platforms"), button -> openPlatformSelector()).size(PANEL_WIDTH / 2, SQUARE_SIZE).build();
+        categoryButton = Button.builder(Component.translatable("gui.tjmetro.play_advertisements"), button -> openCategorySelector()).size(PANEL_WIDTH / 2, SQUARE_SIZE).build();
+        displayPageInput = new WidgetBetterTextField(WidgetBetterTextField.TextFieldFilter.POSITIVE_INTEGER, "1", 3);
     }
 
     @Override
@@ -76,22 +105,28 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         IDrawing.setPositionAndWidth(selectAllCheckbox, SQUARE_SIZE, SQUARE_SIZE, PANEL_WIDTH);
         addDrawableChild(selectAllCheckbox);
 
-        useRealTimeCheckbox.setChecked(useRealTime);
-        IDrawing.setPositionAndWidth(useRealTimeCheckbox, SQUARE_SIZE, SQUARE_SIZE * 2 + TEXT_FIELD_PADDING, PANEL_WIDTH);
-        addDrawableChild(useRealTimeCheckbox);
-
-        filterButton.setPosition(SQUARE_SIZE, SQUARE_SIZE * 3 + TEXT_FIELD_PADDING * 2);
+        IDrawing.setPositionAndWidth(filterButton, SQUARE_SIZE, SQUARE_SIZE * 3, PANEL_WIDTH / 2);
         addDrawableChild(filterButton);
 
-        categoryButton.setPosition(SQUARE_SIZE, SQUARE_SIZE * 4 + TEXT_FIELD_PADDING * 2);
+        displayPageInput.setValue(String.valueOf(displayPage + 1));
+        IDrawing.setPositionAndWidth(displayPageInput, SQUARE_SIZE + TEXT_FIELD_PADDING / 2, SQUARE_SIZE * 5 + TEXT_FIELD_PADDING / 2, PANEL_WIDTH / 2 - TEXT_FIELD_PADDING);
+        addDrawableChild(displayPageInput);
+
+        IDrawing.setPositionAndWidth(categoryButton, SQUARE_SIZE + TEXT_FIELD_PADDING / 2, SQUARE_SIZE * 7 + TEXT_FIELD_PADDING, PANEL_WIDTH / 2);
         addDrawableChild(categoryButton);
+
+        useRealTimeCheckbox.setChecked(useRealTime);
+        IDrawing.setPositionAndWidth(useRealTimeCheckbox, SQUARE_SIZE, SQUARE_SIZE * 8 + TEXT_FIELD_PADDING * 2, PANEL_WIDTH);
+        addDrawableChild(useRealTimeCheckbox);
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         final Font textRenderer = Minecraft.getInstance().font;
         renderBackground(guiGraphics);
-        guiGraphics.drawString(textRenderer, Text.translatable("gui.mtr.filtered_platforms", selectAllCheckbox.selected() ? 0 : filterPlatformIds.size()).getString(), SQUARE_SIZE, SQUARE_SIZE * 3 + TEXT_PADDING + TEXT_FIELD_PADDING, ARGB_WHITE, false);
+        guiGraphics.drawString(textRenderer, Text.translatable("gui.mtr.filtered_platforms", selectAllCheckbox.selected() ? 0 : filterPlatformIds.size()).getString(), SQUARE_SIZE, SQUARE_SIZE * 2 + TEXT_PADDING, ARGB_WHITE, false);
+        guiGraphics.drawString(textRenderer, Text.translatable("gui.mtr.display_page").getString(), SQUARE_SIZE, SQUARE_SIZE * 4 + TEXT_PADDING, ARGB_WHITE, false);
+        guiGraphics.drawString(textRenderer, Text.translatable("gui.tjmetro.filtered_ads", filteredAdsCount).getString(), SQUARE_SIZE, SQUARE_SIZE * 6 + TEXT_PADDING * 2, ARGB_WHITE, false);
         super.render(guiGraphics, mouseX, mouseY, delta);
     }
 
@@ -100,7 +135,13 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         if (selectAllCheckbox.selected()) {
             filterPlatformIds.clear();
         }
-        sendConfigToServer(filterPlatformIds, 0, useRealTime);
+        int displayPage = 0;
+        try {
+            displayPage = Math.max(0, Integer.parseInt(displayPageInput.getValue()) - 1);
+        } catch (Exception e) {
+            TianjinMetro.LOGGER.error("", e);
+        }
+        sendConfigToServer(filterPlatformIds, displayPage, useRealTime);
         super.onClose();
     }
 
