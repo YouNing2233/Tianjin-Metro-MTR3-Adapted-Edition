@@ -732,6 +732,8 @@ public class RouteMapGenerator implements IGui
                 }
 
                 final int maxStringWidth = (int) (scale * 0.9 * (widthScale / 2 + extraPadding / routeCount));
+                final boolean verticalInterchangeName = ziyue.tjmetro.client.Config.VERTICAL_INTERCHANGE_NAME.get();
+                final float nameScale = stationNameScale(stationPositionsGrouped.size());
                 stationPositionsGrouped.forEach((stationId, stationPositionGroupedSet) -> stationPositionGroupedSet.forEach(stationPositionGrouped -> {
                     final int x = Math.round((stationPositionGrouped.stationPosition.x + xOffset) * scale * widthScale);
                     final int y = Math.round((stationPositionGrouped.stationPosition.y + yOffset) * scale * heightScale);
@@ -751,11 +753,16 @@ public class RouteMapGenerator implements IGui
                         }
 
                         final int interchangePadding = scale / 32;
+                        final int interchangeY = y + lines * lineSpacing + lineHeight;
+                        // 换乘线路名竖排：每个线路一个窄色块，名字逐字竖写，横向占地只有原来的一小部分。
+                        final int interchangeMaxHeight = Math.max(lineSize, nativeImage.getHeight() - interchangeY);
                         int interchangesWidth = 0;
                         int interchangesHeight = 0;
                         final List<ClientCache.Text> interchanges = new ArrayList<>();
                         for (int i = 0; i < stationPositionGrouped.interchangeNames.size(); i++) {
-                            final ClientCache.Text text = ClientCache.DATA_CACHE.getText(stationPositionGrouped.interchangeNames.get(i), maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
+                            final ClientCache.Text text = verticalInterchangeName
+                                    ? ClientCache.DATA_CACHE.getText(IGui.formatVerticalChinese(stationPositionGrouped.interchangeNames.get(i)), Integer.MAX_VALUE, interchangeMaxHeight, fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER)
+                                    : ClientCache.DATA_CACHE.getText(stationPositionGrouped.interchangeNames.get(i), maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
                             interchanges.add(text);
                             interchangesWidth += text.renderWidth() + interchangePadding;
                             interchangesHeight = Math.max(interchangesHeight, text.height());
@@ -764,8 +771,8 @@ public class RouteMapGenerator implements IGui
                         if (interchangesWidth > 0) {
                             int renderX = x - interchangesWidth / 2;
                             for (int i = 0; i < interchanges.size(); i++) {
-                                nativeImage.fillRect(renderX, y + lines * lineSpacing + lineHeight, interchanges.get(i).renderWidth(), interchangesHeight, invertColor(ARGB_BLACK | interchangeColors.get(i)));
-                                drawString(nativeImage, interchanges.get(i), renderX, y + lines * lineSpacing + lineHeight + interchangesHeight / 2, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, 0, ARGB_WHITE, false);
+                                nativeImage.fillRect(renderX, interchangeY, interchanges.get(i).renderWidth(), interchangesHeight, invertColor(ARGB_BLACK | interchangeColors.get(i)));
+                                drawString(nativeImage, interchanges.get(i), renderX, interchangeY + interchangesHeight / 2, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, 0, ARGB_WHITE, false);
                                 renderX += interchanges.get(i).renderWidth() + interchangePadding;
                                 if (renderX >= width) break;
                             }
@@ -781,7 +788,7 @@ public class RouteMapGenerator implements IGui
                     // horizontal name variant used to occupy the same rows for stations whose name is
                     // placed below the node). The horizontal variant is only the fallback when the
                     // option is disabled, and then it matches the MTR4 fallback exactly.
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - colorStripY - padding, fontSizeBig, fontSizeSmall, fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - colorStripY - padding, (int) (fontSizeBig * nameScale), (int) (fontSizeSmall * nameScale), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
                     if (rotateStationName) {
                         drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : (currentStation ? 0xff00acd0 : ARGB_WHITE), false);
                     } else {
@@ -1614,6 +1621,8 @@ public class RouteMapGenerator implements IGui
                 }
 
                 final int maxStringWidth = (int) (scale * 0.9 * ((vertical ? heightScale : widthScale) / 2 + extraPadding / routeCount));
+                final boolean verticalInterchangeName = ziyue.tjmetro.client.Config.VERTICAL_INTERCHANGE_NAME.get() && !vertical;
+                final float nameScale = stationNameScale(stationPositionsGrouped.size());
                 stationPositionsGrouped.forEach((stationId, stationPositionGroupedSet) -> stationPositionGroupedSet.forEach(stationPositionGrouped -> {
                     final int x = Math.round((stationPositionGrouped.stationPosition.x + xOffset) * scale * widthScale);
                     final int y = Math.round((stationPositionGrouped.stationPosition.y + yOffset) * scale * heightScale);
@@ -1634,11 +1643,15 @@ public class RouteMapGenerator implements IGui
                             }
                         }
 
+                        // 换乘线路名竖排：每个线路一个窄色块，名字逐字竖写，横向占地只有原来的一小部分。
+                        final int interchangeMaxHeight = Math.max(lineSize, (textBelow ? y : nativeImage.getHeight() - y) - lineHeight);
                         int interchangesWidth = 0;
                         int interchangesHeight = 0;
                         final List<ClientCache.Text> interchanges = new ArrayList<>();
                         for (int i = 0; i < stationPositionGrouped.interchangeNames.size(); i++) {
-                            final ClientCache.Text text = ClientCache.DATA_CACHE.getText(stationPositionGrouped.interchangeNames.get(i), maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
+                            final ClientCache.Text text = verticalInterchangeName
+                                    ? ClientCache.DATA_CACHE.getText(IGui.formatVerticalChinese(stationPositionGrouped.interchangeNames.get(i)), Integer.MAX_VALUE, interchangeMaxHeight, fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER)
+                                    : ClientCache.DATA_CACHE.getText(stationPositionGrouped.interchangeNames.get(i), maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
                             interchanges.add(text);
                             interchangesWidth += text.renderWidth();
                             interchangesHeight = Math.max(interchangesHeight, text.height());
@@ -1656,7 +1669,7 @@ public class RouteMapGenerator implements IGui
                     drawStation(nativeImage, x, y, heightScale, lines, passed);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - lineSize, (int) ((currentStation ? 1.2 : 1) * fontSizeBig), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall), fontSizeSmall / 4, vertical ? HorizontalAlignment.RIGHT : HorizontalAlignment.CENTER);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - lineSize, (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, vertical ? HorizontalAlignment.RIGHT : HorizontalAlignment.CENTER);
                     drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? ARGB_BLACK | routeDetails.get(lines).getA().color : 0, passed ? ARGB_LIGHT_GRAY : ARGB_WHITE, vertical);
                 }));
 
@@ -2098,6 +2111,8 @@ public class RouteMapGenerator implements IGui
                 }
 
                 final int maxStringWidth = (int) (scale * 0.9 * (widthScale / 2 + extraPadding / routeCount));
+                final boolean verticalInterchangeName = ziyue.tjmetro.client.Config.VERTICAL_INTERCHANGE_NAME.get();
+                final float nameScale = stationNameScale(stationPositionsGrouped.size());
                 stationPositionsGrouped.forEach((stationId, stationPositionGroupedSet) -> stationPositionGroupedSet.forEach(stationPositionGrouped -> {
                     final int x = Math.round((stationPositionGrouped.stationPosition.x + xOffset) * scale * widthScale);
                     final int y = Math.round((stationPositionGrouped.stationPosition.y + yOffset) * scale * heightScale);
@@ -2122,18 +2137,25 @@ public class RouteMapGenerator implements IGui
                             }
                         }
 
-                        final ClientCache.Text text = ClientCache.DATA_CACHE.getText(IGui.mergeStations(stationPositionGrouped.interchangeNames), maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
-                        if (rotateStationName) {
-                            drawString(nativeImage, text, x, y + lines * lineSpacing + lineHeight, HorizontalAlignment.CENTER, VerticalAlignment.TOP, 0, ARGB_BLACK, false);
+                        final String interchangeText = IGui.mergeStations(stationPositionGrouped.interchangeNames);
+                        final boolean interchangeAbove = !rotateStationName && textBelow;
+                        final int interchangeY = rotateStationName ? y + lines * lineSpacing + lineHeight : (interchangeAbove ? y - 1 - lineHeight : y + lines * lineSpacing + lineHeight);
+                        final VerticalAlignment interchangeVerticalAlignment = interchangeAbove ? VerticalAlignment.BOTTOM : VerticalAlignment.TOP;
+                        final int interchangeTextColor = rotateStationName ? ARGB_BLACK : passed ? ARGB_LIGHT_GRAY : ARGB_BLACK;
+                        if (verticalInterchangeName) {
+                            // 换乘线路名竖排：只占一个字宽，站多的时候不会再横向压住相邻站名。
+                            final int interchangeMaxHeight = Math.max(lineSize, interchangeAbove ? interchangeY : nativeImage.getHeight() - interchangeY);
+                            drawVerticalLabel(nativeImage, interchangeText, x, interchangeY, interchangeMaxHeight, fontSizeBig / 2, 0, HorizontalAlignment.CENTER, interchangeVerticalAlignment, interchangeTextColor);
                         } else {
-                            drawString(nativeImage, text, x, y + (textBelow ? -1 - lineHeight : lines * lineSpacing + lineHeight), HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.BOTTOM : VerticalAlignment.TOP, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, false);
+                            final ClientCache.Text text = ClientCache.DATA_CACHE.getText(interchangeText, maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
+                            drawString(nativeImage, text, x, interchangeY, HorizontalAlignment.CENTER, interchangeVerticalAlignment, 0, interchangeTextColor, false);
                         }
                     }
 
                     drawStation(nativeImage, x, y, heightScale, lines, passed);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - textY - textCurrentStation.height() / 2, (int) ((currentStation ? 1.2 : 1) * fontSizeBig), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - textY - textCurrentStation.height() / 2, (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
                     if (rotateStationName) {
                         drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, false);
                     } else {
