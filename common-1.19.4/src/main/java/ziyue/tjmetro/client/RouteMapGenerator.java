@@ -442,7 +442,11 @@ public class RouteMapGenerator implements IGui
                                     if (rotateStationName) {
                                         drawPixelSafe(nativeImage, x + drawX + lineWidth * i - lineWidth * interchangeColors.size() / 2, y + lines * lineSpacing + drawY, ARGB_BLACK | interchangeColors.get(i));
                                     } else {
+                                        if (rotateStationName) {
+                                        drawPixelSafe(nativeImage, x + drawX + lineWidth * i - lineWidth * interchangeColors.size() / 2, y + lines * lineSpacing + drawY, ARGB_BLACK | interchangeColors.get(i));
+                                    } else {
                                         drawPixelSafe(nativeImage, x + drawX + lineWidth * i - lineWidth * interchangeColors.size() / 2, y + (textBelow ? -1 : lines * lineSpacing) + (textBelow ? -drawY : drawY), passed ? ARGB_LIGHT_GRAY : ARGB_BLACK | interchangeColors.get(i));
+                                    }
                                     }
                                 }
                             }
@@ -572,6 +576,7 @@ public class RouteMapGenerator implements IGui
                     stationPositions.get(routeIndex).put(0, new StationPosition(0, getLineOffset(routeIndex, colorIndices), true));
                 }
 
+                final boolean rotateStationName = ziyue.tjmetro.client.Config.ROTATED_STATION_NAME.get();
                 final float[] bounds = new float[3];
                 setup(stationPositions, arrowLeft ? stationsIdsAfter : stationsIdsBefore, colorIndices, bounds, !arrowLeft, true);
                 final float xOffset = bounds[0] + 0.5F;
@@ -579,7 +584,7 @@ public class RouteMapGenerator implements IGui
                 final float rawHeightPart = Math.abs(bounds[1]) + 1;
                 final float rawWidth = xOffset + bounds[0] + 0.5F;
                 final float rawHeightTotal = rawHeightPart + bounds[2] + 3;
-                final float yOffset = rawHeightPart + 1.5F;
+                final float yOffset = rawHeightPart + (rotateStationName ? 0.6F : 0) + 1.5F;
                 final float extraPadding = 0;
 
                 final int height;
@@ -720,8 +725,18 @@ public class RouteMapGenerator implements IGui
                     drawStationRouteMapBMT(nativeImage, x, y, heightScale, lines, passed, currentStation);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - colorStripY - padding, fontSizeBig, fontSizeSmall, fontSizeSmall / 4, HorizontalAlignment.CENTER);
-                    drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? 0xff00acd0 : 0, passed ? ARGB_LIGHT_GRAY : currentStation ? ARGB_WHITE : ARGB_BLACK, false);
+                    // Mirrors the MTR4 BMT route map: with "rotated_station_name" enabled (default) the
+                    // station name is drawn vertically to the left of the node, which keeps it clear of
+                    // the interchange color bars that are drawn just below the node (the bars and the
+                    // horizontal name variant used to occupy the same rows for stations whose name is
+                    // placed below the node). The horizontal variant is only the fallback when the
+                    // option is disabled, and then it matches the MTR4 fallback exactly.
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - colorStripY - padding, fontSizeBig, fontSizeSmall, fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    if (rotateStationName) {
+                        drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : (currentStation ? 0xff00acd0 : ARGB_WHITE), false);
+                    } else {
+                        drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? 0xff00acd0 : 0, passed ? ARGB_LIGHT_GRAY : currentStation ? ARGB_WHITE : ARGB_BLACK, false);
+                    }
                 }));
 
                 return nativeImage;
@@ -1887,7 +1902,8 @@ public class RouteMapGenerator implements IGui
                 final float rawHeightPart = Math.abs(bounds[1]) + 1;
                 final float rawWidth = xOffset + bounds[0] + 0.5F;
                 final float rawHeightTotal = rawHeightPart + bounds[2] + 3;
-                final float yOffset = rawHeightPart + 1.7F;
+                final boolean rotateStationName = ziyue.tjmetro.client.Config.ROTATED_STATION_NAME.get();
+                final float yOffset = rawHeightPart + (rotateStationName ? 0.6F : 0) + 1.7F;
                 final float extraPadding = 0;
 
                 final int height;
@@ -2040,20 +2056,32 @@ public class RouteMapGenerator implements IGui
                         for (int i = 0; i < interchangeColors.size(); i++) {
                             for (int drawX = 0; drawX < lineWidth; drawX++) {
                                 for (int drawY = 0; drawY < lineHeight; drawY++) {
-                                    drawPixelSafe(nativeImage, x + drawX + lineWidth * i - lineWidth * interchangeColors.size() / 2, y + (textBelow ? -1 : lines * lineSpacing) + (textBelow ? -drawY : drawY), passed ? ARGB_LIGHT_GRAY : ARGB_BLACK | interchangeColors.get(i));
+                                    if (rotateStationName) {
+                                        drawPixelSafe(nativeImage, x + drawX + lineWidth * i - lineWidth * interchangeColors.size() / 2, y + lines * lineSpacing + drawY, ARGB_BLACK | interchangeColors.get(i));
+                                    } else {
+                                        drawPixelSafe(nativeImage, x + drawX + lineWidth * i - lineWidth * interchangeColors.size() / 2, y + (textBelow ? -1 : lines * lineSpacing) + (textBelow ? -drawY : drawY), passed ? ARGB_LIGHT_GRAY : ARGB_BLACK | interchangeColors.get(i));
+                                    }
                                 }
                             }
                         }
 
                         final ClientCache.Text text = ClientCache.DATA_CACHE.getText(IGui.mergeStations(stationPositionGrouped.interchangeNames), maxStringWidth, (int) ((fontSizeBig + fontSizeSmall) * LINE_HEIGHT_MULTIPLIER / 2), fontSizeBig / 2, fontSizeSmall / 2, 0, HorizontalAlignment.CENTER);
-                        drawString(nativeImage, text, x, y + (textBelow ? -1 - lineHeight : lines * lineSpacing + lineHeight), HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.BOTTOM : VerticalAlignment.TOP, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, false);
+                        if (rotateStationName) {
+                            drawString(nativeImage, text, x, y + lines * lineSpacing + lineHeight, HorizontalAlignment.CENTER, VerticalAlignment.TOP, 0, ARGB_BLACK, false);
+                        } else {
+                            drawString(nativeImage, text, x, y + (textBelow ? -1 - lineHeight : lines * lineSpacing + lineHeight), HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.BOTTOM : VerticalAlignment.TOP, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, false);
+                        }
                     }
 
                     drawStation(nativeImage, x, y, heightScale, lines, passed);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - textY - textCurrentStation.height() / 2, (int) ((currentStation ? 1.2 : 1) * fontSizeBig), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall), fontSizeSmall / 4, HorizontalAlignment.CENTER);
-                    drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? ARGB_BLACK : 0, passed ? ARGB_LIGHT_GRAY : currentStation ? ARGB_WHITE : ARGB_BLACK, false);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, maxStringWidth, y - textY - textCurrentStation.height() / 2, (int) ((currentStation ? 1.2 : 1) * fontSizeBig), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    if (rotateStationName) {
+                        drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, false);
+                    } else {
+                        drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? ARGB_BLACK : 0, passed ? ARGB_LIGHT_GRAY : currentStation ? ARGB_WHITE : ARGB_BLACK, false);
+                    }
                 }));
 
                 if (transparentWhite) {

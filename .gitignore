@@ -40,3 +40,6 @@ mappings
 MTR-*.jar
 mtr_extract/
 fix_*.ps1
+# build logs
+_build.log
+_build*.log
