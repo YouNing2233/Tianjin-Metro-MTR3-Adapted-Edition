@@ -513,7 +513,7 @@ public class RouteMapGenerator implements IGui
                     drawStation(nativeImage, x, y, heightScale, lines, passed);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - lineSize, (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, vertical ? HorizontalAlignment.RIGHT : (rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER), LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), (int) ((y - lineSize) * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, vertical ? HorizontalAlignment.RIGHT : (rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER), LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
                     if (rotateStationName) {
                         drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, vertical);
                     } else {
@@ -788,7 +788,7 @@ public class RouteMapGenerator implements IGui
                     // horizontal name variant used to occupy the same rows for stations whose name is
                     // placed below the node). The horizontal variant is only the fallback when the
                     // option is disabled, and then it matches the MTR4 fallback exactly.
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - colorStripY - padding, (int) (fontSizeBig * nameScale), (int) (fontSizeSmall * nameScale), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), (int) ((y - colorStripY - padding) * nameScale), (int) (fontSizeBig * nameScale), (int) (fontSizeSmall * nameScale), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
                     if (rotateStationName) {
                         drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : (currentStation ? 0xff00acd0 : ARGB_WHITE), false);
                     } else {
@@ -1669,7 +1669,7 @@ public class RouteMapGenerator implements IGui
                     drawStation(nativeImage, x, y, heightScale, lines, passed);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - lineSize, (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, vertical ? HorizontalAlignment.RIGHT : HorizontalAlignment.CENTER);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), (int) ((y - lineSize) * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, vertical ? HorizontalAlignment.RIGHT : HorizontalAlignment.CENTER);
                     drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? ARGB_BLACK | routeDetails.get(lines).getA().color : 0, passed ? ARGB_LIGHT_GRAY : ARGB_WHITE, vertical);
                 }));
 
@@ -1860,7 +1860,7 @@ public class RouteMapGenerator implements IGui
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
                     final String stationName = station == null ? "" : station.name;
-                    drawVerticalString(nativeImage, stationName, x, y - lineSize * 5 / 4, Integer.MAX_VALUE, y - lineSize * 4, (int) (fontSizeBig * nameScale), (int) (fontSizeSmall * nameScale), fontSizeSmall / 4, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM, 0, currentStation ? 0xffff0000 : ARGB_BLACK);
+                    drawVerticalString(nativeImage, stationName, x, y - lineSize * 5 / 4, Integer.MAX_VALUE, (int) ((y - lineSize * 4) * nameScale), (int) (fontSizeBig * nameScale), (int) (fontSizeSmall * nameScale), fontSizeSmall / 4, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM, 0, currentStation ? 0xffff0000 : ARGB_BLACK);
                 }));
 
                 if (transparentWhite) {
@@ -2155,7 +2155,7 @@ public class RouteMapGenerator implements IGui
                     drawStation(nativeImage, x, y, heightScale, lines, passed);
 
                     final Station station = ClientCache.DATA_CACHE.stationIdMap.get(stationId);
-                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), y - textY - textCurrentStation.height() / 2, (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
+                    final ClientCache.Text text = ClientCache.DATA_CACHE.getText(station == null ? "" : station.name, (int) (maxStringWidth * nameScale), (int) ((y - textY - textCurrentStation.height() / 2) * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeBig * nameScale), (int) ((currentStation ? 1.2 : 1) * fontSizeSmall * nameScale), fontSizeSmall / 4, rotateStationName ? HorizontalAlignment.LEFT : HorizontalAlignment.CENTER, LINE_HEIGHT_MULTIPLIER, false, rotateStationName);
                     if (rotateStationName) {
                         drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, false);
                     } else {

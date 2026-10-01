@@ -31,7 +31,7 @@ public class Config
     public static final Key<Boolean> DISABLE_TRAIN_RENDERING = new Key<>("disable_train_rendering", false);
     public static final Key<Integer> DYNAMIC_TEXTURE_MAX_SIZE = new Key<>("dynamic_texture_max_size", 2048);
     public static final Key<Boolean> SHRINK_DENSE_STATION_NAME = new Key<>("shrink_dense_station_name", true);
-    public static final Key<Boolean> VERTICAL_INTERCHANGE_NAME = new Key<>("vertical_interchange_name", true);
+    public static final Key<Boolean> VERTICAL_INTERCHANGE_NAME = new Key<>("vertical_interchange_name", false);
 
     protected static final Path CONFIG_FILE_PATH = Minecraft.getInstance().gameDirectory.toPath().resolve("config").resolve("tjmetro.json");
     public static final List<Supplier<MutableComponent>> FOOTERS = Arrays.asList(
