@@ -77,20 +77,24 @@ public class RouteMapGenerator implements IGui
      * @since 1.1.3
      */
     protected static float stationNameScale(int stationCount) {
+        final float nameScale;
         if (!ziyue.tjmetro.client.Config.SHRINK_DENSE_STATION_NAME.get()) {
-            return 1;
-        }
-        if (stationCount <= 10) {
-            return 1;
-        } else if (stationCount <= 15) {
-            return 0.85F;
-        } else if (stationCount <= 22) {
-            return 0.72F;
-        } else if (stationCount <= 30) {
-            return 0.62F;
+            nameScale = 1;
+        } else if (stationCount <= 5) {
+            nameScale = 1;
+        } else if (stationCount <= 8) {
+            nameScale = 0.80F;
+        } else if (stationCount <= 12) {
+            nameScale = 0.70F;
+        } else if (stationCount <= 18) {
+            nameScale = 0.62F;
+        } else if (stationCount <= 26) {
+            nameScale = 0.55F;
         } else {
-            return 0.55F;
+            nameScale = 0.48F;
         }
+        TianjinMetro.LOGGER.info("Route map station name scale: {} stations -> {}", stationCount, nameScale);
+        return nameScale;
     }
 
     /**
