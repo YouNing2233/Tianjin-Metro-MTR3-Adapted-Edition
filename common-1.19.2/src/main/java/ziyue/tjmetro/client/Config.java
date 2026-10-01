@@ -32,6 +32,7 @@ public class Config
     public static final Key<Integer> DYNAMIC_TEXTURE_MAX_SIZE = new Key<>("dynamic_texture_max_size", 2048);
     public static final Key<Boolean> SHRINK_DENSE_STATION_NAME = new Key<>("shrink_dense_station_name", true);
     public static final Key<Boolean> VERTICAL_INTERCHANGE_NAME = new Key<>("vertical_interchange_name", false);
+    public static final Key<Integer> STATION_NAME_SIZE = new Key<>("station_name_size", 100);
 
     protected static final Path CONFIG_FILE_PATH = Minecraft.getInstance().gameDirectory.toPath().resolve("config").resolve("tjmetro.json");
     public static final List<Supplier<MutableComponent>> FOOTERS = Arrays.asList(
@@ -51,6 +52,7 @@ public class Config
             DYNAMIC_TEXTURE_MAX_SIZE.set(getInteger(jsonConfig, DYNAMIC_TEXTURE_MAX_SIZE));
             SHRINK_DENSE_STATION_NAME.set(getBoolean(jsonConfig, SHRINK_DENSE_STATION_NAME));
             VERTICAL_INTERCHANGE_NAME.set(getBoolean(jsonConfig, VERTICAL_INTERCHANGE_NAME));
+            STATION_NAME_SIZE.set(getInteger(jsonConfig, STATION_NAME_SIZE));
         } catch (Exception e) {
             writeToFile();
             TianjinMetro.LOGGER.error(e);
@@ -93,6 +95,7 @@ public class Config
         jsonConfig.addProperty(DYNAMIC_TEXTURE_MAX_SIZE.getId(), DYNAMIC_TEXTURE_MAX_SIZE.get());
         jsonConfig.addProperty(SHRINK_DENSE_STATION_NAME.getId(), SHRINK_DENSE_STATION_NAME.get());
         jsonConfig.addProperty(VERTICAL_INTERCHANGE_NAME.getId(), VERTICAL_INTERCHANGE_NAME.get());
+        jsonConfig.addProperty(STATION_NAME_SIZE.getId(), STATION_NAME_SIZE.get());
 
         try {
             Files.write(CONFIG_FILE_PATH, Collections.singleton(RailwayData.prettyPrint(jsonConfig)));
