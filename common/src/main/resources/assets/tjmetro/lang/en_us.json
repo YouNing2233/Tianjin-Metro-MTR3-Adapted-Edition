@@ -253,6 +253,10 @@
     "config.tjmetro.debugging":  "Debugging options",
     "config.tjmetro.disable_dynamic_textures":  "Disable dynamic textures",
     "config.tjmetro.disable_train_rendering":  "Disable train rendering",
+    "config.tjmetro.shrink_dense_station_name":  "Shrink station names on dense lines",
+    "config.tjmetro.vertical_interchange_name":  "Vertical interchange line names",
+    "tooltip.tjmetro.shrink_dense_station_name":  "Station names on a route map get smaller as the line carries more stations, so neighbouring names no longer overlap.",
+    "tooltip.tjmetro.vertical_interchange_name":  "Interchange line names are written vertically (one character per line), taking up a single character of width so they no longer run into the station names.",
     "config.tjmetro.dynamic_texture_max_size":  "Dynamic texture max size",
     "config.tjmetro.disable_filters":  "Disable filters",
 

@@ -30,6 +30,8 @@ public class Config
     public static final Key<Boolean> ROTATED_STATION_NAME = new Key<>("rotated_station_name", true);
     public static final Key<Boolean> DISABLE_TRAIN_RENDERING = new Key<>("disable_train_rendering", false);
     public static final Key<Integer> DYNAMIC_TEXTURE_MAX_SIZE = new Key<>("dynamic_texture_max_size", 2048);
+    public static final Key<Boolean> SHRINK_DENSE_STATION_NAME = new Key<>("shrink_dense_station_name", true);
+    public static final Key<Boolean> VERTICAL_INTERCHANGE_NAME = new Key<>("vertical_interchange_name", true);
 
     protected static final Path CONFIG_FILE_PATH = Minecraft.getInstance().gameDirectory.toPath().resolve("config").resolve("tjmetro.json");
     public static final List<Supplier<MutableComponent>> FOOTERS = Arrays.asList(
@@ -47,6 +49,8 @@ public class Config
             ROTATED_STATION_NAME.set(getBoolean(jsonConfig, ROTATED_STATION_NAME));
             DISABLE_TRAIN_RENDERING.set(getBoolean(jsonConfig, DISABLE_TRAIN_RENDERING));
             DYNAMIC_TEXTURE_MAX_SIZE.set(getInteger(jsonConfig, DYNAMIC_TEXTURE_MAX_SIZE));
+            SHRINK_DENSE_STATION_NAME.set(getBoolean(jsonConfig, SHRINK_DENSE_STATION_NAME));
+            VERTICAL_INTERCHANGE_NAME.set(getBoolean(jsonConfig, VERTICAL_INTERCHANGE_NAME));
         } catch (Exception e) {
             writeToFile();
             TianjinMetro.LOGGER.error(e);
@@ -87,6 +91,8 @@ public class Config
         jsonConfig.addProperty(ROTATED_STATION_NAME.getId(), ROTATED_STATION_NAME.get());
         jsonConfig.addProperty(DISABLE_TRAIN_RENDERING.getId(), DISABLE_TRAIN_RENDERING.get());
         jsonConfig.addProperty(DYNAMIC_TEXTURE_MAX_SIZE.getId(), DYNAMIC_TEXTURE_MAX_SIZE.get());
+        jsonConfig.addProperty(SHRINK_DENSE_STATION_NAME.getId(), SHRINK_DENSE_STATION_NAME.get());
+        jsonConfig.addProperty(VERTICAL_INTERCHANGE_NAME.getId(), VERTICAL_INTERCHANGE_NAME.get());
 
         try {
             Files.write(CONFIG_FILE_PATH, Collections.singleton(RailwayData.prettyPrint(jsonConfig)));

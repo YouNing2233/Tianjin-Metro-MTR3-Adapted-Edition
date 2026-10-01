@@ -23,12 +23,16 @@ public class ConfigScreen
         TextListEntry textFooter = entryBuilder.startTextDescription(FOOTERS.get(new Random().nextInt(FOOTERS.size())).get()).build();
         final var booleanDisableTrainRendering = entryBuilder.startBooleanToggle(Text.translatable("config.tjmetro.disable_train_rendering"), DISABLE_TRAIN_RENDERING.get()).setDefaultValue(DISABLE_TRAIN_RENDERING.getDefault()).setTooltip(Text.translatable("tooltip.tjmetro.disable_train_rendering")).build();
         final var intDynamicTextureMaxSize = entryBuilder.startIntSlider(Text.translatable("config.tjmetro.dynamic_texture_max_size"), DYNAMIC_TEXTURE_MAX_SIZE.get(), 512, 8192).setDefaultValue(DYNAMIC_TEXTURE_MAX_SIZE.getDefault()).setTooltip(Text.translatable("tooltip.tjmetro.dynamic_texture_max_size")).build();
-        categoryTianjinMetro.addEntry(booleanUseTianjinMetroFont).addEntry(booleanDisableTrainRendering).addEntry(intDynamicTextureMaxSize).addEntry(textFooter);
+        final var booleanShrinkDenseStationName = entryBuilder.startBooleanToggle(Text.translatable("config.tjmetro.shrink_dense_station_name"), SHRINK_DENSE_STATION_NAME.get()).setDefaultValue(SHRINK_DENSE_STATION_NAME.getDefault()).setTooltip(Text.translatable("tooltip.tjmetro.shrink_dense_station_name")).build();
+        final var booleanVerticalInterchangeName = entryBuilder.startBooleanToggle(Text.translatable("config.tjmetro.vertical_interchange_name"), VERTICAL_INTERCHANGE_NAME.get()).setDefaultValue(VERTICAL_INTERCHANGE_NAME.getDefault()).setTooltip(Text.translatable("tooltip.tjmetro.vertical_interchange_name")).build();
+        categoryTianjinMetro.addEntry(booleanUseTianjinMetroFont).addEntry(booleanDisableTrainRendering).addEntry(intDynamicTextureMaxSize).addEntry(booleanShrinkDenseStationName).addEntry(booleanVerticalInterchangeName).addEntry(textFooter);
 
         builder.setSavingRunnable(() -> {
             USE_TIANJIN_METRO_FONT.set(booleanUseTianjinMetroFont.getValue());
             DISABLE_TRAIN_RENDERING.set(booleanDisableTrainRendering.getValue());
             DYNAMIC_TEXTURE_MAX_SIZE.set(intDynamicTextureMaxSize.getValue());
+            SHRINK_DENSE_STATION_NAME.set(booleanShrinkDenseStationName.getValue());
+            VERTICAL_INTERCHANGE_NAME.set(booleanVerticalInterchangeName.getValue());
             ClientCache.DATA_CACHE.resetFonts();
         });
         return builder.build();
