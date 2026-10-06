@@ -186,6 +186,12 @@ public abstract class SidingScreenMixin extends SavedRailScreenBase<Siding> impl
 		final TrainProperties trainProperties = trainId.isEmpty() ? null : TrainClientRegistry.getTrainProperties(trainId);
 
 		ClientData.DATA_CACHE.requestDepotIdToSidings(depot.id).values().forEach(siding -> {
+			// 跳过侧线自身：它已经被排除在复制目标之外。重复写入会读到被自身刷新过的输入框，
+			// 多次复制后 maxTrains 会一路归零、导致配置被清空（对齐上游 MTR4 a53f426 / Fix #36）。
+			if (siding.id == savedRailBase.id) {
+				return;
+			}
+
 			try {
 				if (trainProperties != null && !trainId.isEmpty() && trainProperties.baseTrainType != null
 						&& siding.isValidVehicle(TrainType.getSpacing(trainProperties.baseTrainType))) {
