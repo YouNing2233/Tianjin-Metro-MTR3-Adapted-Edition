@@ -1,0 +1,87 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+}
+
+// 1.21 / 1.21.1 NeoForge 子项目：依赖 common-1.21.1，MTR 侧为 NeoMTR
+version = "1.21.1-" + project.mod_version
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${project.subForgeVersion}"
+    modApi "${rootProject.architectury_id}:architectury-neoforge:${project.subArchitecturyVersion}"
+
+    modImplementation files(project.subMtrJar)
+
+    common(project(path: ":common-1.21.1", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common-1.21.1", configuration: "transformProductionNeoForge")) { transitive = false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.mod_version
+    }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier = null
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+task copyMtrToRun() {
+    doLast {
+        copy {
+            from project.subMtrJar
+            into "run/mods"
+        }
+    }
+}
+
+task moveNeoForge1211Builds() {
+    doLast {
+        delete fileTree("../build").matching {
+            include "**/TianjinMetro-neoforge-1.21.1*"
+        }
+        copy {
+            from "build/libs"
+            into "../build"
+            exclude "*dev-shadow.jar"
+            rename "(.+)-1\\.21\\.1-1\\.21\\.1-(.+)", "TianjinMetro-\$1-1.21.1-\$2"
+        }
+    }
+}
+
+afterEvaluate {
+    for (def task in it.tasks) {
+        if (task == tasks.build) {
+            task.finalizedBy tasks.moveNeoForge1211Builds
+        }
+    }
+}

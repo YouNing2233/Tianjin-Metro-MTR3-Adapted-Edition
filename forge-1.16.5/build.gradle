@@ -1,0 +1,99 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+}
+
+// 1.16.5 Forge 子项目：使用 architectury 代码转换，依赖 common-1.16.5
+version = "1.16.5-" + project.mod_version
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+loom {
+    forge {
+        mixinConfig "tjmetro.mixins.json"
+        mixinConfig "tjmetro.forge.mixins.json"
+    }
+    mixin {
+        defaultRefmapName = "forge-forge-refmap.json"
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${project.subForgeVersion}"
+    modApi "${project.subArchitecturyId}:architectury-forge:${project.subArchitecturyVersion}"
+    modApi "me.shedaniel.cloth:cloth-config-forge:${project.subClothConfigForgeVersion}"
+
+    modImplementation files(project.subMtrJar)
+
+    common(project(path: ":common-1.16.5", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common-1.16.5", configuration: "transformProductionForge")) { transitive = false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.mod_version
+    }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+    from sourceSets.main.output
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier = null
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+task copyMtrToRun() {
+    doLast {
+        copy {
+            from project.subMtrJar
+            into "run/mods"
+        }
+    }
+}
+
+task moveForge1165Builds() {
+    doLast {
+        delete fileTree("../build").matching {
+            include "**/TianjinMetro-forge-1.16.5*"
+        }
+        copy {
+            from "build/libs"
+            into "../build"
+            exclude "*dev-shadow.jar"
+            rename "(.+)-1\\.16\\.5-1\\.16\\.5-(.+)", "TianjinMetro-\$1-1.16.5-\$2"
+        }
+    }
+}
+
+afterEvaluate {
+    for (def task in it.tasks) {
+        if (task == tasks.build) {
+            task.finalizedBy tasks.moveForge1165Builds
+        }
+    }
+}

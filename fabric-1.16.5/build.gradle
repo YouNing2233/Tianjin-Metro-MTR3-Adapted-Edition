@@ -1,0 +1,108 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+}
+
+// 1.16.5 Fabric 子项目：使用 architectury 代码转换，依赖 common-1.16.5
+version = "1.16.5-" + project.mod_version
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    mixin {
+        defaultRefmapName = "fabric-fabric-refmap.json"
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${project.subFabricLoaderVersion}"
+    // 1.16.5 的 fabric-api 聚合包会带进约 25 个子模块，Loom 会为**每个**子模块去
+    // maven.fabricmc.net 拉取 -sources.jar，在国内网络下每个要 1~2 分钟，整体会卡死一小时以上。
+    // 本模组只用到下面两个模块（见 fabric.RegistryImpl），因此按需声明即可；
+    // 运行时仍由玩家安装的完整 fabric-api 提供（fabric.mod.json 的 depends 已声明 fabric-api）。
+    modApi "net.fabricmc.fabric-api:fabric-rendering-v1:1.6.1+3cc0f0907d"
+    modApi "net.fabricmc.fabric-api:fabric-game-rule-api-v1:1.0.7+3cc0f0907d"
+    // MTR 1.16.5 的 BlockEntityClientSerializableMapper 实现了这个接口；
+    // 它在 1.16.5 时代属于 fabric-networking-blockentity-v0（1.18 起已从 fabric-api 移除）。
+    modCompileOnly "net.fabricmc.fabric-api:fabric-networking-blockentity-v0:0.2.9+3cc0f0907d"
+    modApi "${project.subArchitecturyId}:architectury-fabric:${project.subArchitecturyVersion}"
+
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.subClothConfigVersion}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    // Mod Menu integration (optional at runtime; entrypoint is only used when Mod Menu is present)
+    // 1.16.5 的 ModMenu(1.16.23) 传递依赖着一批 BMCLAPI/aliyun 都没有的 fabric-api 子模块，
+    // 会让 Loom 在配置阶段卡在 sources 拉取上，因此 1.16.5 暂不接入 ModMenu。
+    // modCompileOnly "com.terraformersmc:modmenu:${project.subModMenuVersion}"
+
+    modImplementation files(project.subMtrJar)
+
+    common(project(path: ":common-1.16.5", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common-1.16.5", configuration: "transformProductionFabric")) { transitive false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.mod_version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier = null
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+task copyMtrToRun() {
+    doLast {
+        copy {
+            from project.subMtrJar
+            into "run/mods"
+        }
+    }
+}
+
+task moveFabric1165Builds() {
+    doLast {
+        delete fileTree("../build").matching {
+            include "**/TianjinMetro-fabric-1.16.5*"
+        }
+        copy {
+            from "build/libs"
+            into "../build"
+            exclude "*dev-shadow.jar"
+            rename "(.+)-1\\.16\\.5-1\\.16\\.5-(.+)", "TianjinMetro-\$1-1.16.5-\$2"
+        }
+    }
+}
+
+afterEvaluate {
+    for (def task in it.tasks) {
+        if (task == tasks.build) {
+            task.finalizedBy tasks.moveFabric1165Builds
+        }
+    }
+}

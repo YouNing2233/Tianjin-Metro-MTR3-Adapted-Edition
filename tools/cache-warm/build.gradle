@@ -1,0 +1,53 @@
+// Gradle 共享缓存预热工程（仅国内网络需要）
+//
+// 背景：本机无法访问 maven.fabricmc.net（直接超时），而 Architectury Loom 会在项目评估阶段
+// 就把该仓库排在其他仓库之前，导致解析 sponge-mixin / fabric-loader 等依赖时长时间卡死。
+// 该仓库顺序无法在 build.gradle 里重排（Loom 已触发过解析），所以这里用一个独立工程，
+// 只挂 BMCLAPI 国内镜像，把这些依赖先灌进 Gradle 共享缓存（~/.gradle/caches/modules-2）。
+// 预热完成后，主工程以 --offline 构建即可，不再访问任何网络。
+//
+// 用法：
+//   gradlew -p tools/cache-warm warmup
+//   gradlew -p tools/cache-warm warmup -Pcoords="g:a:v,g2:a2:v2"   # 追加临时坐标
+// 若主工程离线构建报 "No cached version available for offline mode"，
+// 把报出的坐标补到 DEPENDENCIES 里再跑一次即可。
+
+plugins {
+    id 'java'
+}
+
+repositories {
+    // Forge 官方 maven 在国内经常超时；BMCLAPI 镜像了同样的路径，优先用它。
+    maven { url = "https://bmclapi2.bangbang93.com/maven/" }   // 镜像 maven.fabricmc.net / maven.neoforged.net / maven.minecraftforge.net
+    // net.fabricmc.fabric-api 系列 BMCLAPI 不镜像，只能直连（国内时通时断，多试几次）
+    maven { url = "https://maven.fabricmc.net/" }
+    maven { url = "https://maven.aliyun.com/repository/public" }
+    maven { url = "https://maven.architectury.dev/" }
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.terraformersmc.com/releases/" }
+    maven { url = "https://maven.minecraftforge.net/" }
+}
+
+// 已确认从 maven.fabricmc.net 拉取、且国内直连不可达的依赖
+def DEPENDENCIES = [
+        "net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7",
+]
+
+configurations {
+    warm
+}
+
+dependencies {
+    DEPENDENCIES.each { warm it }
+    if (project.hasProperty("coords")) {
+        project.property("coords").split(",").each { warm it.trim() }
+    }
+}
+
+tasks.register("warmup") {
+    doLast {
+        def files = configurations.warm.resolve()
+        println "预热完成，共 ${files.size()} 个文件："
+        files.each { println "  " + it.name }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "variants": {
+        "facing=north,scale=1": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=1": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=1": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=1": { "model": "tjmetro:block/station_name_projector", "y": 270 },
+        "facing=north,scale=2": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=2": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=2": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=2": { "model": "tjmetro:block/station_name_projector", "y": 270 },
+        "facing=north,scale=3": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=3": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=3": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=3": { "model": "tjmetro:block/station_name_projector", "y": 270 },
+        "facing=north,scale=4": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=4": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=4": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=4": { "model": "tjmetro:block/station_name_projector", "y": 270 },
+        "facing=north,scale=5": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=5": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=5": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=5": { "model": "tjmetro:block/station_name_projector", "y": 270 },
+        "facing=north,scale=6": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=6": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=6": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=6": { "model": "tjmetro:block/station_name_projector", "y": 270 },
+        "facing=north,scale=7": { "model": "tjmetro:block/station_name_projector" },
+        "facing=east,scale=7": { "model": "tjmetro:block/station_name_projector", "y": 90 },
+        "facing=south,scale=7": { "model": "tjmetro:block/station_name_projector", "y": 180 },
+        "facing=west,scale=7": { "model": "tjmetro:block/station_name_projector", "y": 270 }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "ziyue.tjmetro.neoforge.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "FallingBlockMixin",
+        "GameRulesBooleanValueAccessor",
+        "GameRulesIntegerValueAccessor",
+        "StorageMinecartEntityMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 0
+    }
+}

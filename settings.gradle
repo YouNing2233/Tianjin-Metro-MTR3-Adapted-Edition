@@ -22,4 +22,14 @@ include("common-1.18.2")
 include("fabric-1.18.2")
 include("forge-1.18.2")
 
+// 1.16.5（MTR 侧仍是 3.2.2；平台为 Fabric + Forge，字节码目标 Java 17）
+include("common-1.16.5")
+include("fabric-1.16.5")
+include("forge-1.16.5")
+
+// 1.21 / 1.21.1（MTR 侧改用 NeoMTR；平台为 Fabric + NeoForge）
+include("common-1.21.1")
+include("fabric-1.21.1")
+include("neoforge-1.21.1")
+
 rootProject.name = "Tianjin-Metro"

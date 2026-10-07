@@ -1,0 +1,6 @@
+// common-1.16.5 模块：1.16.5 版本的共享代码
+// 依赖（fabric-loader, architectury, cloth-config, MTR）已在 subprojects 块中配置
+
+architectury {
+    common("fabric", "forge")
+}

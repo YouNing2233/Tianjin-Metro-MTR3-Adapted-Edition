@@ -1,0 +1,49 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="GPL-3.0-only"
+
+[[mods]]
+modId="tjmetro"
+version="${version}"
+displayName="Tianjin Metro - MTR3 Adapted Edition"
+description='''
+Tianjin Metro content addon for Minecraft Transit Railway (NeoMTR).
+Supports Minecraft 1.21 / 1.21.1 on NeoForge.
+
+Original mod: https://github.com/ZiYueCommentary/Tianjin-Metro
+'''
+logoFile="icon.png"
+
+[[mixins]]
+config="tjmetro.mixins.json"
+
+[[mixins]]
+config="tjmetro.neoforge.mixins.json"
+
+[[dependencies.tjmetro]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.tjmetro]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21,1.22)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.tjmetro]]
+    modId="architectury"
+    type="required"
+    versionRange="[13,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.tjmetro]]
+    modId="mtr"
+    type="required"
+    versionRange="[300,)"
+    ordering="AFTER"
+    side="BOTH"

@@ -1,0 +1,13 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "ziyue.tjmetro.fabric.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "FallingBlockMixin",
+        "StorageMinecartEntityMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 0
+    }
+}

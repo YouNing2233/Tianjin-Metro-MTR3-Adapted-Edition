@@ -48,6 +48,33 @@ def forge_version_1182 = "1.18.2-40.3.12"
 def cloth_config_forge_version_1182 = "7.0.72"
 def architectury_version_1182 = "4.12.94"
 
+// 1.16.5 子项目专用配置
+// 注意：1.16.5 时期的 Architectury 仍发布在 me.shedaniel 组下（不是 dev.architectury），
+//   Forge 为 36.2.x，MTR 侧同样是 3.2.2（其 mtr.mappings 层与 1.18.2 完全一致）。
+def minecraft_version_1165 = "1.16.5"
+def mtr_jar_1165 = "E:/Project/MTRjars/MTR-fabric-1.16.5-3.2.2-hotfix-1.jar"
+def mtr_forge_jar_1165 = "E:/Project/MTRjars/MTR-forge-1.16.5-3.2.2-hotfix-1.jar"
+def fabric_loader_version_1165 = "0.19.3"
+def fabric_api_version_1165 = "0.42.0+1.16"
+def mod_menu_version_1165 = "1.16.23"
+def cloth_config_fabric_version_1165 = "4.11.26"
+def forge_version_1165 = "1.16.5-36.2.39"
+def cloth_config_forge_version_1165 = "4.11.26"
+def architectury_version_1165 = "1.32.66"
+
+// 1.21 / 1.21.1 子项目专用配置
+// MTR 侧改用 NeoMTR（zbx1425/NeoMTR，MIT，包名同为 mtr.*），平台为 Fabric + NeoForge
+def minecraft_version_1211 = "1.21.1"
+def neomtr_jar_1211 = "E:/Project/MTRjars/NeoMTR-300.6.1+1.21.1+fabric.jar"
+def neomtr_jar_neoforge_1211 = "E:/Project/MTRjars/NeoMTR-300.6.1+1.21.1+neoforge.jar"
+def fabric_loader_version_1211 = "0.16.2"
+def fabric_api_version_1211 = "0.102.1+1.21.1"
+def neoforge_version_1211 = "21.1.21"
+def mod_menu_version_1211 = "11.0.2"
+def cloth_config_fabric_version_1211 = "15.0.140"
+def cloth_config_neoforge_version_1211 = "15.0.140"
+def architectury_version_1211 = "13.0.6"
+
 
 
 rootProject.ext.fabric_loader_version = "0.19.3"
@@ -70,18 +97,27 @@ subprojects {
     def isLegacy1194 = project.name == "fabric-1.19.4" || project.name == "forge-1.19.4" || project.name == "common-1.19.4"
     def isLegacy1192 = project.name == "fabric-1.19.2" || project.name == "forge-1.19.2" || project.name == "common-1.19.2"
     def isLegacy1182 = project.name == "fabric-1.18.2" || project.name == "forge-1.18.2" || project.name == "common-1.18.2"
-    def isForge = project.name == "forge" || project.name == "forge-1.19.4" || project.name == "forge-1.19.2" || project.name == "forge-1.18.2"
-    def isCommon = project.name == "common" || project.name == "common-1.19.4" || project.name == "common-1.19.2" || project.name == "common-1.18.2"
-    def subMcVersion = isLegacy1194 ? minecraft_version_1194 : (isLegacy1192 ? minecraft_version_1192 : (isLegacy1182 ? minecraft_version_1182 : minecraft_version))
+    def isLegacy1165 = project.name == "fabric-1.16.5" || project.name == "forge-1.16.5" || project.name == "common-1.16.5"
+    def isLegacy1211 = project.name == "fabric-1.21.1" || project.name == "neoforge-1.21.1" || project.name == "common-1.21.1"
+    def isNeoForge1211 = project.name == "neoforge-1.21.1"
+    def isForge = project.name == "forge" || project.name == "forge-1.19.4" || project.name == "forge-1.19.2" || project.name == "forge-1.18.2" || project.name == "forge-1.16.5"
+    def isCommon = project.name == "common" || project.name == "common-1.19.4" || project.name == "common-1.19.2" || project.name == "common-1.18.2" || project.name == "common-1.21.1" || project.name == "common-1.16.5"
+    def subMcVersion = isLegacy1211 ? minecraft_version_1211 : (isLegacy1194 ? minecraft_version_1194 : (isLegacy1192 ? minecraft_version_1192 : (isLegacy1182 ? minecraft_version_1182 : (isLegacy1165 ? minecraft_version_1165 : minecraft_version))))
     // 根据平台和版本选择对应的 MTR jar
     def subMtrJar
-    if (isForge) {
+    if (isNeoForge1211) {
+        subMtrJar = neomtr_jar_neoforge_1211
+    } else if (isLegacy1211) {
+        subMtrJar = neomtr_jar_1211
+    } else if (isForge) {
         if (isLegacy1194) {
             subMtrJar = "../${mtr_forge_jar_1194}"
         } else if (isLegacy1192) {
             subMtrJar = "E:/Project/MTRjars/${mtr_forge_jar_1192}"
         } else if (isLegacy1182) {
             subMtrJar = "../${mtr_forge_jar_1182}"
+        } else if (isLegacy1165) {
+            subMtrJar = mtr_forge_jar_1165
         } else {
             subMtrJar = "E:/Project/MTRjars/MTR-forge-1.20.1-3.6.2.2.jar"
         }
@@ -92,6 +128,8 @@ subprojects {
             subMtrJar = "E:/Project/MTRjars/${mtr_jar_1192}"
         } else if (isLegacy1182) {
             subMtrJar = "../${mtr_jar_1182}"
+        } else if (isLegacy1165) {
+            subMtrJar = mtr_jar_1165
         } else {
             subMtrJar = "E:/Project/MTRjars/MTR-fabric-1.20.1-3.6.2.2.jar"
         }
@@ -109,6 +147,34 @@ subprojects {
     project.ext.subForgeVersion = isLegacy1194 ? forge_version_1194 : (isLegacy1192 ? forge_version_1192 : (isLegacy1182 ? forge_version_1182 : rootProject.forge_version))
     project.ext.subArchitecturyVersion = isLegacy1194 ? architectury_version_1194 : (isLegacy1192 ? architectury_version_1192 : (isLegacy1182 ? architectury_version_1182 : rootProject.architectury_version))
     project.ext.subClothConfigForgeVersion = isLegacy1194 ? cloth_config_forge_version_1194 : (isLegacy1192 ? cloth_config_forge_version_1192 : (isLegacy1182 ? cloth_config_forge_version_1182 : rootProject.cloth_config_forge_version))
+
+    // 1.16.5 子项目覆盖默认值。
+    // 关键差异：Architectury 在该版本仍发布在 me.shedaniel 组下，所以用 subArchitecturyId 区分；
+    // MC 1.16.5 还要求 Java 8 字节码（见 JavaCompile 配置）。
+    if (isLegacy1165) {
+        project.ext.subFabricLoaderVersion = fabric_loader_version_1165
+        project.ext.subFabricApiVersion = fabric_api_version_1165
+        project.ext.subModMenuVersion = mod_menu_version_1165
+        project.ext.subClothConfigVersion = cloth_config_fabric_version_1165
+        project.ext.subArchitecturyVersion = architectury_version_1165
+        project.ext.subForgeVersion = forge_version_1165
+        project.ext.subClothConfigForgeVersion = cloth_config_forge_version_1165
+        project.ext.subIsLegacy1165 = true
+    }
+    project.ext.subArchitecturyId = isLegacy1165 ? "me.shedaniel" : "dev.architectury"
+
+    // 1.21.1 子项目覆盖上面的默认值（NeoMTR + MC 1.21.1 工具链）
+    if (isLegacy1211) {
+        project.ext.subFabricLoaderVersion = fabric_loader_version_1211
+        project.ext.subFabricApiVersion = fabric_api_version_1211
+        project.ext.subModMenuVersion = mod_menu_version_1211
+        project.ext.subClothConfigVersion = isNeoForge1211 ? cloth_config_neoforge_version_1211 : cloth_config_fabric_version_1211
+        project.ext.subArchitecturyVersion = architectury_version_1211
+        project.ext.subForgeVersion = neoforge_version_1211
+        project.ext.subClothConfigForgeVersion = cloth_config_neoforge_version_1211
+        project.ext.subIsLegacy1211 = true
+        project.ext.subIsNeoForge1211 = isNeoForge1211
+    }
 
     loom {
         silentMojangMappingsLicense()
@@ -137,6 +203,28 @@ subprojects {
             modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version_1182}"
             modApi "dev.architectury:architectury:${architectury_version_1182}"
             modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1182}") {
+                exclude(group: "net.fabricmc.fabric-api")
+            }
+        }
+        if (isCommon && isLegacy1165) {
+            // 1.16.5 时期 Architectury 的组名是 me.shedaniel，不是 dev.architectury
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version_1165}"
+            modApi "me.shedaniel:architectury:${architectury_version_1165}"
+            modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1165}") {
+                exclude(group: "net.fabricmc.fabric-api")
+            }
+            // MTR 1.16.5 的 BlockEntityClientSerializableMapper 实现了
+            // net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable，
+            // 而 Architectury 1.x 的 BlockEntityExtension 也继承自它。
+            // 这个接口在 1.16.5 时代位于 fabric-networking-blockentity-v0 模块（1.18 起已从 fabric-api 移除）。
+            // 注意：不要用 compileOnly "net.fabricmc.fabric-api:fabric-api:0.42.0+1.16"——那个聚合 jar 只是
+            // 个 6 条目的空壳，且 modCompileOnly 会让 Loom 去为全部子模块拉 sources，国内网络下会卡很久。
+            modCompileOnly "net.fabricmc.fabric-api:fabric-networking-blockentity-v0:0.2.9+3cc0f0907d"
+        }
+        if (isCommon && isLegacy1211) {
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version_1211}"
+            modApi "dev.architectury:architectury:${architectury_version_1211}"
+            modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1211}") {
                 exclude(group: "net.fabricmc.fabric-api")
             }
         }
@@ -194,6 +282,18 @@ allprojects {
     group = project.maven_group
 
     repositories {
+        // 本地 maven 仓库：存放国内各镜像都拿不到、且官方源极慢的构件
+        // （目前是 net.minecraftforge:forge 1.16.5 的 pom + jar + installer/userdev/sources classifier）。
+        // 必须放在最前面，否则 Gradle 会在 BMCLAPI 找到模块描述符后只去 BMCLAPI 找构件，
+        // 而 BMCLAPI 对 GET 请求返回 JS 反爬页。
+        maven { url = uri("file:///E:/Project/Tianjin-metro-MTR3/tools/local-maven") }
+        // Forge 1.16.5 的 dev 依赖（cpw.mods:modlauncher、net.minecraftforge:* 等）只在官方 maven 上，
+        // 国内各镜像都没有。官方源很慢，但这些都是几百 KB 的小包，配合 gradle.properties 里的长 socket 超时可以下完。
+        maven { url = "https://maven.minecraftforge.net/" }
+        // 国内网络下 maven.fabricmc.net / maven.neoforged.net 会直接超时或 Connection reset，
+        // BMCLAPI 提供同路径的国内镜像。这里先声明，稍后由下方 projectsEvaluated 提升到首位。
+        maven { url = "https://bmclapi2.bangbang93.com/maven/" }
+        maven { url = "https://maven.neoforged.net/releases/" }
         maven { url = "https://maven.aliyun.com/repository/public" }
         maven { url = "https://jitpack.io/" }
         maven { url = "https://maven.terraformersmc.com/" }
@@ -205,13 +305,18 @@ allprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
 
-        if (minecraft_main_version == 16) {
-            def targetVersion = 16
-            if (JavaVersion.current().isJava9Compatible()) {
-                options.release = targetVersion
-            }
-        } else if (minecraft_main_version == 17) {
+        // 每个子项目按自己的 MC 版本决定字节码目标：
+        //   1.16.5 → 17（沿用与本模组其它版本一致的 Java 17；注意这要求游戏运行在 Java 17+，
+        //            Forge 1.16.5 官方只支持 Java 8，若要在 Java 8 上跑需另行降级语法）
+        //   1.18–1.20 → 17，1.21+ → 21
+        def subMcVersionForRelease = project.hasProperty("subMinecraftVersion") ? project.subMinecraftVersion : minecraft_version
+        def subMinorForRelease = subMcVersionForRelease.split("\\.")[1] as int
+        if (subMinorForRelease == 16 && (subMcVersionForRelease.split("\\.")[2] as int) == 5) {
+            options.release = 17
+        } else if (subMinorForRelease == 16 || subMinorForRelease == 17) {
             options.release = 16
+        } else if (subMinorForRelease >= 21) {
+            options.release = 21
         } else {
             options.release = 17
         }
@@ -225,6 +330,10 @@ allprojects {
         }
     }
 }
+
+// 注意：Loom 会在 afterEvaluate 阶段就把 maven.fabricmc.net 解析进仓库列表并可能已触发解析，
+// 因此无法在这里重排仓库顺序。国内网络下请先用 tools/cache-warm 预热 Gradle 共享缓存，
+// 之后以 --offline 构建（见 README-1.21.1.md）。
 
 static def getModrinthVersion(loader, minecraftVersion, projectId) {
     def versionsArray = new JsonSlurper().parse(("https://api.modrinth.com/v2/project/" + projectId + "/version").toURL())

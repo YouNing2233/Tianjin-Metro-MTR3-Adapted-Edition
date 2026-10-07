@@ -43,3 +43,8 @@ fix_*.ps1
 # build logs
 _build.log
 _build*.log
+_*.log
+# 本地 maven 仓库：24MB 的 Forge / MCP / ASM 第三方构件，用
+# tools/port1165/mirror-forge-deps.ps1 可以重新生成，不进版本库。
+tools/local-maven/
+tools/_ni/

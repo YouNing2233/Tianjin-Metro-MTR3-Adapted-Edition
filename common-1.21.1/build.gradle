@@ -1,0 +1,7 @@
+// common-1.21.1 模块：1.21 / 1.21.1 的共享代码
+// MTR 侧使用 NeoMTR（zbx1425/NeoMTR，MIT，包名同为 mtr.*），平台为 Fabric + NeoForge
+// 依赖（fabric-loader, architectury, cloth-config, NeoMTR）已在 subprojects 块中配置
+
+architectury {
+    common("fabric", "neoforge")
+}

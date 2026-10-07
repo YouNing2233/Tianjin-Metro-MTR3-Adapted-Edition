@@ -1,0 +1,97 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+}
+
+// 1.21 / 1.21.1 Fabric 子项目：依赖 common-1.21.1，MTR 侧为 NeoMTR
+version = "1.21.1-" + project.mod_version
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    mixin {
+        defaultRefmapName = "fabric-1211-refmap.json"
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${project.subFabricLoaderVersion}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${project.subFabricApiVersion}"
+    modApi "${rootProject.architectury_id}:architectury-fabric:${project.subArchitecturyVersion}"
+
+    // Mod Menu 集成（运行期可选）。modCompileOnly：只在编译期需要，玩家没装 Mod Menu 也能正常启动。
+    // 1.21.1 暂不接入 ModMenu：modmenu 11.0.2 只在 maven.terraformersmc.com/releases 上有，
+    // 而主工程的仓库用的是无 /releases 的地址，缓存对不上，会导致每次配置都去联网重解析。
+    // 不属于核心功能，先摘掉；玩家侧不受影响（织入的配置界面走 Cloth Config 自己的入口）。
+
+    modImplementation files(project.subMtrJar)
+
+    common(project(path: ":common-1.21.1", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common-1.21.1", configuration: "transformProductionFabric")) { transitive false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.mod_version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveClassifier = null
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+task copyMtrToRun() {
+    doLast {
+        copy {
+            from project.subMtrJar
+            into "run/mods"
+        }
+    }
+}
+
+task moveFabric1211Builds() {
+    doLast {
+        delete fileTree("../build").matching {
+            include "**/TianjinMetro-fabric-1.21.1*"
+        }
+        copy {
+            from "build/libs"
+            into "../build"
+            exclude "*dev-shadow.jar"
+            rename "(.+)-1\\.21\\.1-1\\.21\\.1-(.+)", "TianjinMetro-\$1-1.21.1-\$2"
+        }
+    }
+}
+
+afterEvaluate {
+    for (def task in it.tasks) {
+        if (task == tasks.build) {
+            task.finalizedBy tasks.moveFabric1211Builds
+        }
+    }
+}
