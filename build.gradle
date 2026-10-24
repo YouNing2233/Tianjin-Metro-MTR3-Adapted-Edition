@@ -78,7 +78,7 @@ def architectury_version_1211 = "13.0.6"
 
 
 rootProject.ext.fabric_loader_version = "0.19.3"
-rootProject.ext.forge_version = "1.20.1-47.4.23"
+rootProject.ext.forge_version = "1.20.1-47.4.22"
 rootProject.ext.fabric_api_version = "0.92.11+1.20.1"
 rootProject.ext.mod_menu_version = "7.2.2"
 rootProject.ext.cloth_config_fabric_version = "11.1.136"

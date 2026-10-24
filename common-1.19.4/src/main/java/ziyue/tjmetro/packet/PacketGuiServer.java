@@ -15,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import ziyue.tjmetro.block.BlockPIDSTianjin;
+import ziyue.tjmetro.block.BlockRailwaySignSingle;
 import ziyue.tjmetro.block.BlockRailwaySignTianjinDouble;
 import ziyue.tjmetro.block.BlockRailwaySignWallDouble;
 import ziyue.tjmetro.block.BlockStationNameEntranceTianjin;
@@ -267,6 +268,39 @@ public class PacketGuiServer
             final BlockEntity entity = player.level.getBlockEntity(pos);
             if (entity instanceof BlockStationNavigator.BlockEntity entity1) {
                 setTileEntityDataAndWriteUpdate(player, entity2 -> entity2.setData(selectedRoutes), entity1);
+            }
+        });
+    }
+
+    /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+
+    public static void openRailwaySignSingleScreenS2C(ServerPlayer player, BlockPos pos, int index) {
+        final FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+        packet.writeBlockPos(pos);
+        packet.writeInt(index);
+        Registry.sendToPlayer(player, PACKET_OPEN_RAILWAY_SIGN_SINGLE_SCREEN, packet);
+    }
+
+    public static void sendRailwaySignSingleConfigC2S(BlockPos pos, int index, String signId) {
+        final FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+        packet.writeBlockPos(pos);
+        packet.writeInt(index);
+        packet.writeUtf(signId == null ? "" : signId);
+        RegistryClient.sendToServer(PACKET_RAILWAY_SIGN_SINGLE_CONFIG, packet);
+    }
+
+    public static void receiveRailwaySignSingleConfigC2S(MinecraftServer minecraftServer, ServerPlayer player, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        final int index = packet.readInt();
+        final String rawSignId = packet.readUtf(SerializedDataBase.PACKET_STRING_READ_LENGTH);
+        final String signId = rawSignId.isEmpty() ? null : rawSignId;
+
+        minecraftServer.execute(() -> {
+            final BlockEntity entity = player.level.getBlockEntity(pos);
+            if (entity instanceof BlockRailwaySignSingle.BlockEntity entity1) {
+                // Applied directly: setTileEntityDataAndWriteUpdate() only runs the setter when the level
+                // already has RailwayData, which silently dropped the sign id.
+                entity1.setData(index, signId);
             }
         });
     }

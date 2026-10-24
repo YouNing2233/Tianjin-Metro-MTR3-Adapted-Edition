@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,half=upper": { "model": "tjmetro:block/route_map_bmt_wall_upper" },
+        "facing=east,half=upper":  { "model": "tjmetro:block/route_map_bmt_wall_upper", "y":  90},
+        "facing=south,half=upper": { "model": "tjmetro:block/route_map_bmt_wall_upper", "y": 180 },
+        "facing=west,half=upper":  { "model": "tjmetro:block/route_map_bmt_wall_upper", "y": 270 },
+        "facing=north,half=lower": { "model": "tjmetro:block/route_map_bmt_wall_lower" },
+        "facing=east,half=lower":  { "model": "tjmetro:block/route_map_bmt_wall_lower", "y":  90},
+        "facing=south,half=lower": { "model": "tjmetro:block/route_map_bmt_wall_lower", "y": 180 },
+        "facing=west,half=lower":  { "model": "tjmetro:block/route_map_bmt_wall_lower", "y": 270 }
+    }
+}

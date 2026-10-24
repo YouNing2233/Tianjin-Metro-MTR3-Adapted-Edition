@@ -156,6 +156,12 @@ public interface BlockEntityTypes
     /* 1.1.8 - Ported from 4.0 - BMT route map */
     RegistryObject<BlockEntityType<BlockRouteMapBMT.TileEntityRouteMapBMT>> ROUTE_MAP_BMT = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockRouteMapBMT.TileEntityRouteMapBMT::new, BlockList.ROUTE_MAP_BMT.get()));
 
+    /* 1.1.9 - Wall-mounted BMT route map */
+    RegistryObject<BlockEntityType<BlockRouteMapBMTWall.TileEntityRouteMapBMTWall>> ROUTE_MAP_BMT_WALL = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockRouteMapBMTWall.TileEntityRouteMapBMTWall::new, BlockList.ROUTE_MAP_BMT_WALL.get()));
+
+    /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+    RegistryObject<BlockEntityType<BlockRailwaySignSingle.BlockEntity>> RAILWAY_SIGN_SINGLE = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockRailwaySignSingle.BlockEntity::new, BlockList.RAILWAY_SIGN_SINGLE.get()));
+
     /* 1.1.8 - Ported from 4.0 - Security check sign */
     RegistryObject<BlockEntityType<BlockSecurityCheckSign.TileEntitySecurityCheckSign>> SECURITY_CHECK_SIGN_TILE_ENTITY = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockSecurityCheckSign.TileEntitySecurityCheckSign::new, BlockList.SECURITY_CHECK_SIGN.get()));
 }

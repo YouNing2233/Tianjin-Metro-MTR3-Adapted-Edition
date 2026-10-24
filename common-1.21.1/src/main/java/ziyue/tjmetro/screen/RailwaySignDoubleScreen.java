@@ -40,6 +40,9 @@ import java.util.stream.Collectors;
  * @since beta-1
  */
 
+import static ziyue.tjmetro.screen.RailwaySignScreen.SIGN_BUTTON_SIZE;
+import static ziyue.tjmetro.screen.RailwaySignScreen.SIGN_SIZE;
+
 public class RailwaySignDoubleScreen extends ScreenMapper implements IGui
 {
     protected int line;
@@ -65,9 +68,6 @@ public class RailwaySignDoubleScreen extends ScreenMapper implements IGui
     protected final Button buttonClear;
     protected final TianjinImageButton buttonPrevPage;
     protected final TianjinImageButton buttonNextPage;
-
-    protected static final int SIGN_SIZE = 32;
-    protected static final int SIGN_BUTTON_SIZE = 16;
     protected static final int BUTTON_Y_START = (SQUARE_SIZE + SIGN_SIZE) * 2 + SIGN_BUTTON_SIZE / 2;
 
     public RailwaySignDoubleScreen(BlockPos signPos) {

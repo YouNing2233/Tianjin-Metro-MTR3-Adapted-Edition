@@ -217,10 +217,13 @@ public interface IRailwaySign
         EXIT_BMT_RIGHT_TEXT("exit_bmt_right", "exit_bmt", false, true),
         TICKETS_BMT_TEXT("fare_adjustment", "tickets_bmt", false, false),
         TICKETS_BMT_TEXT_FLIPPED("fare_adjustment", "tickets_bmt", false, true),
+        OUTBOUND_TRANSFER_TEXT("transfer", "outbound_transfer", false, false),
+        OUTBOUND_TRANSFER_TEXT_FLIPPED("transfer", "outbound_transfer", false, true),
 
         NO_ENTRY_BMT("no_entry_bmt", false),
         TO_SUBWAY_BMT("to_subway_bmt", false),
         TO_SUBWAY_BMT_FLIPPED("to_subway_bmt", true),
+        OUTBOUND_TRANSFER("transfer", false),
         //BINHAI_MASS_TRANSIT("binhai_mass_transit", false),
         //BINHAI_MASS_TRANSIT_FLIPPED("binhai_mass_transit", true),
         EXIT_BMT_UP("exit_bmt_up", false),

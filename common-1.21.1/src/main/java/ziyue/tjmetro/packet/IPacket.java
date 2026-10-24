@@ -24,4 +24,6 @@ public interface IPacket
 
     ResourceLocation PACKET_OPEN_STATION_NAVIGATOR_SCREEN = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "packet_open_station_navigator_screen");
     ResourceLocation PACKET_STATION_NAVIGATOR_CONFIG = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "packet_station_navigator_config");
+    ResourceLocation PACKET_OPEN_RAILWAY_SIGN_SINGLE_SCREEN = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "packet_open_railway_sign_single_screen");
+    ResourceLocation PACKET_RAILWAY_SIGN_SINGLE_CONFIG = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "packet_railway_sign_single_config");
 }

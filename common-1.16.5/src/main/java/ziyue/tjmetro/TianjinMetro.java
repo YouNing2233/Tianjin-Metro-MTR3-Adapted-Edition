@@ -88,6 +88,11 @@ public class TianjinMetro
         /* 1.1.8 - Ported from 4.0 - BMT route map */
         registerBlockItem.accept("route_map_bmt", BlockList.ROUTE_MAP_BMT, SIGNS);
         registerBlock.accept("route_map_bmt_middle", BlockList.ROUTE_MAP_BMT_MIDDLE);
+        /* 1.1.9 - Wall-mounted BMT route map */
+        registerBlockItem.accept("route_map_bmt_wall", BlockList.ROUTE_MAP_BMT_WALL, SIGNS);
+        registerBlock.accept("route_map_bmt_wall_middle", BlockList.ROUTE_MAP_BMT_WALL_MIDDLE);
+        /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+        registerBlockItem.accept("railway_sign_single", BlockList.RAILWAY_SIGN_SINGLE, SIGNS);
         /* 1.1.8 - Ported from 4.0 - Security check sign */
         registerBlockItem.accept("security_check_sign", BlockList.SECURITY_CHECK_SIGN, SIGNS);
         /* SIGNS */
@@ -200,6 +205,9 @@ public class TianjinMetro
         /* 1.1.4 - Ported from 4.0 */
         registerBlockItem.accept("ticket_barrier_tianjin_entrance", BlockList.TICKET_BARRIER_TIANJIN_ENTRANCE, DECORATION);
         registerBlockItem.accept("ticket_barrier_tianjin_exit", BlockList.TICKET_BARRIER_TIANJIN_EXIT, DECORATION);
+        /* 1.1.3 - Ported from 1.1.3 - Ticket barrier for outbound transfer */
+        registerBlockItem.accept("ticket_barrier_outbound_transfer_exit", BlockList.TICKET_BARRIER_OUTBOUND_TRANSFER_EXIT, DECORATION);
+        registerBlockItem.accept("ticket_barrier_outbound_transfer_tianjin", BlockList.TICKET_BARRIER_OUTBOUND_TRANSFER_TIANJIN, DECORATION);
 //        registerEnchantedBlockItem.accept("decoration_light", BlockList.DECORATION_LIGHT, DECORATION);
         /* 1.1.0 - Ported from 4.0 */
         registerBlockItem.accept("station_navigator_pole", BlockList.STATION_NAVIGATOR_POLE, DECORATION);
@@ -433,6 +441,10 @@ public class TianjinMetro
         registerBlockEntityType.accept("station_name_sign_tianjin", BlockEntityTypes.STATION_NAME_SIGN_TIANJIN);
         /* 1.1.8 - Ported from 4.0 - BMT route map */
         registerBlockEntityType.accept("route_map_bmt", BlockEntityTypes.ROUTE_MAP_BMT);
+        /* 1.1.9 - Wall-mounted BMT route map */
+        registerBlockEntityType.accept("route_map_bmt_wall", BlockEntityTypes.ROUTE_MAP_BMT_WALL);
+        /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+        registerBlockEntityType.accept("railway_sign_single", BlockEntityTypes.RAILWAY_SIGN_SINGLE);
         /* 1.1.8 - Ported from 4.0 - Security check sign */
         registerBlockEntityType.accept("security_check_sign", BlockEntityTypes.SECURITY_CHECK_SIGN_TILE_ENTITY);
 
@@ -440,6 +452,7 @@ public class TianjinMetro
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_TIANJIN_CONFIG, PacketGuiServer::receivePIDSTianjinConfigC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_PIDS_ADS_CONFIG, PacketGuiServer::receivePIDSAdsConfigC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_STATION_NAVIGATOR_CONFIG, PacketGuiServer::receiveStationNavigatorConfigC2S);
+        mtr.Registry.registerNetworkReceiver(PACKET_RAILWAY_SIGN_SINGLE_CONFIG, PacketGuiServer::receiveRailwaySignSingleConfigC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_COLOR, PacketGuiServer::receiveCustomColorC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_SIGN_TYPES, PacketGuiServer::receiveSignIdsC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_SIGN_TYPES_DOUBLE, PacketGuiServer::receiveSignIdsDoubleC2S);

@@ -148,6 +148,9 @@ public interface BlockList
     RegistryObject<Block> METAL_POLE_BMT = new RegistryObject<>(BlockMetalPoleBMT::new);
     RegistryObject<Block> TICKET_BARRIER_TIANJIN_ENTRANCE = new RegistryObject<>(() -> new mtr.block.BlockTicketBarrier(true));
     RegistryObject<Block> TICKET_BARRIER_TIANJIN_EXIT = new RegistryObject<>(() -> new mtr.block.BlockTicketBarrier(false));
+    /* 1.1.3 - Ported from 1.1.3 - Ticket barrier for outbound transfer */
+    RegistryObject<Block> TICKET_BARRIER_OUTBOUND_TRANSFER_EXIT = new RegistryObject<>(BlockTicketBarrierOutboundTransfer::new);
+    RegistryObject<Block> TICKET_BARRIER_OUTBOUND_TRANSFER_TIANJIN = new RegistryObject<>(BlockTicketBarrierOutboundTransfer::new);
 
 
     RegistryObject<Block> RAILWAY_SIGN_TIANJIN_BMT_2_ODD = new RegistryObject<>(() -> new BlockRailwaySignTianjinBMT(2, true));
@@ -224,6 +227,12 @@ public interface BlockList
     /* 1.1.8 - Ported from 4.0 - BMT route map */
     RegistryObject<Block> ROUTE_MAP_BMT = new RegistryObject<>(BlockRouteMapBMT::new);
     RegistryObject<Block> ROUTE_MAP_BMT_MIDDLE = new RegistryObject<>(BlockRouteMapBMT::new);
+    /* 1.1.9 - Wall-mounted BMT route map */
+    RegistryObject<Block> ROUTE_MAP_BMT_WALL = new RegistryObject<>(BlockRouteMapBMTWall::new);
+    RegistryObject<Block> ROUTE_MAP_BMT_WALL_MIDDLE = new RegistryObject<>(BlockRouteMapBMTWall::new);
+
+    /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+    RegistryObject<Block> RAILWAY_SIGN_SINGLE = new RegistryObject<>(BlockRailwaySignSingle::new);
 
     /* 1.1.8 - Ported from 4.0 - Security check sign */
     RegistryObject<Block> SECURITY_CHECK_SIGN = new RegistryObject<>(BlockSecurityCheckSign::new);

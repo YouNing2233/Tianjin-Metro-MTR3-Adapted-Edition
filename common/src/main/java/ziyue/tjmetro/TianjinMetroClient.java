@@ -62,6 +62,9 @@ public class TianjinMetroClient
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.METAL_POLE_BMT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_TIANJIN_ENTRANCE.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_TIANJIN_EXIT.get());
+        /* 1.1.3 - Ported from 1.1.3 - Ticket barrier for outbound transfer */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_OUTBOUND_TRANSFER_EXIT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_OUTBOUND_TRANSFER_TIANJIN.get());
         /* 1.1.6 - Ported from 4.0 - APG (half-height platform doors) */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_TRT.get());
@@ -191,6 +194,12 @@ public class TianjinMetroClient
         /* 1.1.8 - Ported from 4.0 - BMT route map */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.ROUTE_MAP_BMT.get());
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.ROUTE_MAP_BMT.get(), RenderRouteMapBMT::new);
+        /* 1.1.9 - Wall-mounted BMT route map */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.ROUTE_MAP_BMT_WALL.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.ROUTE_MAP_BMT_WALL.get(), RenderRouteMapBMTWall::new);
+        /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.RAILWAY_SIGN_SINGLE.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.RAILWAY_SIGN_SINGLE.get(), RenderRailwaySignSingle::new);
         /* 1.1.8 - Ported from 4.0 - Security check sign */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SECURITY_CHECK_SIGN.get());
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.SECURITY_CHECK_SIGN_TILE_ENTITY.get(), RenderSecurityCheckSign::new);
@@ -251,6 +260,7 @@ public class TianjinMetroClient
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_RAILWAY_SIGN_DOUBLE_SCREEN, packet -> PacketGuiClient.openRailwaySignDoubleScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_PIDS_TIANJIN_SCREEN, packet -> PacketGuiClient.openPIDSTianjinScreenS2C(Minecraft.getInstance(), packet));
         RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_STATION_NAVIGATOR_SCREEN, packet -> PacketGuiClient.openStationNavigatorScreenS2C(Minecraft.getInstance(), packet));
+        RegistryClient.registerNetworkReceiver(IPacket.PACKET_OPEN_RAILWAY_SIGN_SINGLE_SCREEN, packet -> PacketGuiClient.openRailwaySignSingleScreenS2C(Minecraft.getInstance(), packet));
     }
 
     /**

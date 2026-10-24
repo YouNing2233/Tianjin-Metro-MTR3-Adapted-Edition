@@ -15,6 +15,7 @@ import ziyue.tjmetro.screen.CustomContentScreen;
 import ziyue.tjmetro.screen.PIDSTianjinConfigScreen;
 import ziyue.tjmetro.screen.RailwaySignDoubleScreen;
 import ziyue.tjmetro.screen.RailwaySignScreen;
+import ziyue.tjmetro.screen.RailwaySignSingleScreen;
 import ziyue.tjmetro.screen.StationNavigatorScreen;
 
 import static ziyue.tjmetro.packet.IPacket.*;
@@ -99,6 +100,18 @@ public class PacketGuiClient
                 if (entity instanceof BlockStationNavigator.BlockEntity) {
                     UtilitiesClient.setScreen(minecraftClient, new StationNavigatorScreen(pos));
                 }
+            }
+        });
+    }
+
+    /* 1.1.3 - Ported from 1.1.3 - Single-block railway sign */
+
+    public static void openRailwaySignSingleScreenS2C(Minecraft minecraftClient, FriendlyByteBuf packet) {
+        final BlockPos pos = packet.readBlockPos();
+        final int index = packet.readInt();
+        minecraftClient.execute(() -> {
+            if (minecraftClient.level != null && !(minecraftClient.screen instanceof RailwaySignSingleScreen)) {
+                UtilitiesClient.setScreen(minecraftClient, new RailwaySignSingleScreen(pos, index));
             }
         });
     }

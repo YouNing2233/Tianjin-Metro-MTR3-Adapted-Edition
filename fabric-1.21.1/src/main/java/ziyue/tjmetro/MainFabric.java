@@ -21,6 +21,9 @@ public class MainFabric implements ModInitializer
     public void onInitialize() {
         TianjinMetro.init(MainFabric::registerBlock, MainFabric::registerBlock, MainFabric::registerItem, MainFabric::registerEnchantedBlock, MainFabric::registerBlockEntityType);
         registerSoundEvent("smoke_alarm");
+        // MTR commits its Fabric payload types inside its own initializer, which runs before this
+        // mod's, so everything registered above is unknown to Fabric and would crash on send.
+        ziyue.tjmetro.fabric.TianjinNetwork.registerServer();
     }
 
     public static void registerSoundEvent(String path) {

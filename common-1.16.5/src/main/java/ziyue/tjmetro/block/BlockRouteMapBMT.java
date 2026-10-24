@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -207,6 +208,11 @@ public class BlockRouteMapBMT extends BlockRailwaySignBase
     {
         public TileEntityRouteMapBMT(BlockPos pos, BlockState state) {
             super(BlockEntityTypes.ROUTE_MAP_BMT.get(), pos, state);
+        }
+
+        // Lets subclasses (the wall-mounted variant) reuse this type while registering their own BlockEntityType.
+        public TileEntityRouteMapBMT(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
         }
     }
 }
