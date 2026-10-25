@@ -10,7 +10,7 @@ public interface Reference
 {
     String MOD_ID = "tjmetro";
     String NAME = "Tianjin Metro";
-    String VERSION = "1.1.3";
+    String VERSION = "1.1.3-hotfix-1";
 
     /** Source code of this MTR3 adapted edition. */
     String SOURCE_REPO = "https://gitee.com/lingxii/tianjin-metro-mtr3-adapted-edition";
