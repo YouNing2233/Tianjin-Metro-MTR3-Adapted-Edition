@@ -52,8 +52,8 @@ def architectury_version_1182 = "4.12.94"
 // 注意：1.16.5 时期的 Architectury 仍发布在 me.shedaniel 组下（不是 dev.architectury），
 //   Forge 为 36.2.x，MTR 侧同样是 3.2.2（其 mtr.mappings 层与 1.18.2 完全一致）。
 def minecraft_version_1165 = "1.16.5"
-def mtr_jar_1165 = "E:/Project/MTRjars/MTR-fabric-1.16.5-3.2.2-hotfix-1.jar"
-def mtr_forge_jar_1165 = "E:/Project/MTRjars/MTR-forge-1.16.5-3.2.2-hotfix-1.jar"
+def mtr_jar_1165 = "MTR-fabric-1.16.5-3.2.2-hotfix-1.jar"
+def mtr_forge_jar_1165 = "MTR-forge-1.16.5-3.2.2-hotfix-1.jar"
 def fabric_loader_version_1165 = "0.19.3"
 def fabric_api_version_1165 = "0.42.0+1.16"
 def mod_menu_version_1165 = "1.16.23"
@@ -65,8 +65,8 @@ def architectury_version_1165 = "1.32.66"
 // 1.21 / 1.21.1 子项目专用配置
 // MTR 侧改用 NeoMTR（zbx1425/NeoMTR，MIT，包名同为 mtr.*），平台为 Fabric + NeoForge
 def minecraft_version_1211 = "1.21.1"
-def neomtr_jar_1211 = "E:/Project/MTRjars/NeoMTR-300.6.1+1.21.1+fabric.jar"
-def neomtr_jar_neoforge_1211 = "E:/Project/MTRjars/NeoMTR-300.6.1+1.21.1+neoforge.jar"
+def neomtr_jar_1211 = "NeoMTR-300.6.1+1.21.1+fabric.jar"
+def neomtr_jar_neoforge_1211 = "NeoMTR-300.6.1+1.21.1+neoforge.jar"
 def fabric_loader_version_1211 = "0.16.2"
 def fabric_api_version_1211 = "0.102.1+1.21.1"
 def neoforge_version_1211 = "21.1.21"
@@ -93,6 +93,22 @@ architectury {
 subprojects {
     apply plugin: "dev.architectury.loom"
 
+    // Forge 1.19.2 (43.5.2) 的 userdev 声明了 cpw.mods:modlauncher:10.0.10，但该版本只存在于
+    // maven.minecraftforge.net（本机与国内镜像均不可达，BMCLAPI 镜像最高只到 10.0.9）。
+    // modlauncher 在编译期只是 Forge 内部的启动器库，10.0.9 与 10.0.10 无 API 差异，这里统一降级解析。
+    configurations.configureEach {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == "cpw.mods" && details.requested.name == "modlauncher" && details.requested.version == "10.0.10") {
+                details.useVersion("10.0.9")
+                details.because("10.0.10 is not mirrored domestically; 10.0.9 is API compatible for compilation")
+            }
+        }
+    }
+
+    // MTR / NeoMTR 的 jar 目录：默认指向本机镜像目录，其它环境（CI）用 -PmtrJarDir=... 覆盖。
+    def mtrJarDir = (project.findProperty("mtrJarDir") ?: "E:/Project/MTRjars").toString()
+    def mtrJarPaths = { String fileName -> new File(mtrJarDir, fileName).absolutePath }
+
     // 1.19.4、1.19.2 和 1.18.2 子项目使用独立版本配置
     def isLegacy1194 = project.name == "fabric-1.19.4" || project.name == "forge-1.19.4" || project.name == "common-1.19.4"
     def isLegacy1192 = project.name == "fabric-1.19.2" || project.name == "forge-1.19.2" || project.name == "common-1.19.2"
@@ -106,32 +122,32 @@ subprojects {
     // 根据平台和版本选择对应的 MTR jar
     def subMtrJar
     if (isNeoForge1211) {
-        subMtrJar = neomtr_jar_neoforge_1211
+        subMtrJar = mtrJarPaths(neomtr_jar_neoforge_1211)
     } else if (isLegacy1211) {
-        subMtrJar = neomtr_jar_1211
+        subMtrJar = mtrJarPaths(neomtr_jar_1211)
     } else if (isForge) {
         if (isLegacy1194) {
-            subMtrJar = "../${mtr_forge_jar_1194}"
+            subMtrJar = mtrJarPaths(mtr_forge_jar_1194)
         } else if (isLegacy1192) {
-            subMtrJar = "E:/Project/MTRjars/${mtr_forge_jar_1192}"
+            subMtrJar = mtrJarPaths(mtr_forge_jar_1192)
         } else if (isLegacy1182) {
-            subMtrJar = "../${mtr_forge_jar_1182}"
+            subMtrJar = mtrJarPaths(mtr_forge_jar_1182)
         } else if (isLegacy1165) {
-            subMtrJar = mtr_forge_jar_1165
+            subMtrJar = mtrJarPaths(mtr_forge_jar_1165)
         } else {
-            subMtrJar = "E:/Project/MTRjars/MTR-forge-1.20.1-3.6.2.2.jar"
+            subMtrJar = mtrJarPaths("MTR-forge-1.20.1-3.6.2.2.jar")
         }
     } else {
         if (isLegacy1194) {
-            subMtrJar = "../${mtr_jar_1194}"
+            subMtrJar = mtrJarPaths(mtr_jar_1194)
         } else if (isLegacy1192) {
-            subMtrJar = "E:/Project/MTRjars/${mtr_jar_1192}"
+            subMtrJar = mtrJarPaths(mtr_jar_1192)
         } else if (isLegacy1182) {
-            subMtrJar = "../${mtr_jar_1182}"
+            subMtrJar = mtrJarPaths(mtr_jar_1182)
         } else if (isLegacy1165) {
-            subMtrJar = mtr_jar_1165
+            subMtrJar = mtrJarPaths(mtr_jar_1165)
         } else {
-            subMtrJar = "E:/Project/MTRjars/MTR-fabric-1.20.1-3.6.2.2.jar"
+            subMtrJar = mtrJarPaths("MTR-fabric-1.20.1-3.6.2.2.jar")
         }
     }
     project.ext.subMinecraftVersion = subMcVersion
@@ -262,7 +278,7 @@ task setupFiles() {
 
     copy {
         outputs.upToDateWhen { false }
-        from "E:/Project/MTRjars/MTR-fabric-1.20.1-3.6.2.2.jar"
+        from new File((project.findProperty("mtrJarDir") ?: "E:/Project/MTRjars").toString(), "MTR-fabric-1.20.1-3.6.2.2.jar").absolutePath
         into "fabric/run/mods"
     }
 

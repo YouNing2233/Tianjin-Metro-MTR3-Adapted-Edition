@@ -1,10 +1,9 @@
 package ziyue.tjmetro.block;
-
+
 import com.mojang.serialization.MapCodec;
 import mtr.block.IBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,6 +23,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import ziyue.tjmetro.BlockList;
+import ziyue.tjmetro.EntityTypes;
+import ziyue.tjmetro.entity.EntitySeat;
 
 import static mtr.block.IBlock.SIDE_EXTENDED;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
@@ -59,10 +60,22 @@ public class BlockBench extends HorizontalDirectionalBlock implements SimpleWate
 
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
-        // TODO(1.21.1): NeoMTR 移除了 mtr.entity.EntitySeat（连同按座位渲染列车的那套 BlockEntityRenderer），
-        //  所以 1.21.1 上暂时没有可直接复用的座位实体，长椅目前只作装饰。
-        //  若之后要恢复落座，需要本模组自己注册一个 EntityType + Entity（Architectury DeferredRegister 可同时覆盖
-        //  Fabric / NeoForge），而不能再依赖 MTR。
+        // NeoMTR removed mtr.entity.EntitySeat, so the bench now uses its own seat entity
+        // (ziyue.tjmetro.entity.EntitySeat, registered through ziyue.tjmetro.EntityTypes.SEAT).
+        if (!world.isClientSide) {
+            if (player.getVehicle() != null) {
+                player.stopRiding();
+            } else {
+                final Direction facing = state.getValue(FACING);
+                // Sit slightly towards the backrest so the player does not hang out of the front edge.
+                final double offsetX = facing.getStepX() * 0.1;
+                final double offsetZ = facing.getStepZ() * 0.1;
+                final EntitySeat seat = new EntitySeat(EntityTypes.SEAT.get(), world);
+                seat.moveTo(pos.getX() + 0.5 + offsetX, pos.getY() + 0.35, pos.getZ() + 0.5 + offsetZ);
+                world.addFreshEntity(seat);
+                player.startRiding(seat);
+            }
+        }
         return InteractionResult.SUCCESS;
     }
 

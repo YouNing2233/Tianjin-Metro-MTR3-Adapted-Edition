@@ -16,6 +16,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -46,6 +48,7 @@ public class MainForge
     public static final DeferredRegisterHolder<Item> ITEMS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetItem());
     public static final DeferredRegisterHolder<Block> BLOCKS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetBlock());
     public static final DeferredRegisterHolder<BlockEntityType<?>> BLOCK_ENTITY_TYPES = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetBlockEntityType());
+    public static final DeferredRegisterHolder<EntityType<?>> ENTITY_TYPES = new DeferredRegisterHolder<>(Reference.MOD_ID, net.minecraft.core.registries.Registries.ENTITY_TYPE);
     public static final DeferredRegisterHolder<SoundEvent> SOUND_EVENTS = new DeferredRegisterHolder<>(Reference.MOD_ID, ForgeUtilities.registryGetSoundEvent());
     public static final DeferredRegisterHolder<CreativeModeTab> CREATIVE_MODE_TABS = new DeferredRegisterHolder<>(Reference.MOD_ID, Registries.CREATIVE_MODE_TAB);
 
@@ -58,6 +61,7 @@ public class MainForge
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);
         SOUND_EVENTS.register(modEventBus);
 
         // 创造模式物品栏。
@@ -81,7 +85,7 @@ public class MainForge
                 .build());
         CREATIVE_MODE_TABS.register(modEventBus);
 
-        TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType);
+        TianjinMetro.init(MainForge::registerBlock, MainForge::registerBlockItem, MainForge::registerItem, MainForge::registerEnchantedBlockItem, MainForge::registerBlockEntityType, MainForge::registerEntityType);
 
         registerSoundEvent("smoke_alarm");
 
@@ -130,6 +134,10 @@ public class MainForge
         BLOCK_ENTITY_TYPES.register(path, blockEntityType::get);
     }
 
+    public static void registerEntityType(String path, RegistryObject<? extends EntityType<? extends Entity>> entityType) {
+        ENTITY_TYPES.register(path, entityType::get);
+    }
+
     public static void registerSoundEvent(String path) {
         final ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path);
         SOUND_EVENTS.register(path, () -> RegistryUtilities.createSoundEvent(id));
@@ -140,6 +148,11 @@ public class MainForge
         @SubscribeEvent
         public static void onClientSetupEvent(FMLClientSetupEvent event) {
             TianjinMetroClient.init();
+        }
+
+        @SubscribeEvent
+        public static void onRegisterRenderers(net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(EntityTypes.SEAT.get(), ziyue.tjmetro.render.RenderSeat::new);
         }
     }
 }

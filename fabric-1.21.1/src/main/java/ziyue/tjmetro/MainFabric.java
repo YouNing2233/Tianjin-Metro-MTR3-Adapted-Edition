@@ -13,13 +13,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class MainFabric implements ModInitializer
 {
     @Override
     public void onInitialize() {
-        TianjinMetro.init(MainFabric::registerBlock, MainFabric::registerBlock, MainFabric::registerItem, MainFabric::registerEnchantedBlock, MainFabric::registerBlockEntityType);
+        TianjinMetro.init(MainFabric::registerBlock, MainFabric::registerBlock, MainFabric::registerItem, MainFabric::registerEnchantedBlock, MainFabric::registerBlockEntityType, MainFabric::registerEntityType);
         registerSoundEvent("smoke_alarm");
         // MTR commits its Fabric payload types inside its own initializer, which runs before this
         // mod's, so everything registered above is unknown to Fabric and would crash on send.
@@ -60,5 +62,9 @@ public class MainFabric implements ModInitializer
 
     public static void registerBlockEntityType(String path, RegistryObject<? extends BlockEntityType<? extends BlockEntityMapper>> blockEntityType) {
         Registry.register(RegistryUtilities.registryGetBlockEntityType(), ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path), blockEntityType.get());
+    }
+
+    public static void registerEntityType(String path, RegistryObject<? extends EntityType<? extends Entity>> entityType) {
+        Registry.register(RegistryUtilities.registryGetEntityType(), ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path), entityType.get());
     }
 }

@@ -4,6 +4,8 @@ import mtr.CreativeModeTabs;
 import mtr.RegistryObject;
 import mtr.mappings.BlockEntityMapper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -40,7 +42,8 @@ public class TianjinMetro
             RegisterBlockItem registerBlockItem,
             RegisterItem registerItem,
             RegisterBlockItem registerEnchantedBlockItem,
-            BiConsumer<String, RegistryObject<? extends BlockEntityType<? extends BlockEntityMapper>>> registerBlockEntityType
+            BiConsumer<String, RegistryObject<? extends BlockEntityType<? extends BlockEntityMapper>>> registerBlockEntityType,
+            BiConsumer<String, RegistryObject<? extends EntityType<? extends Entity>>> registerEntityType
     ) {
         /* MISCELLANEOUS */
         registerItem.accept("wrench", ItemList.WRENCH, MISCELLANEOUS);
@@ -448,6 +451,9 @@ public class TianjinMetro
         registerBlockEntityType.accept("railway_sign_single", BlockEntityTypes.RAILWAY_SIGN_SINGLE);
         /* 1.1.8 - Ported from 4.0 - Security check sign */
         registerBlockEntityType.accept("security_check_sign", BlockEntityTypes.SECURITY_CHECK_SIGN_TILE_ENTITY);
+
+        /* 1.1.3.1 - Bench seat entity (NeoMTR removed mtr.entity.EntitySeat) */
+        registerEntityType.accept("seat", EntityTypes.SEAT);
 
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_CONTENT, PacketGuiServer::receiveCustomContentC2S);
         mtr.Registry.registerNetworkReceiver(PACKET_UPDATE_CUSTOM_COLOR, PacketGuiServer::receiveCustomColorC2S);
