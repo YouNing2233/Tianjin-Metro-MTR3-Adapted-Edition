@@ -12,11 +12,10 @@
     ],
     "contributors": [],
     "contact": {
-        "sources": "https://github.com/ZiYueCommentary/Tianjin-Metro",
-        "issues": "https://github.com/ZiYueCommentary/Tianjin-Metro/issues",
-        "email": "ziyuecommentary@gmail.com"
+        "sources": "https://gitee.com/lingxii/tianjin-metro-mtr3-adapted-edition",
+        "issues": "https://gitee.com/lingxii/tianjin-metro-mtr3-adapted-edition/issues"
     },
-    "license": "GPL-3.0-only",
+    "license": "MIT AND GPL-3.0-or-later",
     "icon": "icon.png",
     "environment": "*",
     "entrypoints": {

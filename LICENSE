@@ -1,22 +1,65 @@
-MIT License
+Tianjin Metro - MTR3 Adapted Edition
+================================================================================
 
-Copyright (c) 2022-2026 ZiYueCommentary (子悦解说)
-Copyright (c) 2026 __Lingxii__ (泠惜i) - MTR3 Adapted Edition multi-platform port
+LICENSING SUMMARY  (per-file mapping: see LICENSING.md; full texts: LICENSE-MIT,
+LICENSE-GPL-3.0-or-later)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This project is a MIXED-LICENCE work. It is NOT dual-licensed: you may not pick
+one licence and apply it to the whole project.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  Component                              Licence
+  -------------------------------------  ------------------------------------
+  Upstream-derived files, unchanged      MIT             (LICENSING.md class A)
+  Port additions and modifications       GPL-3.0-or-later (classes B and C)
+  This distribution as a whole           GPL-3.0-or-later, with the MIT
+                                         notices for the upstream-derived
+                                         parts retained
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SPDX-License-Identifier: MIT AND GPL-3.0-or-later
+
+Copyright notices
+-----------------
+  Copyright (c) 2022-2024 ZiYueCommentary (子悦解说)
+      Original mod "Tianjin Metro"
+      https://github.com/ZiYueCommentary/Tianjin-Metro
+      Licensed under the MIT License -- see LICENSE-MIT.
+
+  Copyright (c) 2026 __Lingxii__ (泠惜i)
+      "MTR3 Adapted Edition": Architectury multi-platform restructure, the MTR
+      3.x port of MTR 4 features, the Minecraft 1.16.5 / 1.21.1 modules,
+      translations, tooling and every other new or modified file in this
+      repository.
+      Licensed under GPL-3.0-or-later -- see LICENSE-GPL-3.0-or-later.
+
+中文摘要
+--------
+本项目是复合许可项目，不是二选一的双许可项目：
+
+  · 直接取自上游「天津地铁模组」(ZiYueCommentary) 且未修改的文件   —— MIT
+  · 本移植版新增或修改的文件                                      —— GPL-3.0-or-later
+  · 整个发行包作为一个整体                                        —— 按 GPL-3.0-or-later
+                                                                    分发，同时保留
+                                                                    MIT 声明
+
+逐文件归属见 LICENSING.md。要点：
+
+  1. MIT 声明不可移除。上游 MIT 部分不因本项目标注 GPL 而失去 MIT 授权，任何人
+     仍可从上游获取那些文件并按 MIT 使用。
+  2. GPLv3 的义务适用于 B、C 两类文件以及整包：分发修改后的版本时须提供对应的
+     完整源码（本仓库即为该源码），并按 GPLv3 §5(a) 标明修改。
+  3. 若只想以更宽松的方式复用本项目，请只取 A 类文件（MIT），或回到上游仓库。
+
+Dependencies
+------------
+  · Minecraft Transit Railway (MTR) -- MIT -- required at runtime, NOT bundled
+    with this mod. Its licences and notices are its own.
+  · Fabric API, Architectury API, Cloth Config API, Mod Menu, Forge / NeoForge
+    -- their own licences; only declared as dependencies, not redistributed.
+
+Trademarks
+----------
+  The names "Tianjin Metro" / "天津地铁", and the artwork and logos of the
+  original project, are not licensed for trademark use by either licence above.
+  Both licences grant copyright permissions only. If you publish a fork,
+  identify it clearly as a modified version and do not reuse the originals'
+  branding to imply endorsement.

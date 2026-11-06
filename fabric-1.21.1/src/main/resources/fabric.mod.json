@@ -9,7 +9,7 @@
         "jiangxingyunjian",
         "__Lingxii__ (lingxii)"
     ],
-    "license": "GPL-3.0-only",
+    "license": "MIT AND GPL-3.0-or-later",
     "icon": "icon.png",
     "environment": "*",
     "entrypoints": {

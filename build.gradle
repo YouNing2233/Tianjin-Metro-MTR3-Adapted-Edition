@@ -351,6 +351,37 @@ allprojects {
 // 因此无法在这里重排仓库顺序。国内网络下请先用 tools/cache-warm 预热 Gradle 共享缓存，
 // 之后以 --offline 构建（见 README-1.21.1.md）。
 
+// ── 许可文件随 jar 分发 ─────────────────────────────────────────────────────────
+// 本项目是复合许可（MIT AND GPL-3.0-or-later），见 LICENSING.md：
+//   · MIT 要求「所有副本或实质部分」附带版权声明与许可声明；
+//   · GPLv3 要求随分发提供完整许可文本。
+// 因此把四份文件打进每个发行 jar 的 META-INF/licenses/。
+// 只加在最终会被打包的平台模块上，避免与 shadow 进来的 common 资源重复。
+def licenseFileNames = ["LICENSE", "LICENSE-MIT", "LICENSE-GPL-3.0-or-later", "LICENSING.md"]
+def platformModuleNames = [
+        "fabric", "forge",
+        "fabric-1.16.5", "forge-1.16.5",
+        "fabric-1.18.2", "forge-1.18.2",
+        "fabric-1.19.2", "forge-1.19.2",
+        "fabric-1.19.4", "forge-1.19.4",
+        "fabric-1.21.1", "neoforge-1.21.1"
+]
+
+subprojects { subproject ->
+    if (platformModuleNames.contains(subproject.name)) {
+        subproject.plugins.withId("java") {
+            subproject.tasks.matching { it.name == "processResources" }.configureEach { task ->
+                def licenseFiles = licenseFileNames.collect { rootProject.file(it) }
+                task.inputs.files(licenseFiles)
+                task.from(licenseFiles) {
+                    into "META-INF/licenses"
+                }
+                task.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+            }
+        }
+    }
+}
+
 static def getModrinthVersion(loader, minecraftVersion, projectId) {
     def versionsArray = new JsonSlurper().parse(("https://api.modrinth.com/v2/project/" + projectId + "/version").toURL())
     for (def versionElement : versionsArray) {
