@@ -6,12 +6,12 @@ license = "MIT AND GPL-3.0-or-later"
 modId = "tjmetro"
 version = "${version}"
 displayName = "Tianjin Metro - MTR3 Adapted Edition"
-authors = "ZiYueCommentary (ziyue), jiangxingyunjian, __Lingxii__ (lingxii), 厦航在拍车的无名机长"
+authors = "ZiYueCommentary (ziyue), jiangxingyunjian, 攸宁 (__Lingxii__ / lingxii), 厦航在拍车的无名机长"
 description = '''
 A small addon for the Minecraft Transit Railway Mod.
 
 Original mod: https://github.com/ZiYueCommentary/Tianjin-Metro
-Port author: __Lingxii__ (泠惜i)
+Port author: 攸宁 (formerly __Lingxii__ / 泠惜i)
 '''
 logoFile = "icon.png"
 

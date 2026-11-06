@@ -31,11 +31,11 @@
 | --- | --- |
 | 原模组作者 | 子悦解说（ZiYueCommentary）· MIT |
 | 原模组地址 | https://github.com/ZiYueCommentary/Tianjin-Metro |
-| 本移植版作者 | 泠惜i（\_\_Lingxii\_\_）· GPL-3.0-or-later |
-| 贡献者 | jiangxingyunjian、厦航在拍车的无名机长 |
+| 本移植版作者 | 攸宁（原名泠惜i）· GPL-3.0-or-later |
+| 贡献者 | 厦航在拍车的无名机长 |
 | 特别致谢 | 感谢江兴城、临岚工艺等服务器提出的问题反馈与测试支持 |
 
-**本项目是复合许可（mixed-licence）项目，不是二选一的双许可项目：**
+**本项目是复合许可（mixed-licence）项目：**
 
 - 直接取自上游、**未修改**的文件 —— **MIT**（`LICENSE-MIT`）
 - 本移植版**修改过**的上游文件 —— 整体 **GPL-3.0-or-later**，其中上游部分仍保留 MIT 声明

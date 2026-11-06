@@ -164,7 +164,7 @@ ziyue/tjmetro/screen/TianjinImageButton.java
 对 B 类文件：
 
 - 上游衍生的部分仍是 **MIT**（版权归 ZiYueCommentary）；
-- 本移植版修改的部分是 **GPL-3.0-or-later**（版权归 __Lingxii__）；
+- 本移植版修改的部分是 **GPL-3.0-or-later**（版权归 攸宁，原名 __Lingxii__ / 泠惜i）；
 - 文件**整体**随发行包按 GPL-3.0-or-later 分发，且**必须保留 MIT 声明**。
 
 ---
