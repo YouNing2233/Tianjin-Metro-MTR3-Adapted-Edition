@@ -38,7 +38,7 @@
     "cloth-config": "*"
 },
 "depends": {
-        "fabric-api": "*",
+        "fabric": "*",
         "architectury": "*",
         "minecraft": "1.17.1",
         "mtr": "*",
