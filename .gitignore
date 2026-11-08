@@ -48,3 +48,7 @@ _*.log
 # tools/port1165/mirror-forge-deps.ps1 可以重新生成，不进版本库。
 tools/local-maven/
 tools/_ni/
+
+# 本地补充 maven 仓库（BMCLAPI 缺件时手工补的构件，按需生成，不进版本库）
+tools/dynex-maven/
+tools/dynex2-maven/

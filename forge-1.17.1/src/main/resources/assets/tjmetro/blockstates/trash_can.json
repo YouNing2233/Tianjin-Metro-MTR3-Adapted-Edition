@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,half=bottom": { "model": "tjmetro:block/trash_can_lower" },
+        "facing=east,half=bottom":  { "model": "tjmetro:block/trash_can_lower", "y":  90 },
+        "facing=south,half=bottom": { "model": "tjmetro:block/trash_can_lower", "y": 180 },
+        "facing=west,half=bottom":  { "model": "tjmetro:block/trash_can_lower", "y": 270 },
+        "facing=north,half=top":    { "model": "tjmetro:block/trash_can_upper" },
+        "facing=east,half=top":     { "model": "tjmetro:block/trash_can_upper", "y":  90 },
+        "facing=south,half=top":    { "model": "tjmetro:block/trash_can_upper", "y": 180 },
+        "facing=west,half=top":     { "model": "tjmetro:block/trash_can_upper", "y": 270 }
+    }
+}

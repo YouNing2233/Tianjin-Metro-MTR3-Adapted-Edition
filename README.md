@@ -8,6 +8,7 @@
 | Minecraft | 加载器 | MTR 依赖 |
 | --- | --- | --- |
 | 1.16.5 | Fabric / Forge | MTR 3.2.2 |
+| 1.17.1 | Fabric / Forge | MTR 3.2.2 |
 | 1.18.2 | Fabric / Forge | MTR 3.2.2 |
 | 1.19.2 | Fabric / Forge | MTR 3.2.2 |
 | 1.19.4 | Fabric / Forge | MTR 3.2.2 |
@@ -54,7 +55,7 @@
 
 | 目录 | 说明 |
 | --- | --- |
-| `common` / `common-1.16.5` / `common-1.18.2` / `common-1.19.2` / `common-1.19.4` / `common-1.21.1` | 各 MC 版本共享源码 |
+| `common` / `common-1.16.5` / `common-1.17.1` / `common-1.18.2` / `common-1.19.2` / `common-1.19.4` / `common-1.21.1` | 各 MC 版本共享源码 |
 | `fabric` / `forge` / `neoforge-1.21.1` 等 | 各加载器与 MC 版本的平台层 |
 | `tools/` | 构建辅助、语言文件生成、许可清单生成脚本 |
 | `licensing/` | 自动生成的逐文件许可清单 |

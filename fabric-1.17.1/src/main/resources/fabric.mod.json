@@ -1,0 +1,47 @@
+{
+    "schemaVersion": 1,
+    "id": "tjmetro",
+    "version": "${version}",
+    "name": "Tianjin Metro - MTR3 Adapted Edition",
+    "description": "A small addon for the Minecraft Transit Railway Mod",
+    "authors": [
+        "ZiYueCommentary (ziyue)",
+        "jiangxingyunjian",
+        "攸宁 (__Lingxii__ / lingxii)",
+        "厦航在拍车的无名机长"
+    ],
+    "contributors": [
+    ],
+    "contact": {
+        "sources": "https://gitee.com/lingxii/tianjin-metro-mtr3-adapted-edition",
+        "issues": "https://gitee.com/lingxii/tianjin-metro-mtr3-adapted-edition/issues"
+    },
+    "license": "MIT AND GPL-3.0-or-later",
+    "icon": "icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "modmenu": [
+            "ziyue.tjmetro.fabric.ModMenuConfig"
+        ],
+        "main": [
+            "ziyue.tjmetro.MainFabric"
+        ],
+        "client": [
+            "ziyue.tjmetro.MainFabricClient"
+        ]
+    },
+    "mixins": [
+        "tjmetro.mixins.json",
+        "tjmetro-fabric.mixins.json"
+    ],
+    "suggests": {
+    "cloth-config": "*"
+},
+"depends": {
+        "fabric-api": "*",
+        "architectury": "*",
+        "minecraft": "1.17.1",
+        "mtr": "*",
+        "java": ">=16"
+    }
+}

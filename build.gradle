@@ -48,6 +48,20 @@ def forge_version_1182 = "1.18.2-40.3.12"
 def cloth_config_forge_version_1182 = "7.0.72"
 def architectury_version_1182 = "4.12.94"
 
+// 1.17.1 子项目专用配置
+// 注意：1.17.1 对应 Architectury 2.x（组名已是 dev.architectury），
+//   Forge 为 37.1.x，字节码目标 Java 16，MTR 侧仍是 3.2.2（mtr.mappings 层与 1.18.2 一致）。
+def minecraft_version_1171 = "1.17.1"
+def mtr_jar_1171 = "MTR-fabric-1.17.1-3.2.2-hotfix-1.jar"
+def mtr_forge_jar_1171 = "MTR-forge-1.17.1-3.2.2-hotfix-1.jar"
+def fabric_loader_version_1171 = "0.19.3"
+def fabric_api_version_1171 = "0.46.1+1.17"
+def mod_menu_version_1171 = "2.0.17"
+def cloth_config_fabric_version_1171 = "5.3.63"
+def forge_version_1171 = "1.17.1-37.1.1"
+def cloth_config_forge_version_1171 = "5.3.63"
+def architectury_version_1171 = "2.10.12"
+
 // 1.16.5 子项目专用配置
 // 注意：1.16.5 时期的 Architectury 仍发布在 me.shedaniel 组下（不是 dev.architectury），
 //   Forge 为 36.2.x，MTR 侧同样是 3.2.2（其 mtr.mappings 层与 1.18.2 完全一致）。
@@ -113,12 +127,13 @@ subprojects {
     def isLegacy1194 = project.name == "fabric-1.19.4" || project.name == "forge-1.19.4" || project.name == "common-1.19.4"
     def isLegacy1192 = project.name == "fabric-1.19.2" || project.name == "forge-1.19.2" || project.name == "common-1.19.2"
     def isLegacy1182 = project.name == "fabric-1.18.2" || project.name == "forge-1.18.2" || project.name == "common-1.18.2"
+    def isLegacy1171 = project.name == "fabric-1.17.1" || project.name == "forge-1.17.1" || project.name == "common-1.17.1"
     def isLegacy1165 = project.name == "fabric-1.16.5" || project.name == "forge-1.16.5" || project.name == "common-1.16.5"
     def isLegacy1211 = project.name == "fabric-1.21.1" || project.name == "neoforge-1.21.1" || project.name == "common-1.21.1"
     def isNeoForge1211 = project.name == "neoforge-1.21.1"
-    def isForge = project.name == "forge" || project.name == "forge-1.19.4" || project.name == "forge-1.19.2" || project.name == "forge-1.18.2" || project.name == "forge-1.16.5"
-    def isCommon = project.name == "common" || project.name == "common-1.19.4" || project.name == "common-1.19.2" || project.name == "common-1.18.2" || project.name == "common-1.21.1" || project.name == "common-1.16.5"
-    def subMcVersion = isLegacy1211 ? minecraft_version_1211 : (isLegacy1194 ? minecraft_version_1194 : (isLegacy1192 ? minecraft_version_1192 : (isLegacy1182 ? minecraft_version_1182 : (isLegacy1165 ? minecraft_version_1165 : minecraft_version))))
+    def isForge = project.name == "forge" || project.name == "forge-1.19.4" || project.name == "forge-1.19.2" || project.name == "forge-1.18.2" || project.name == "forge-1.17.1" || project.name == "forge-1.16.5"
+    def isCommon = project.name == "common" || project.name == "common-1.19.4" || project.name == "common-1.19.2" || project.name == "common-1.18.2" || project.name == "common-1.17.1" || project.name == "common-1.21.1" || project.name == "common-1.16.5"
+    def subMcVersion = isLegacy1211 ? minecraft_version_1211 : (isLegacy1194 ? minecraft_version_1194 : (isLegacy1192 ? minecraft_version_1192 : (isLegacy1182 ? minecraft_version_1182 : (isLegacy1171 ? minecraft_version_1171 : (isLegacy1165 ? minecraft_version_1165 : minecraft_version)))))
     // 根据平台和版本选择对应的 MTR jar
     def subMtrJar
     if (isNeoForge1211) {
@@ -132,6 +147,8 @@ subprojects {
             subMtrJar = mtrJarPaths(mtr_forge_jar_1192)
         } else if (isLegacy1182) {
             subMtrJar = mtrJarPaths(mtr_forge_jar_1182)
+        } else if (isLegacy1171) {
+            subMtrJar = mtrJarPaths(mtr_forge_jar_1171)
         } else if (isLegacy1165) {
             subMtrJar = mtrJarPaths(mtr_forge_jar_1165)
         } else {
@@ -144,6 +161,8 @@ subprojects {
             subMtrJar = mtrJarPaths(mtr_jar_1192)
         } else if (isLegacy1182) {
             subMtrJar = mtrJarPaths(mtr_jar_1182)
+        } else if (isLegacy1171) {
+            subMtrJar = mtrJarPaths(mtr_jar_1171)
         } else if (isLegacy1165) {
             subMtrJar = mtrJarPaths(mtr_jar_1165)
         } else {
@@ -163,6 +182,18 @@ subprojects {
     project.ext.subForgeVersion = isLegacy1194 ? forge_version_1194 : (isLegacy1192 ? forge_version_1192 : (isLegacy1182 ? forge_version_1182 : rootProject.forge_version))
     project.ext.subArchitecturyVersion = isLegacy1194 ? architectury_version_1194 : (isLegacy1192 ? architectury_version_1192 : (isLegacy1182 ? architectury_version_1182 : rootProject.architectury_version))
     project.ext.subClothConfigForgeVersion = isLegacy1194 ? cloth_config_forge_version_1194 : (isLegacy1192 ? cloth_config_forge_version_1192 : (isLegacy1182 ? cloth_config_forge_version_1182 : rootProject.cloth_config_forge_version))
+
+    // 1.17.1 子项目覆盖默认值（Architectury 2.x，Forge 37.1.x，Java 16 字节码）
+    if (isLegacy1171) {
+        project.ext.subFabricLoaderVersion = fabric_loader_version_1171
+        project.ext.subFabricApiVersion = fabric_api_version_1171
+        project.ext.subModMenuVersion = mod_menu_version_1171
+        project.ext.subClothConfigVersion = cloth_config_fabric_version_1171
+        project.ext.subArchitecturyVersion = architectury_version_1171
+        project.ext.subForgeVersion = forge_version_1171
+        project.ext.subClothConfigForgeVersion = cloth_config_forge_version_1171
+        project.ext.subIsLegacy1171 = true
+    }
 
     // 1.16.5 子项目覆盖默认值。
     // 关键差异：Architectury 在该版本仍发布在 me.shedaniel 组下，所以用 subArchitecturyId 区分；
@@ -221,6 +252,17 @@ subprojects {
             modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1182}") {
                 exclude(group: "net.fabricmc.fabric-api")
             }
+        }
+        if (isCommon && isLegacy1171) {
+            modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version_1171}"
+            modApi "dev.architectury:architectury:${architectury_version_1171}"
+            modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_fabric_version_1171}") {
+                exclude(group: "net.fabricmc.fabric-api")
+            }
+            // 与 1.16.5 同理：MTR 3.2.2 的 BlockEntityClientSerializableMapper 依赖
+            // fabric-networking-blockentity-v0 里的 BlockEntityClientSerializable，
+            // 该模块在 1.18 起已从 fabric-api 移除，1.17.1 仍需显式声明。
+            modCompileOnly("net.fabricmc.fabric-api:fabric-networking-blockentity-v0:0.2.12+cf39a74318") { transitive = false }
         }
         if (isCommon && isLegacy1165) {
             // 1.16.5 时期 Architectury 的组名是 me.shedaniel，不是 dev.architectury
@@ -297,25 +339,42 @@ allprojects {
     version = minecraft_version + "-" + project.mod_version
     group = project.maven_group
 
+    // -PcnMirror：只走国内镜像 / 本地缓存。
+    // 生效时会跳过下方所有境外仓库，并在 projectsEvaluated 里剔除 Loom 注入的 fabricmc / neoforged 仓库。
+    // 国内直连 maven.fabricmc.net、maven.neoforged.net 会卡在 Cloudflare 握手上（每个请求数分钟），
+    // 因此离线构建失败、又需要补件时用它联网走 BMCLAPI。
+    def cnMirrorOnly = project.hasProperty("cnMirror")
+
     repositories {
+        // -PlocalMirror：把 tools/local-maven 用 `python -m http.server 8899` 暴露成 HTTP 仓库。
+        // 目的：Gradle 在 --offline 下不读 file:// 仓库，却会读"从网络仓库缓存过的"构件，
+        // 所以先用本地 HTTP 源跑一次在线构建把构件记账，之后离线构建才认。
+        if (project.hasProperty("localMirror")) {
+            maven {
+                url = "http://127.0.0.1:8899/"
+                allowInsecureProtocol = true
+            }
+        }
         // 本地 maven 仓库：存放国内各镜像都拿不到、且官方源极慢的构件
         // （目前是 net.minecraftforge:forge 1.16.5 的 pom + jar + installer/userdev/sources classifier）。
         // 必须放在最前面，否则 Gradle 会在 BMCLAPI 找到模块描述符后只去 BMCLAPI 找构件，
         // 而 BMCLAPI 对 GET 请求返回 JS 反爬页。
         maven { url = uri("file:///E:/Project/Tianjin-metro-MTR3/tools/local-maven") }
-        // Forge 1.16.5 的 dev 依赖（cpw.mods:modlauncher、net.minecraftforge:* 等）只在官方 maven 上，
-        // 国内各镜像都没有。官方源很慢，但这些都是几百 KB 的小包，配合 gradle.properties 里的长 socket 超时可以下完。
-        maven { url = "https://maven.minecraftforge.net/" }
         // 国内网络下 maven.fabricmc.net / maven.neoforged.net 会直接超时或 Connection reset，
         // BMCLAPI 提供同路径的国内镜像。这里先声明，稍后由下方 projectsEvaluated 提升到首位。
         maven { url = "https://bmclapi2.bangbang93.com/maven/" }
-        maven { url = "https://maven.neoforged.net/releases/" }
         maven { url = "https://maven.aliyun.com/repository/public" }
         maven { url = "https://jitpack.io/" }
-        maven { url = "https://maven.terraformersmc.com/" }
-        maven { url = "https://maven.shedaniel.me/" }
-        maven { url = "https://maven.ziyuesinicization.site/releases/" }
-        maven { url = "https://api.modrinth.com/maven" }
+        if (!cnMirrorOnly) {
+            // Forge 1.16.5 的 dev 依赖（cpw.mods:modlauncher、net.minecraftforge:* 等）只在官方 maven 上，
+            // 国内各镜像都没有。官方源很慢，但这些都是几百 KB 的小包，配合 gradle.properties 里的长 socket 超时可以下完。
+            maven { url = "https://maven.minecraftforge.net/" }
+            maven { url = "https://maven.neoforged.net/releases/" }
+            maven { url = "https://maven.terraformersmc.com/" }
+            maven { url = "https://maven.shedaniel.me/" }
+            maven { url = "https://maven.ziyuesinicization.site/releases/" }
+            maven { url = "https://api.modrinth.com/maven" }
+        }
     }
 
     tasks.withType(JavaCompile) {
@@ -350,6 +409,22 @@ allprojects {
 // 注意：Loom 会在 afterEvaluate 阶段就把 maven.fabricmc.net 解析进仓库列表并可能已触发解析，
 // 因此无法在这里重排仓库顺序。国内网络下请先用 tools/cache-warm 预热 Gradle 共享缓存，
 // 之后以 --offline 构建（见 README-1.21.1.md）。
+//
+// 需要联网补件时改用 -PcnMirror：等所有子项目评估完，把 Loom 注入的境外仓库剔掉，
+// 只留上面的 BMCLAPI / 阿里云 / 本地 maven，避免每个请求卡在 Cloudflare 握手上数分钟。
+if (project.hasProperty("cnMirror")) {
+    gradle.projectsEvaluated {
+        allprojects { p ->
+            p.repositories.removeAll { repo ->
+                def u = (repo.hasProperty("url") && repo.url != null) ? repo.url.toString() : ""
+                u.contains("fabricmc.net") || u.contains("neoforged.net") ||
+                        u.contains("architectury.dev") || u.contains("minecraftforge.net") ||
+                        u.contains("shedaniel.me") || u.contains("terraformersmc.com") ||
+                        u.contains("modrinth.com") || u.contains("ziyuesinicization.site")
+            }
+        }
+    }
+}
 
 // ── 许可文件随 jar 分发 ─────────────────────────────────────────────────────────
 // 本项目是复合许可（MIT AND GPL-3.0-or-later），见 LICENSING.md：
@@ -361,6 +436,7 @@ def licenseFileNames = ["LICENSE", "LICENSE-MIT", "LICENSE-GPL-3.0-or-later", "L
 def platformModuleNames = [
         "fabric", "forge",
         "fabric-1.16.5", "forge-1.16.5",
+        "fabric-1.17.1", "forge-1.17.1",
         "fabric-1.18.2", "forge-1.18.2",
         "fabric-1.19.2", "forge-1.19.2",
         "fabric-1.19.4", "forge-1.19.4",

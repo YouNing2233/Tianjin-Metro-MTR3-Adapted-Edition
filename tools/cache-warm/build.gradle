@@ -17,6 +17,25 @@ plugins {
 }
 
 repositories {
+    // 注意：Gradle 在 --offline 下不读 file:// 仓库，所以从本地 file 仓库预热的构件，
+    // 主工程离线构建时依然会报 "No cached version available for offline mode"。
+    // 需要预热本地构件时，用 `python -m http.server 8899` 把 tools/local-maven 暴露成 HTTP 仓库
+    // （Gradle 视其为远程仓库，离线可用），然后传 -PhttpMirror。
+    if (project.hasProperty("httpMirror")) {
+        maven {
+            url = "http://127.0.0.1:8899/"
+            allowInsecureProtocol = true
+        }
+    }
+    // -PuseLocalMaven：直接读 file 仓库（只对在线构建有用，离线无效）
+    if (project.hasProperty("useLocalMaven")) {
+        maven { url = uri("file:///E:/Project/Tianjin-metro-MTR3/tools/local-maven") }
+    }
+    // -PfirstRepo=official：把 forge 官方 maven 提到最前。
+    // 有些构件（如 forge installer）BMCLAPI 会重定向到失效镜像返回 503，而官方源直连是通的。
+    if (project.findProperty("firstRepo") == "official") {
+        maven { url = "https://maven.minecraftforge.net/" }
+    }
     // Forge 官方 maven 在国内经常超时；BMCLAPI 镜像了同样的路径，优先用它。
     maven { url = "https://bmclapi2.bangbang93.com/maven/" }   // 镜像 maven.fabricmc.net / maven.neoforged.net / maven.minecraftforge.net
     // net.fabricmc.fabric-api 系列 BMCLAPI 不镜像，只能直连（国内时通时断，多试几次）

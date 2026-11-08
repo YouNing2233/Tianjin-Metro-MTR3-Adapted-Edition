@@ -1,0 +1,50 @@
+modLoader = "javafml"
+loaderVersion = "[37,)"
+license = "MIT AND GPL-3.0-or-later"
+
+[[mods]]
+modId = "tjmetro"
+version = "${version}"
+displayName = "Tianjin Metro - MTR3 Adapted Edition"
+authors = "ZiYueCommentary (ziyue), jiangxingyunjian, 攸宁 (__Lingxii__ / lingxii), 厦航在拍车的无名机长"
+description = '''
+A small addon for the Minecraft Transit Railway Mod.
+
+Original mod: https://github.com/ZiYueCommentary/Tianjin-Metro
+Port author: 攸宁 (formerly __Lingxii__ / 泠惜i)
+'''
+logoFile = "icon.png"
+
+[[dependencies.tjmetro]]
+modId = "forge"
+mandatory = true
+versionRange = "[37,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.tjmetro]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.17.1,1.18)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.tjmetro]]
+modId = "architectury"
+mandatory = true
+versionRange = "[2.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.tjmetro]]
+modId = "mtr"
+mandatory = true
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "tjmetro.mixins.json"
+
+[[mixins]]
+config = "tjmetro.forge.mixins.json"

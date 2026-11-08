@@ -13,6 +13,7 @@ on:
 #   在构建前拉取到 mtr-jars/，再用 -PmtrJarDir 指给 Gradle。
 #   需要在压缩包里的文件（12 个，按需即可）：
 #     MTR-fabric-1.16.5-3.2.2-hotfix-1.jar   MTR-forge-1.16.5-3.2.2-hotfix-1.jar
+#     MTR-fabric-1.17.1-3.2.2-hotfix-1.jar   MTR-forge-1.17.1-3.2.2-hotfix-1.jar
 #     MTR-fabric-1.18.2-3.2.2-hotfix-1.jar   MTR-forge-1.18.2-3.2.2-hotfix-1.jar
 #     MTR-fabric-1.19.2-3.2.2-hotfix-1.jar   MTR-forge-1.19.2-3.2.2-hotfix-1.jar
 #     MTR-fabric-1.19.4-3.2.2-hotfix-1.jar   MTR-forge-1.19.4-3.2.2-hotfix-1.jar
@@ -39,6 +40,9 @@ jobs:
           # 1.18.2 - MTR 3.2.2-hotfix-1
           - { module: fabric-1.18.2,    mc: "1.18.2", java: "21" }
           - { module: forge-1.18.2,     mc: "1.18.2", java: "21" }
+          # 1.17.1 - MTR 3.2.2-hotfix-1（Architectury 2.x / Forge 37.1.x / Java 16 字节码）
+          - { module: fabric-1.17.1,    mc: "1.17.1", java: "21" }
+          - { module: forge-1.17.1,     mc: "1.17.1", java: "21" }
           # 1.16.5 - MTR 3.2.2-hotfix-1
           - { module: fabric-1.16.5,    mc: "1.16.5", java: "21" }
           - { module: forge-1.16.5,     mc: "1.16.5", java: "21" }
