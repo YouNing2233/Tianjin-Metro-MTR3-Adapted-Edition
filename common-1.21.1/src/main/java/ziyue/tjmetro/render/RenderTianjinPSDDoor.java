@@ -2,7 +2,6 @@ package ziyue.tjmetro.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mtr.MTRClient;
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.IBlock;
 import mtr.mappings.BlockEntityRendererMapper;
@@ -51,7 +50,7 @@ public class RenderTianjinPSDDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
         final boolean half = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.HALF) == DoubleBlockHalf.UPPER;
         final boolean end = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.END);
         final boolean unlocked = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.UNLOCKED);
-        final float open = Math.min(entity.getOpen(MTRClient.getLastFrameDuration()), 1);
+        final float open = DoorAnimationState.getInterpolatedOpen(entity, world, tickDelta);
 
         final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations();
         storedMatrixTransformations.add(matricesNew -> {
@@ -62,14 +61,14 @@ public class RenderTianjinPSDDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
         final StoredMatrixTransformations storedMatrixTransformationsLight = storedMatrixTransformations.copy();
 
         if (half) {
-            RenderTrains.scheduleRender(ResourceLocation.parse(String.format("tjmetro:textures/block/light_%s.png", open > 0 ? "on" : "off")), false, open > 0 ? RenderTrains.QueuedRenderLayer.LIGHT : RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(DoorTextureCache.psdLight(open > 0), false, open > 0 ? RenderTrains.QueuedRenderLayer.LIGHT : RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformationsLight.transform(matricesNew);
                 (side ? MODEL_PSD_LIGHT_RIGHT : MODEL_PSD_LIGHT_LEFT).renderToBuffer(matricesNew, vertexConsumer, light, overlay, 0xFFFFFFFF);
                 matricesNew.popPose();
             });
         }
         if (end) {
-            RenderTrains.scheduleRender(ResourceLocation.parse(String.format("tjmetro:textures/block/psd_door_end_tianjin_%s_%s_2.png", half ? "top" : "bottom", side ? "right" : "left")), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(DoorTextureCache.psdEnd(half, side, 2), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformationsLight.transform(matricesNew);
                 matricesNew.translate(open / 2 * (side ? -1 : 1), 0, 0);
                 (side ? MODEL_PSD_END_RIGHT_2 : MODEL_PSD_END_LEFT_2).renderToBuffer(matricesNew, vertexConsumer, light, overlay, 0xFFFFFFFF);
@@ -80,20 +79,20 @@ public class RenderTianjinPSDDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
         storedMatrixTransformations.add(matricesNew -> matricesNew.translate(open * (side ? -1 : 1), 0, 0));
 
         if (end) {
-            RenderTrains.scheduleRender(ResourceLocation.parse(String.format("tjmetro:textures/block/psd_door_end_tianjin_%s_%s_1.png", half ? "top" : "bottom", side ? "right" : "left")), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(DoorTextureCache.psdEnd(half, side, 1), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformations.transform(matricesNew);
                 (side ? MODEL_PSD_END_RIGHT_1 : MODEL_PSD_END_LEFT_1).renderToBuffer(matricesNew, vertexConsumer, light, overlay, 0xFFFFFFFF);
                 matricesNew.popPose();
             });
         } else {
-            RenderTrains.scheduleRender(ResourceLocation.parse(String.format("tjmetro:textures/block/psd_door_tianjin_%s_%s.png", half ? "top" : "bottom", side ? "right" : "left")), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(DoorTextureCache.psd(half, side), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformations.transform(matricesNew);
                 MODEL_PSD.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 0xFFFFFFFF);
                 matricesNew.popPose();
             });
         }
         if (half && !unlocked) {
-            RenderTrains.scheduleRender(ResourceLocation.parse("mtr:textures/block/sign/door_not_in_use.png"), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(DoorTextureCache.LOCKED, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformations.transform(matricesNew);
                 if (end) {
                     matricesNew.translate(side ? 0.25 : -0.25, 0, 0);

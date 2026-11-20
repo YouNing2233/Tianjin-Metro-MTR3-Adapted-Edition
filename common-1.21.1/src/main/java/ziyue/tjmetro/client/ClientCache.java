@@ -127,99 +127,99 @@ public class ClientCache extends DataCache implements IGui
     }
 
     public DynamicResource getDirectionArrow(long platformId, boolean hasLeft, boolean hasRight, IGui.HorizontalAlignment horizontalAlignment, boolean showToString, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_direction_arrow_%s_%s_%s_%s_%s_%s_%s_%s_%s_%s", platformId, hasLeft, hasRight, horizontalAlignment, showToString, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), () -> RouteMapGenerator.generateDirectionArrow(platformId, hasLeft, hasRight, horizontalAlignment, showToString, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_direction_arrow_" + platformId + "_" + hasLeft + "_" + hasRight + "_" + horizontalAlignment + "_" + showToString + "_" + paddingScale + "_" + aspectRatio + "_" + backgroundColor + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generateDirectionArrow(platformId, hasLeft, hasRight, horizontalAlignment, showToString, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getStationName(long platformId, boolean isAPG, IGui.HorizontalAlignment horizontalAlignment, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_station_name_%s_%s_%s_%s_%s_%s_%s_%s", platformId, isAPG, horizontalAlignment, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), () -> RouteMapGenerator.generateStationName(platformId, isAPG, horizontalAlignment, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_name_" + platformId + "_" + isAPG + "_" + horizontalAlignment + "_" + paddingScale + "_" + aspectRatio + "_" + backgroundColor + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generateStationName(platformId, isAPG, horizontalAlignment, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getPSDNextStation(long platformId, int arrowDirection, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_psd_next_station_%s_%s_%s_%s_%s_%s_%s", platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), () -> RouteMapGenerator.generatePSDNextStation(platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_psd_next_station_" + platformId + "_" + arrowDirection + "_" + paddingScale + "_" + aspectRatio + "_" + backgroundColor + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generatePSDNextStation(platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getRouteMap(long platformId, boolean vertical, boolean flip, float aspectRatio, boolean transparentWhite) {
-        return getResource(String.format("tjmetro_route_map_%s_%s_%s_%s_%s", platformId, vertical, flip, aspectRatio, transparentWhite), () -> RouteMapGenerator.generateRouteMap(platformId, vertical, flip, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
+        return getResource("tjmetro_route_map_" + platformId + "_" + vertical + "_" + flip + "_" + aspectRatio + "_" + transparentWhite, () -> RouteMapGenerator.generateRouteMap(platformId, vertical, flip, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
     }
 
     public DynamicResource getRouteSquare(int color, String routeName, IGui.HorizontalAlignment horizontalAlignment) {
-        return getResource(String.format("tjmetro_route_square_%s_%s_%s", color, routeName, horizontalAlignment), () -> RouteMapGenerator.generateRouteSquare(color, routeName, horizontalAlignment), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_route_square_" + color + "_" + routeName + "_" + horizontalAlignment, () -> RouteMapGenerator.generateRouteSquare(color, routeName, horizontalAlignment), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getExitSignLetter(String exitLetter, String exitNumber, int backgroundColor) {
-        return getResource(String.format("tjmetro_exit_sign_letter_%s_%s", exitLetter, exitNumber), () -> RouteMapGenerator.generateExitSignLetter(exitLetter, exitNumber, backgroundColor), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_exit_sign_letter_" + exitLetter + "_" + exitNumber + "_" + backgroundColor, () -> RouteMapGenerator.generateExitSignLetter(exitLetter, exitNumber, backgroundColor), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getExitSignLetterTianjin(String exitLetter, String exitNumber, int backgroundColor, int textColor, boolean forceMTRFont) {
-        return getResource(String.format("tjmetro_exit_sign_letter_tianjin_%s_%s_%s_%s", exitLetter, exitNumber, textColor, forceMTRFont), () -> RouteMapGenerator.generateExitSignLetterTianjin(exitLetter, exitNumber, backgroundColor, textColor, forceMTRFont), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_exit_sign_letter_tianjin_" + exitLetter + "_" + exitNumber + "_" + backgroundColor + "_" + textColor + "_" + forceMTRFont, () -> RouteMapGenerator.generateExitSignLetterTianjin(exitLetter, exitNumber, backgroundColor, textColor, forceMTRFont), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getBoundFor(long platformId, IGui.HorizontalAlignment horizontalAlignment, float aspectRatio, float paddingScale, int backgroundColor, boolean forceMTRFont) {
-        return getResource(String.format("tjmetro_bound_for_%s_%s_%s_%s_%s_%s", platformId, horizontalAlignment, aspectRatio, paddingScale, backgroundColor, forceMTRFont), () -> RouteMapGenerator.generateBoundFor(platformId, horizontalAlignment, aspectRatio, paddingScale, backgroundColor, forceMTRFont), ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_bound_for_" + platformId + "_" + horizontalAlignment + "_" + aspectRatio + "_" + paddingScale + "_" + backgroundColor + "_" + forceMTRFont, () -> RouteMapGenerator.generateBoundFor(platformId, horizontalAlignment, aspectRatio, paddingScale, backgroundColor, forceMTRFont), ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getSignText(String string, HorizontalAlignment horizontalAlignment, float paddingScale, int backgroundColor, int textColor) {
-        return getResource(String.format("tjmetro_sign_text_%s_%s_%s_%s_%s", string, horizontalAlignment, paddingScale, backgroundColor, textColor), () -> RouteMapGenerator.generateSignText(string, horizontalAlignment, paddingScale, backgroundColor, textColor), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_sign_text_" + string + "_" + horizontalAlignment + "_" + paddingScale + "_" + backgroundColor + "_" + textColor, () -> RouteMapGenerator.generateSignText(string, horizontalAlignment, paddingScale, backgroundColor, textColor), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getStationNameEntrance(long stationId, long selectedId, int style, String stationName, ziyue.tjmetro.block.BlockStationNameEntranceTianjin.Type type, float aspectRatio) {
-        return getResource(String.format("tjmetro_station_name_entrance_%s_%s_%s_%s_%s_%s", stationId, selectedId, style, stationName, type, aspectRatio), () -> RouteMapGenerator.generateStationNameEntrance(stationId, selectedId, style, stationName, type, aspectRatio), ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_name_entrance_" + stationId + "_" + selectedId + "_" + style + "_" + stationName + "_" + type + "_" + aspectRatio, () -> RouteMapGenerator.generateStationNameEntrance(stationId, selectedId, style, stationName, type, aspectRatio), ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getRouteMapTRT(long platformId, boolean vertical, boolean flip, float aspectRatio, boolean transparentWhite) {
-        return getResource(String.format("tjmetro_route_map_trt_%s_%s_%s_%s_%s", platformId, vertical, flip, aspectRatio, transparentWhite), () -> RouteMapGenerator.generateRouteMapTRT(platformId, vertical, flip, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
+        return getResource("tjmetro_route_map_trt_" + platformId + "_" + vertical + "_" + flip + "_" + aspectRatio + "_" + transparentWhite, () -> RouteMapGenerator.generateRouteMapTRT(platformId, vertical, flip, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
     }
 
     public DynamicResource getRouteMapJinjing(long platformId, int arrowDirection, float aspectRatio, boolean transparentWhite) {
-        return getResource(String.format("tjmetro_route_map_jinjing_%s_%s_%s_%s", platformId, arrowDirection, aspectRatio, transparentWhite), () -> RouteMapGenerator.generateRouteMapJinjing(platformId, arrowDirection, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
+        return getResource("tjmetro_route_map_jinjing_" + platformId + "_" + arrowDirection + "_" + aspectRatio + "_" + transparentWhite, () -> RouteMapGenerator.generateRouteMapJinjing(platformId, arrowDirection, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
     }
 
     public DynamicResource getRouteMapPSDBMT(long platformId, boolean flip, float aspectRatio, boolean transparentWhite) {
-        return getResource(String.format("tjmetro_route_map_psd_bmt_%s_%s_%s_%s", platformId, flip, aspectRatio, transparentWhite), () -> RouteMapGenerator.generateRouteMapPSDBMT(platformId, flip, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
+        return getResource("tjmetro_route_map_psd_bmt_" + platformId + "_" + flip + "_" + aspectRatio + "_" + transparentWhite, () -> RouteMapGenerator.generateRouteMapPSDBMT(platformId, flip, aspectRatio, transparentWhite), transparentWhite ? ClientCache.DefaultRenderingColor.TRANSPARENT : ClientCache.DefaultRenderingColor.WHITE);
     }
 
     public DynamicResource getRouteMapBMT(long platformId, boolean arrowLeft, float aspectRatio, int backgroundColor) {
-        return getResource(String.format("tjmetro_route_map_bmt_%s_%s_%s_%s", platformId, arrowLeft, aspectRatio, backgroundColor), () -> RouteMapGenerator.generateRouteMapBMT(platformId, arrowLeft, aspectRatio, backgroundColor), ClientCache.DefaultRenderingColor.WHITE);
+        return getResource("tjmetro_route_map_bmt_" + platformId + "_" + arrowLeft + "_" + aspectRatio + "_" + backgroundColor, () -> RouteMapGenerator.generateRouteMapBMT(platformId, arrowLeft, aspectRatio, backgroundColor), ClientCache.DefaultRenderingColor.WHITE);
     }
 
     public DynamicResource getStationNameBMT(long platformId, boolean flip, HorizontalAlignment horizontalAlignment, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_station_name_bmt_%s_%s_%s_%s_%s_%s_%s_%s", platformId, flip, horizontalAlignment, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), () -> RouteMapGenerator.generateStationNameBMT(platformId, flip, horizontalAlignment, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_name_bmt_" + platformId + "_" + flip + "_" + horizontalAlignment + "_" + paddingScale + "_" + aspectRatio + "_" + backgroundColor + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generateStationNameBMT(platformId, flip, horizontalAlignment, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getStationNameProjector(String stationName, float aspectRatio) {
-        return getResource(String.format("tjmetro_station_name_projector_%s_%s", stationName, aspectRatio), () -> RouteMapGenerator.generateStationNameProjector(stationName, aspectRatio), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_name_projector_" + stationName + "_" + aspectRatio, () -> RouteMapGenerator.generateStationNameProjector(stationName, aspectRatio), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getPlainText(String text, int backgroundColor, int textColor) {
-        return getResource(String.format("tjmetro_plain_text_%s_%s_%s", text, backgroundColor, textColor), () -> RouteMapGenerator.generatePlainText(text, backgroundColor, textColor), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_plain_text_" + text + "_" + backgroundColor + "_" + textColor, () -> RouteMapGenerator.generatePlainText(text, backgroundColor, textColor), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getStationNavigator(Set<Long> selectedRoutes, boolean arrowLeft, int backgroundColor, float aspectRatio) {
-        return getResource(String.format("tjmetro_station_navigator_%s_%s_%s_%s", selectedRoutes.hashCode(), arrowLeft, backgroundColor, aspectRatio), () -> RouteMapGenerator.generateStationNavigator(selectedRoutes, arrowLeft, backgroundColor, aspectRatio), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_navigator_" + selectedRoutes.hashCode() + "_" + arrowLeft + "_" + backgroundColor + "_" + aspectRatio, () -> RouteMapGenerator.generateStationNavigator(selectedRoutes, arrowLeft, backgroundColor, aspectRatio), DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getNextStation(long platformId, int arrowDirection, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_next_station_%s_%s_%s_%s_%s_%s_%s", platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), () -> RouteMapGenerator.generateNextStation(platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_next_station_" + platformId + "_" + arrowDirection + "_" + paddingScale + "_" + aspectRatio + "_" + backgroundColor + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generateNextStation(platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getNextStationJinjing(long platformId, int arrowDirection, float paddingScale, float aspectRatio, int backgroundColor, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_next_station_jinjing_%s_%s_%s_%s_%s_%s_%s", platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), () -> RouteMapGenerator.generateNextStationJinjing(platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_next_station_jinjing_" + platformId + "_" + arrowDirection + "_" + paddingScale + "_" + aspectRatio + "_" + backgroundColor + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generateNextStationJinjing(platformId, arrowDirection, paddingScale, aspectRatio, backgroundColor, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getSingleRowStationName(long platformId, float aspectRatio) {
-        return getResource(String.format("tjmetro_single_row_station_name_%s_%s", platformId, aspectRatio), () -> RouteMapGenerator.generateSingleRowStationName(platformId, aspectRatio), ClientCache.DefaultRenderingColor.WHITE);
+        return getResource("tjmetro_single_row_station_name_" + platformId + "_" + aspectRatio, () -> RouteMapGenerator.generateSingleRowStationName(platformId, aspectRatio), ClientCache.DefaultRenderingColor.WHITE);
     }
 
     public DynamicResource getColorStrip(long platformId) {
-        return getResource(String.format("tjmetro_color_strip_%s", platformId), () -> RouteMapGenerator.generateColorStrip(platformId), ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_color_strip_" + platformId, () -> RouteMapGenerator.generateColorStrip(platformId), ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getStationNamePlate(long platformId, int arrowDirection, int backgroundColor, float paddingScale, float aspectRatio, int textColor, int transparentColor) {
-        return getResource(String.format("tjmetro_station_name_plate_%s_%s_%s_%s_%s_%s_%s", platformId, arrowDirection, backgroundColor, paddingScale, aspectRatio, textColor, transparentColor), () -> RouteMapGenerator.generateStationNamePlate(platformId, arrowDirection, backgroundColor, paddingScale, aspectRatio, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_name_plate_" + platformId + "_" + arrowDirection + "_" + backgroundColor + "_" + paddingScale + "_" + aspectRatio + "_" + textColor + "_" + transparentColor, () -> RouteMapGenerator.generateStationNamePlate(platformId, arrowDirection, backgroundColor, paddingScale, aspectRatio, textColor, transparentColor), transparentColor == 0 && backgroundColor == ARGB_WHITE ? ClientCache.DefaultRenderingColor.WHITE : ClientCache.DefaultRenderingColor.TRANSPARENT);
     }
 
     public DynamicResource getStationNameSignTianjin(long platformId, float aspectRatio, int backgroundColor) {
-        return getResource(String.format("tjmetro_station_name_sign_tianjin_%s_%s_%s", platformId, aspectRatio, backgroundColor), () -> RouteMapGenerator.generateStationNameSignTianjin(platformId, aspectRatio, backgroundColor), DefaultRenderingColor.TRANSPARENT);
+        return getResource("tjmetro_station_name_sign_tianjin_" + platformId + "_" + aspectRatio + "_" + backgroundColor, () -> RouteMapGenerator.generateStationNameSignTianjin(platformId, aspectRatio, backgroundColor), DefaultRenderingColor.TRANSPARENT);
     }
 
     protected DynamicResource getResource(String key, Supplier<NativeImage> supplier, DefaultRenderingColor defaultRenderingColor) {

@@ -2,7 +2,6 @@ package ziyue.tjmetro.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mtr.MTRClient;
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.IBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -49,7 +48,7 @@ public class RenderAPGDoorTianjinTRT<T extends BlockPSDAPGDoorBase.TileEntityPSD
         if (half) {
             final Block sideBlock = world.getBlockState(pos.relative(side ? facing.getClockWise() : facing.getCounterClockWise())).getBlock();
             if (sideBlock instanceof BlockAPGGlassTianjinTRT) {
-                tryUpdateLightState(world, pos, entity.getOpen(MTRClient.getLastFrameDuration()) > 0 ? BlockAPGDoorTianjinTRT.LightProperty.LIGHT_ON : BlockAPGDoorTianjinTRT.LightProperty.LIGHT_OFF);
+                tryUpdateLightState(world, pos, DoorAnimationState.getOpen(entity, world) > 0 ? BlockAPGDoorTianjinTRT.LightProperty.LIGHT_ON : BlockAPGDoorTianjinTRT.LightProperty.LIGHT_OFF);
             } else {
                 tryUpdateLightState(world, pos, BlockAPGDoorTianjinTRT.LightProperty.NO_LIGHT);
             }

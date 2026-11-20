@@ -2,7 +2,6 @@ package ziyue.tjmetro.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mtr.MTRClient;
 import mtr.block.BlockAPGGlass;
 import mtr.block.BlockAPGGlassEnd;
 import mtr.block.BlockPSDAPGDoorBase;
@@ -56,7 +55,7 @@ public class RenderTianjinAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
         final boolean side = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.SIDE) == BlockPSDAPGDoorBase.EnumSide.RIGHT;
         final boolean half = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.HALF) == DoubleBlockHalf.UPPER;
         final boolean unlocked = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.UNLOCKED);
-        final float open = Math.min(entity.getOpen(MTRClient.getLastFrameDuration()), 1);
+        final float open = DoorAnimationState.getInterpolatedOpen(entity, world, tickDelta);
 
         final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations();
         storedMatrixTransformations.add(matricesNew -> {
@@ -71,7 +70,7 @@ public class RenderTianjinAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
             final boolean hasGlassNeighbor = sideBlock instanceof BlockAPGGlass || sideBlock instanceof BlockAPGGlassEnd;
 
             if (!useBlockStateLight && lightTexturePrefix != null && hasGlassNeighbor) {
-                RenderTrains.scheduleRender(new ResourceLocation(String.format("tjmetro:textures/block/%s_light_%s.png", lightTexturePrefix, open > 0 ? "on" : "off")), false, open > 0 ? RenderTrains.QueuedRenderLayer.LIGHT_TRANSLUCENT : RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+                RenderTrains.scheduleRender(DoorTextureCache.apgLight(lightTexturePrefix, open > 0), false, open > 0 ? RenderTrains.QueuedRenderLayer.LIGHT_TRANSLUCENT : RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                     storedMatrixTransformationsLight.transform(matricesNew);
                     matricesNew.translate(side ? -0.515625 : 0.515625, 0, 0);
                     matricesNew.scale(0.5F, 1, 1);
@@ -83,14 +82,14 @@ public class RenderTianjinAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 
         storedMatrixTransformations.add(matricesNew -> matricesNew.translate(open * (side ? -1 : 1), 0, 0));
 
-        RenderTrains.scheduleRender(new ResourceLocation(String.format("tjmetro:textures/block/%s_%s_%s.png", doorTexturePrefix, half ? "top" : "bottom", side ? "right" : "left")), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+        RenderTrains.scheduleRender(DoorTextureCache.apg(doorTexturePrefix, half, side), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
             storedMatrixTransformations.transform(matricesNew);
             (half ? MODEL_APG_TOP : MODEL_APG_BOTTOM).renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
             matricesNew.popPose();
         });
 
         if (half && !unlocked) {
-            RenderTrains.scheduleRender(new ResourceLocation("mtr:textures/block/sign/door_not_in_use.png"), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(DoorTextureCache.LOCKED, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformations.transform(matricesNew);
                 MODEL_APG_DOOR_LOCKED.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
                 matricesNew.popPose();
