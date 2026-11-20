@@ -20,20 +20,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { mod: fabric,           common: common,           mtr: modrinth }
-          - { mod: forge,            common: common,           mtr: modrinth }
-          - { mod: fabric-1.16.5,    common: common-1.16.5,    mtr: modrinth }
-          - { mod: forge-1.16.5,     common: common-1.16.5,    mtr: modrinth }
-          - { mod: fabric-1.17.1,    common: common-1.17.1,    mtr: modrinth }
-          - { mod: forge-1.17.1,     common: common-1.17.1,    mtr: modrinth }
-          - { mod: fabric-1.18.2,    common: common-1.18.2,    mtr: modrinth }
-          - { mod: forge-1.18.2,     common: common-1.18.2,    mtr: modrinth }
-          - { mod: fabric-1.19.2,    common: common-1.19.2,    mtr: modrinth }
-          - { mod: forge-1.19.2,     common: common-1.19.2,    mtr: modrinth }
-          - { mod: fabric-1.19.4,    common: common-1.19.4,    mtr: modrinth }
-          - { mod: forge-1.19.4,     common: common-1.19.4,    mtr: modrinth }
-          - { mod: fabric-1.21.1,    common: common-1.21.1,    mtr: modrinth }
-          - { mod: neoforge-1.21.1,  common: common-1.21.1,    mtr: modrinth }
+          - { mod: fabric,           common: common,           mc: "1.20.1" }
+          - { mod: forge,            common: common,           mc: "1.20.1" }
+          - { mod: fabric-1.16.5,    common: common-1.16.5,    mc: "1.16.5" }
+          - { mod: forge-1.16.5,     common: common-1.16.5,    mc: "1.16.5" }
+          - { mod: fabric-1.17.1,    common: common-1.17.1,    mc: "1.17.1" }
+          - { mod: forge-1.17.1,     common: common-1.17.1,    mc: "1.17.1" }
+          - { mod: fabric-1.18.2,    common: common-1.18.2,    mc: "1.18.2" }
+          - { mod: forge-1.18.2,     common: common-1.18.2,    mc: "1.18.2" }
+          - { mod: fabric-1.19.2,    common: common-1.19.2,    mc: "1.19.2" }
+          - { mod: forge-1.19.2,     common: common-1.19.2,    mc: "1.19.2" }
+          - { mod: fabric-1.19.4,    common: common-1.19.4,    mc: "1.19.4" }
+          - { mod: forge-1.19.4,     common: common-1.19.4,    mc: "1.19.4" }
+          - { mod: fabric-1.21.1,    common: common-1.21.1,    mc: "1.21.1" }
+          - { mod: neoforge-1.21.1,  common: common-1.21.1,    mc: "1.21.1" }
 
     steps:
       - uses: actions/checkout@v4
@@ -45,6 +45,11 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Fix gradlew permissions
+        run: |
+          chmod +x gradlew
+          sed -i 's/\r$//' gradlew
+
       - name: Stage MTR / NeoMTR jars
         run: |
           set -euo pipefail
@@ -54,10 +59,15 @@ jobs:
 
           # MTR 3.2.2-hotfix-1（Modrinth 官方 CDN，文件名与 build.gradle 完全一致）
           dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/YoiezDVD/MTR-fabric-1.16.5-3.2.2-hotfix-1.jar" "MTR-fabric-1.16.5-3.2.2-hotfix-1.jar"
+          dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/BXjGAhyU/MTR-forge-1.16.5-3.2.2-hotfix-1.jar"  "MTR-forge-1.16.5-3.2.2-hotfix-1.jar"
           dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/wT190mxx/MTR-fabric-1.17.1-3.2.2-hotfix-1.jar" "MTR-fabric-1.17.1-3.2.2-hotfix-1.jar"
+          dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/bUgsbKUr/MTR-forge-1.17.1-3.2.2-hotfix-1.jar"  "MTR-forge-1.17.1-3.2.2-hotfix-1.jar"
           dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/KD7TXFaw/MTR-fabric-1.18.2-3.2.2-hotfix-1.jar" "MTR-fabric-1.18.2-3.2.2-hotfix-1.jar"
+          dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/aF2FI7ui/MTR-forge-1.18.2-3.2.2-hotfix-1.jar"  "MTR-forge-1.18.2-3.2.2-hotfix-1.jar"
           dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/H0yHV2yE/MTR-fabric-1.19.2-3.2.2-hotfix-1.jar" "MTR-fabric-1.19.2-3.2.2-hotfix-1.jar"
+          dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/vkmzH7aU/MTR-forge-1.19.2-3.2.2-hotfix-1.jar"  "MTR-forge-1.19.2-3.2.2-hotfix-1.jar"
           dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/UT2U5yfn/MTR-fabric-1.19.4-3.2.2-hotfix-1.jar" "MTR-fabric-1.19.4-3.2.2-hotfix-1.jar"
+          dl "https://cdn.modrinth.com/data/XKPAmI6u/versions/PP5puu9Z/MTR-forge-1.19.4-3.2.2-hotfix-1.jar"  "MTR-forge-1.19.4-3.2.2-hotfix-1.jar"
 
           # NeoMTR 300.6.1+1.21.1（Modrinth）
           dl "https://cdn.modrinth.com/data/xilU2EKS/versions/1jZyPnjl/NeoMTR-300.6.1%2B1.21.1%2Bfabric.jar" "NeoMTR-300.6.1+1.21.1+fabric.jar"
@@ -98,7 +108,9 @@ jobs:
           mkdir -p out
           find build -maxdepth 1 -name "TianjinMetro-*.jar" -exec cp {} out/ \;
           if [ -z "$(ls -A out)" ]; then
+            echo "no jar collected, listing build/libs:"
             find . -path ./mtr-jars -prune -o -name "*.jar" -print | grep -E "build/libs/.*-[0-9].*\.jar$" | grep -v sources | head -20
+            exit 1
           fi
           ls -l out
 
