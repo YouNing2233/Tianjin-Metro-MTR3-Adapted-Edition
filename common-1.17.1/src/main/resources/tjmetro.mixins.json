@@ -8,7 +8,8 @@
 		"CustomResourcesMixin",
 		"BlockRailwaySignPoleMixin",
 		"PacketTrainDataGuiClientMixin",
-		"TicketSystemMixin"
+		"TicketSystemMixin",
+		"BlockPSDAPGDoorBaseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
