@@ -189,6 +189,11 @@ public class TianjinMetro
         /* PSD - Jinjing */
         registerBlock.accept("psd_door_tianjin_jinjing", BlockList.PSD_DOOR_TIANJIN_JINJING);
         registerItem.accept("psd_door_tianjin_jinjing", ItemList.PSD_DOOR_TIANJIN_JINJING, GATES);
+                registerBlock.accept("psd_door_tianjin_wide", BlockList.PSD_DOOR_TIANJIN_WIDE);
+                registerItem.accept("psd_door_tianjin_wide", ItemList.PSD_DOOR_TIANJIN_WIDE, GATES);
+                registerBlock.accept("apg_door_tianjin_wide", BlockList.APG_DOOR_TIANJIN_WIDE);
+                registerItem.accept("apg_door_tianjin_wide", ItemList.APG_DOOR_TIANJIN_WIDE, GATES);
+                registerBlock.accept("psd_top_tianjin_wide", BlockList.PSD_TOP_TIANJIN_WIDE);
         registerBlock.accept("psd_glass_tianjin_jinjing", BlockList.PSD_GLASS_TIANJIN_JINJING);
         registerItem.accept("psd_glass_tianjin_jinjing", ItemList.PSD_GLASS_TIANJIN_JINJING, GATES);
         registerBlock.accept("psd_glass_end_tianjin_jinjing", BlockList.PSD_GLASS_END_TIANJIN_JINJING);
@@ -432,6 +437,9 @@ public class TianjinMetro
         registerBlockEntityType.accept("psd_top_tianjin", BlockEntityTypes.PSD_TOP_TIANJIN_TILE_ENTITY);
         registerBlockEntityType.accept("psd_top_tianjin_jinjing", BlockEntityTypes.PSD_TOP_TIANJIN_JINJING_TILE_ENTITY);
         registerBlockEntityType.accept("psd_top_tianjin_bmt", BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY);
+                registerBlockEntityType.accept("psd_door_tianjin_wide", BlockEntityTypes.PSD_DOOR_TIANJIN_WIDE_TILE_ENTITY);
+                registerBlockEntityType.accept("apg_door_tianjin_wide", BlockEntityTypes.APG_DOOR_TIANJIN_WIDE_TILE_ENTITY);
+                registerBlockEntityType.accept("psd_top_tianjin_wide", BlockEntityTypes.PSD_TOP_TIANJIN_WIDE_TILE_ENTITY);
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         registerBlockEntityType.accept("station_name_projector", BlockEntityTypes.STATION_NAME_PROJECTOR);
 

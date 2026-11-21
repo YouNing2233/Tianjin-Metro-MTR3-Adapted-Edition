@@ -238,4 +238,9 @@ public interface BlockList
 
     /* 1.1.8 - Ported from 4.0 - Security check sign */
     RegistryObject<Block> SECURITY_CHECK_SIGN = new RegistryObject<>(BlockSecurityCheckSign::new);
+
+    /* 1.1.8 - Three-leaf wide Tianjin PSD / APG door and wide PSD top */
+    RegistryObject<Block> PSD_DOOR_TIANJIN_WIDE = new RegistryObject<>(BlockPSDDoorTianjinWide::new);
+    RegistryObject<Block> APG_DOOR_TIANJIN_WIDE = new RegistryObject<>(BlockAPGDoorTianjinWide::new);
+    RegistryObject<Block> PSD_TOP_TIANJIN_WIDE = new RegistryObject<>(BlockPSDTopTianjinWide::new);
 }

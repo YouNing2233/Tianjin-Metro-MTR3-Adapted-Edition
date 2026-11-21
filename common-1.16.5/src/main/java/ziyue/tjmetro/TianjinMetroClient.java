@@ -91,6 +91,8 @@ public class TianjinMetroClient
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN_BMT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_TIANJIN_JINJING.get());
+                RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_DOOR_TIANJIN_WIDE.get());
+                RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.APG_DOOR_TIANJIN_WIDE.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN_BMT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.PSD_GLASS_END_TIANJIN_JINJING.get());
@@ -242,6 +244,9 @@ public class TianjinMetroClient
         registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_TILE_ENTITY.get(), RenderPSDTopTianjin::new);
         registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_JINJING_TILE_ENTITY.get(), RenderPSDTopTianjin::new);
         registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_BMT_TILE_ENTITY.get(), RenderPSDTopTianjinBMT::new);
+                registerRouteRenderer(BlockEntityTypes.PSD_TOP_TIANJIN_WIDE_TILE_ENTITY.get(), RenderPSDTopTianjinWide::new);
+                RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_DOOR_TIANJIN_WIDE_TILE_ENTITY.get(), RenderTianjinPSDDoorWide::new);
+                RegistryClient.registerTileEntityRenderer(BlockEntityTypes.APG_DOOR_TIANJIN_WIDE_TILE_ENTITY.get(), RenderTianjinAPGDoorWide::new);
         /* 1.1.6 - Ported from 4.0 - Station Name Projector */
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PROJECTOR.get(), RenderStationNameProjector::new);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */

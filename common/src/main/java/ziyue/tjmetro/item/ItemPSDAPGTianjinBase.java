@@ -30,6 +30,8 @@ import ziyue.tjmetro.block.flag.BlockFlagAPGTianjin;
 import ziyue.tjmetro.block.flag.BlockFlagAPGTianjinBMT;
 import ziyue.tjmetro.block.flag.BlockFlagAPGTianjinTRT;
 import ziyue.tjmetro.block.flag.BlockFlagDoorSingle;
+import ziyue.tjmetro.block.BlockPSDDoorTianjinWide;
+import ziyue.tjmetro.block.flag.BlockFlagDoorWide;
 import ziyue.tjmetro.block.flag.BlockFlagPSDTianjin;
 import ziyue.tjmetro.block.flag.BlockFlagPSDTianjinBMT;
 import ziyue.tjmetro.block.flag.BlockFlagPSDTianjinJinjing;
@@ -65,7 +67,7 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
     @Override
     public InteractionResult useOn(UseOnContext context) {
         final Block block = getBlock();
-        final int horizontalBlocks = (block instanceof BlockPSDAPGDoorBase && !(block instanceof BlockFlagDoorSingle)) ? 2 : 1;
+        final int horizontalBlocks = block instanceof BlockFlagDoorWide ? 3 : (block instanceof BlockPSDAPGDoorBase && !(block instanceof BlockFlagDoorSingle)) ? 2 : 1;
         if (ItemPSDAPGBase.blocksNotReplaceable(context, horizontalBlocks, isAPG() ? 2 : 3, block)) {
             return InteractionResult.FAIL;
         }
@@ -84,6 +86,10 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
 
                 if (block instanceof BlockFlagDoorSingle doorSingle) {
                     world.setBlockAndUpdate(newPos.above(y), state.setValue(SIDE, doorSingle.isLeft() ? EnumSide.LEFT : EnumSide.RIGHT));
+                } else if (block instanceof BlockFlagDoorWide) {
+                    world.setBlockAndUpdate(newPos.above(y), state
+                            .setValue(SIDE, x == 0 ? EnumSide.LEFT : EnumSide.RIGHT)
+                            .setValue(BlockPSDDoorTianjinWide.WIDE_SIDE, x == 0 ? BlockPSDDoorTianjinWide.WideSide.LEFT : x == 1 ? BlockPSDDoorTianjinWide.WideSide.MIDDLE : BlockPSDDoorTianjinWide.WideSide.RIGHT));
                 } else if (block instanceof BlockPSDAPGDoorBase) {
                     world.setBlockAndUpdate(newPos.above(y), state.setValue(SIDE, x == 0 ? EnumSide.LEFT : EnumSide.RIGHT));
                 } else {
@@ -94,8 +100,14 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
             if (!isAPG()) {
                 if (block instanceof BlockFlagPSDTianjinBMT) {
                     world.setBlockAndUpdate(newPos.above(2), BlockPSDTopTianjinBMT.getActualState(world, newPos.above(2)).setValue(BlockPSDTopTianjinBMT.STYLE, BlockPSDTopTianjinBMT.EnumPSDType.BMT));
+                } else if (block instanceof BlockFlagDoorWide) {
+                    // 三扇宽的门：吊板换成专门的宽版方块，三块合起来画成一整块牌子
+                    final BlockPos topPos = newPos.above(2);
+                    world.setBlockAndUpdate(topPos, ziyue.tjmetro.BlockList.PSD_TOP_TIANJIN_WIDE.get().defaultBlockState());
+                    world.setBlockAndUpdate(topPos, BlockPSDTopTianjin.getActualState(world, topPos, true).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME));
                 } else if (block instanceof BlockFlagPSDTianjin) {
-                    world.setBlockAndUpdate(newPos.above(2), BlockPSDTopTianjin.getActualState(world, newPos.above(2), block instanceof BlockFlagPSDTianjinJinjing).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME));
+                    final BlockState topState = BlockPSDTopTianjin.getActualState(world, newPos.above(2), block instanceof BlockFlagPSDTianjinJinjing).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME);
+                    world.setBlockAndUpdate(newPos.above(2), topState);
                 }
             }
         }

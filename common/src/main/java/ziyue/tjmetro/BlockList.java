@@ -192,6 +192,12 @@ public interface BlockList
     RegistryObject<Block> PSD_DOOR_TIANJIN = new RegistryObject<>(BlockPSDDoorTianjin::new);
     RegistryObject<Block> PSD_DOOR_TIANJIN_BMT = new RegistryObject<>(BlockPSDDoorTianjinBMT::new);
     RegistryObject<Block> PSD_DOOR_TIANJIN_JINJING = new RegistryObject<>(BlockPSDDoorTianjinJinjing::new);
+    RegistryObject<Block> PSD_DOOR_TIANJIN_WIDE = new RegistryObject<>(BlockPSDDoorTianjinWide::new);
+
+    /* 1.1.8 - 半高屏蔽门（三扇） */
+    RegistryObject<Block> APG_DOOR_TIANJIN_WIDE = new RegistryObject<>(BlockAPGDoorTianjinWide::new);
+
+    /* 1.1.8 - 半高屏蔽门（三扇） */
     RegistryObject<Block> PSD_DOOR_SINGLE_LEFT = new RegistryObject<>(() -> new BlockPSDDoorSingle(true));
     RegistryObject<Block> PSD_DOOR_SINGLE_RIGHT = new RegistryObject<>(() -> new BlockPSDDoorSingle(false));
     RegistryObject<Block> PSD_GLASS_TIANJIN = new RegistryObject<>(BlockPSDGlassTianjin::new);
@@ -202,6 +208,7 @@ public interface BlockList
     RegistryObject<Block> PSD_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassEndTianjinJinjing::new);
     RegistryObject<Block> PSD_TOP_TIANJIN = new RegistryObject<>(() -> new BlockPSDTopTianjin(false));
     RegistryObject<Block> PSD_TOP_TIANJIN_JINJING = new RegistryObject<>(() -> new BlockPSDTopTianjin(true));
+    RegistryObject<Block> PSD_TOP_TIANJIN_WIDE = new RegistryObject<>(BlockPSDTopTianjinWide::new);
     RegistryObject<Block> PSD_TOP_TIANJIN_BMT = new RegistryObject<>(BlockPSDTopTianjinBMT::new);
 
     /* 1.1.6 - Ported from 4.0 - Station Name Projector */

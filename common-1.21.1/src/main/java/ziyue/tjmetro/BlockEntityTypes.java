@@ -167,4 +167,8 @@ public interface BlockEntityTypes
 
     /* 1.1.8 - Ported from 4.0 - Security check sign */
     RegistryObject<BlockEntityType<BlockSecurityCheckSign.TileEntitySecurityCheckSign>> SECURITY_CHECK_SIGN_TILE_ENTITY = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockSecurityCheckSign.TileEntitySecurityCheckSign::new, BlockList.SECURITY_CHECK_SIGN.get()));
+
+    RegistryObject<BlockEntityType<BlockPSDDoorTianjinWide.TileEntityPSDDoorTianjinWide>> PSD_DOOR_TIANJIN_WIDE_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPSDDoorTianjinWide.TileEntityPSDDoorTianjinWide::new, BlockList.PSD_DOOR_TIANJIN_WIDE.get()));
+    RegistryObject<BlockEntityType<BlockAPGDoorTianjinWide.TileEntityAPGDoorTianjinWide>> APG_DOOR_TIANJIN_WIDE_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockAPGDoorTianjinWide.TileEntityAPGDoorTianjinWide::new, BlockList.APG_DOOR_TIANJIN_WIDE.get()));
+    RegistryObject<BlockEntityType<BlockPSDTopTianjinWide.TileEntityPSDTopTianjinWide>> PSD_TOP_TIANJIN_WIDE_TILE_ENTITY = new RegistryObject<>(() -> RegistryUtilities.getBlockEntityType(BlockPSDTopTianjinWide.TileEntityPSDTopTianjinWide::new, BlockList.PSD_TOP_TIANJIN_WIDE.get()));
 }

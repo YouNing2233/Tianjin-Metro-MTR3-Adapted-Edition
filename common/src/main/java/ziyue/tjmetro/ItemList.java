@@ -4,6 +4,7 @@ import mtr.RegistryObject;
 import mtr.item.ItemWithCreativeTabBase;
 import net.minecraft.world.item.Item;
 import ziyue.tjmetro.item.ItemPSDAPGTianjinBase;
+import ziyue.tjmetro.item.ItemPSDDoorTianjinWide;
 
 /**
  * @since beta-1
@@ -33,6 +34,8 @@ public interface ItemList
     RegistryObject<Item> PSD_DOOR_TIANJIN = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_DOOR_TIANJIN));
     RegistryObject<Item> PSD_DOOR_TIANJIN_BMT = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_DOOR_TIANJIN_BMT));
     RegistryObject<Item> PSD_DOOR_TIANJIN_JINJING = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_DOOR_TIANJIN_JINJING));
+    RegistryObject<Item> PSD_DOOR_TIANJIN_WIDE = new RegistryObject<>(() -> new ItemPSDDoorTianjinWide(BlockList.PSD_DOOR_TIANJIN_WIDE));
+    RegistryObject<Item> APG_DOOR_TIANJIN_WIDE = new RegistryObject<>(() -> new ziyue.tjmetro.item.ItemAPGDoorTianjinWide(BlockList.APG_DOOR_TIANJIN_WIDE));
     RegistryObject<Item> PSD_DOOR_SINGLE_LEFT = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_DOOR_SINGLE_LEFT));
     RegistryObject<Item> PSD_DOOR_SINGLE_RIGHT = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_DOOR_SINGLE_RIGHT));
     RegistryObject<Item> PSD_GLASS_TIANJIN = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_TIANJIN));

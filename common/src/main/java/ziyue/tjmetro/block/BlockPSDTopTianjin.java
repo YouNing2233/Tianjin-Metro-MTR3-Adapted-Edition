@@ -139,6 +139,10 @@ public class BlockPSDTopTianjin extends BlockPSDTop implements BlockFlagPSDTianj
         if (blockBelow instanceof BlockFlagPSDTianjin) {
             if (blockBelow instanceof BlockPSDDoorTianjin) {
                 side = IBlock.getStatePropertySafe(stateBelow, SIDE);
+            } else if (blockBelow instanceof BlockPSDDoorTianjinWide) {
+                // 三扇宽屏蔽门：把门的 wide_side 传给吊板，让渲染器把整组当成 LEFT / MIDDLE / RIGHT
+                final BlockPSDDoorTianjinWide.WideSide wideSide = IBlock.getStatePropertySafe(stateBelow, BlockPSDDoorTianjinWide.WIDE_SIDE);
+                side = wideSide == BlockPSDDoorTianjinWide.WideSide.MIDDLE ? IBlock.EnumSide.MIDDLE : wideSide == BlockPSDDoorTianjinWide.WideSide.LEFT ? IBlock.EnumSide.LEFT : IBlock.EnumSide.RIGHT;
             } else {
                 side = IBlock.getStatePropertySafe(stateBelow, SIDE_EXTENDED);
             }
