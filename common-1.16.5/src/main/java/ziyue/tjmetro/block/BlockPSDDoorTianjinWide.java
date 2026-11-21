@@ -119,7 +119,7 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
     @Override
     public InteractionResult use(BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         // 扳手：整组（上下两半 × 三扇）一起切换开门方向，并给操作者一行提示
-        if (player.getItemInHand(interactionHand).is(ItemList.WRENCH.get())) {
+        if (player.getItemInHand(interactionHand).getItem() == ItemList.WRENCH.get()) {
             if (!world.isClientSide) {
                 final Direction sideDirection = IBlock.getSideDirection(blockState);
 

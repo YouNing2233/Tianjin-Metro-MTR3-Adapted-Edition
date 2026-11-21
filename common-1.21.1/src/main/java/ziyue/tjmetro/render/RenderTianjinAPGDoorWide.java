@@ -74,14 +74,14 @@ public class RenderTianjinAPGDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
         final ResourceLocation doorTexture = ResourceLocation.parse(String.format("tjmetro:textures/block/apg_door_tianjin_%s_%s.png", half ? "top" : "bottom", sideName));
         RenderTrains.scheduleRender(doorTexture, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
             storedMatrixTransformations.transform(matricesNew);
-            (half ? MODEL_APG_TOP : MODEL_APG_BOTTOM).renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
+            (half ? MODEL_APG_TOP : MODEL_APG_BOTTOM).renderToBuffer(matricesNew, vertexConsumer, light, overlay, 0xFFFFFFFF);
             matricesNew.popPose();
         });
 
         if (half && !unlocked) {
             RenderTrains.scheduleRender(ResourceLocation.parse("mtr:textures/block/sign/door_not_in_use.png"), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformations.transform(matricesNew);
-                MODEL_APG_DOOR_LOCKED.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
+                MODEL_APG_DOOR_LOCKED.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 0xFFFFFFFF);
                 matricesNew.popPose();
             });
         }
