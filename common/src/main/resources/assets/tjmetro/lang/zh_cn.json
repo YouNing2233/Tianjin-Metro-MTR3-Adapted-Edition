@@ -5,6 +5,7 @@
     "itemGroup.tjmetro.tjmetro_tab":  "天津地铁",
     "item.tjmetro.wrench":  "扳手",
     "block.tjmetro.rolling":  "卷帘门",
+    "block.tjmetro.rolling_corner":  "卷帘门（转角）",
     "block.tjmetro.logo":  "天津地铁Logo",
     "block.tjmetro.station_name_sign_1":  "站名牌",
     "block.tjmetro.station_name_sign_2":  "站名牌",
@@ -377,9 +378,5 @@
     "tooltip.tjmetro.disable_train_rendering": "跳过列车渲染以提升性能，列车将不可见。",
     "config.tjmetro.cloth_config_hint": "按 ESC 返回。",
     "gui.tjmetro.select_advertisements": "选择广告",
-    "gui.tjmetro.following_train": "Following Train",
-    "gui.tjmetro.following_train_cjk": "后续列车",
-    "block.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客资讯显示屏）",
-    "item.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客资讯显示屏）",
-    "tooltip.tjmetro.psd_glass_screen_tianjin": "将三扇并排放置（三格宽、两格高），即可显示完整的乘客信息"
+    "tooltip.tjmetro.rolling_corner": "扳手或刷子可切换上/下部，转角处与普通卷帘门拼接"
 }

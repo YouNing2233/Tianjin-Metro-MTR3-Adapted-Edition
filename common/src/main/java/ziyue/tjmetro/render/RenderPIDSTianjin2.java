@@ -64,16 +64,16 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
 
     private static final float COLUMN_CENTER_X = 35.8F;
 
-    private static final float LINE_NAME_Y = 11.0F;
+    private static final float LINE_NAME_Y = 13.4F;
     private static final float LINE_NAME_SCALE = 1.32F;
     private static final float LINE_NAME_WIDTH = 62F;
 
-    private static final float SEPARATOR_Y = 17.6F;
+    private static final float SEPARATOR_Y = 19.6F;
     private static final float SEPARATOR_X0 = 13.1F;
     private static final float SEPARATOR_X1 = 58.6F;
     private static final float SEPARATOR_THICKNESS = 0.7F;
 
-    private static final float LABEL_Y = 24.6F;
+    private static final float LABEL_Y = 27.0F;
     private static final float LABEL_SCALE = 1.36F;
     private static final float LABEL_WIDTH = 60F;
 
@@ -158,7 +158,7 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
         renderDate(matrices, immediate, entity);
 
         if (route != null) {
-            final String lineName = route.name == null ? "" : route.name;
+            final String lineName = toChineseName(route.name);
             if (!lineName.isEmpty()) {
                 renderText(matrices, immediate, lineName, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, COLUMN_CENTER_X, LINE_NAME_Y, LINE_NAME_WIDTH, LINE_NAME_SCALE, ARGB_WHITE);
             }
@@ -182,6 +182,22 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
 
         immediate.endBatch();
         matrices.popPose();
+    }
+
+    /**
+     * Keeps only the Chinese part of a route name.
+     *
+     * <p>MTR route names are often entered as {@code "1号线|Line 1"} or {@code "1号线 / Line 1"};
+     * the Line 2 board only has room for the Chinese name, so the first segment that contains
+     * CJK characters wins. Names without any CJK text are returned unchanged.</p>
+     */
+    private static String toChineseName(String name) {
+        if (name == null || name.isEmpty()) return "";
+        for (final String part : name.split("[|/]")) {
+            final String trimmed = part.trim();
+            if (!trimmed.isEmpty() && IGui.isCjk(trimmed)) return trimmed;
+        }
+        return name.trim();
     }
 
     /**

@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,bottom=true":  { "model": "tjmetro:block/rolling_corner_bottom" },
+        "facing=east,bottom=true":   { "model": "tjmetro:block/rolling_corner_bottom_east" },
+        "facing=south,bottom=true":  { "model": "tjmetro:block/rolling_corner_bottom_south" },
+        "facing=west,bottom=true":   { "model": "tjmetro:block/rolling_corner_bottom_west" },
+        "facing=north,bottom=false": { "model": "tjmetro:block/rolling_corner" },
+        "facing=east,bottom=false":  { "model": "tjmetro:block/rolling_corner_east" },
+        "facing=south,bottom=false": { "model": "tjmetro:block/rolling_corner_south" },
+        "facing=west,bottom=false":  { "model": "tjmetro:block/rolling_corner_west" }
+    }
+}

@@ -5,6 +5,7 @@
     "itemGroup.tjmetro.tjmetro_tab":  "Tianjin Metro",
     "item.tjmetro.wrench":  "Wrench",
     "block.tjmetro.rolling":  "Rolling shutter",
+    "block.tjmetro.rolling_corner":  "Rolling shutter (corner)",
     "block.tjmetro.logo":  "Tianjin Metro Logo",
     "block.tjmetro.station_name_sign_1":  "Station Name Sign",
     "block.tjmetro.station_name_sign_2":  "Station Name Sign",
@@ -382,9 +383,5 @@
     "tooltip.tjmetro.disable_train_rendering": "Skip rendering trains to improve performance. Trains will become invisible.",
     "config.tjmetro.cloth_config_hint": "Press ESC to go back.",
     "gui.tjmetro.select_advertisements": "Select Advertisements",
-    "gui.tjmetro.following_train": "Following Train",
-    "gui.tjmetro.following_train_cjk": "后续列车",
-    "block.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客咨询显示屏）",
-    "item.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客咨询显示屏）",
-    "tooltip.tjmetro.psd_glass_screen_tianjin": "Place three panels side by side (3 wide, 2 tall) to show the full passenger information board"
+    "tooltip.tjmetro.rolling_corner": "Use the wrench or brush to switch between the upper and bottom section"
 }
