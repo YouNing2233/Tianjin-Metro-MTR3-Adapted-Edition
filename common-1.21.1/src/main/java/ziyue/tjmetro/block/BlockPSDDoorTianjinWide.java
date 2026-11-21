@@ -2,6 +2,7 @@ package ziyue.tjmetro.block;
 
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.IBlock;
+import mtr.mappings.Text;
 import mtr.mappings.BlockEntityMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
