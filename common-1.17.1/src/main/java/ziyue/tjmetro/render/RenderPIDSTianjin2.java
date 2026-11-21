@@ -78,7 +78,7 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
     private static final float LABEL_SCALE = 1.36F;
     private static final float LABEL_WIDTH = 60F;
 
-    private static final float ARRIVAL_Y = 41.8F;
+    private static final float ARRIVAL_Y = 45.5F;
     private static final float ARRIVAL_NUMBER_SCALE = 0.37F;
     private static final float ARRIVAL_UNIT_SCALE = 1.36F;
     private static final float ARRIVAL_WIDTH = 60F;
@@ -87,7 +87,7 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
     private static final float DESTINATION_SCALE = 1.36F;
     private static final float DESTINATION_WIDTH = 60F;
 
-    private static final float CLOCK_Y = 96.9F;
+    private static final float CLOCK_Y = 99.2F;
     private static final float CLOCK_SCALE = 0.72F;
     private static final float CLOCK_WIDTH = 58F;
 
