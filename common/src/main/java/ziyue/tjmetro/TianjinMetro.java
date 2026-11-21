@@ -187,6 +187,8 @@ public class TianjinMetro
         registerItem.accept("psd_door_tianjin_jinjing", ItemList.PSD_DOOR_TIANJIN_JINJING, GATES);
         registerBlock.accept("psd_glass_tianjin_jinjing", BlockList.PSD_GLASS_TIANJIN_JINJING);
         registerItem.accept("psd_glass_tianjin_jinjing", ItemList.PSD_GLASS_TIANJIN_JINJING, GATES);
+        registerBlock.accept("psd_glass_screen_tianjin", BlockList.PSD_GLASS_SCREEN_TIANJIN);
+        registerItem.accept("psd_glass_screen_tianjin", ItemList.PSD_GLASS_SCREEN_TIANJIN, GATES);
         registerBlock.accept("psd_glass_end_tianjin_jinjing", BlockList.PSD_GLASS_END_TIANJIN_JINJING);
         registerItem.accept("psd_glass_end_tianjin_jinjing", ItemList.PSD_GLASS_END_TIANJIN_JINJING, GATES);
         registerBlock.accept("psd_top_tianjin_jinjing", BlockList.PSD_TOP_TIANJIN_JINJING);
@@ -196,6 +198,8 @@ public class TianjinMetro
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockItem.accept("pids_tianjin", BlockList.PIDS_TIANJIN, DECORATION);
         registerBlockItem.accept("pids_tianjin_single", BlockList.PIDS_TIANJIN_SINGLE, DECORATION);
+registerBlockItem.accept("pids_tianjin_2", BlockList.PIDS_TIANJIN_2, DECORATION);
+registerBlockItem.accept("pids_tianjin_2_single", BlockList.PIDS_TIANJIN_2_SINGLE, DECORATION);
         /* DECORATION - logo, furniture, signs, barriers, misc */
         registerBlockItem.accept("logo", BlockList.LOGO, DECORATION);
         registerBlockItem.accept("bench", BlockList.BENCH, DECORATION);
@@ -432,6 +436,9 @@ public class TianjinMetro
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockEntityType.accept("pids_tianjin", BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY);
         registerBlockEntityType.accept("pids_tianjin_single", BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY);
+registerBlockEntityType.accept("pids_tianjin_2", BlockEntityTypes.PIDS_TIANJIN_2_TILE_ENTITY);
+registerBlockEntityType.accept("pids_tianjin_2_single", BlockEntityTypes.PIDS_TIANJIN_2_SINGLE_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_glass_screen_tianjin", BlockEntityTypes.PSD_GLASS_SCREEN_TIANJIN_TILE_ENTITY);
 
         /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
         registerBlockEntityType.accept("smoke_alarm", BlockEntityTypes.SMOKE_ALARM_TILE_ENTITY);

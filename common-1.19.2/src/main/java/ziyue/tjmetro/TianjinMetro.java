@@ -184,6 +184,8 @@ public class TianjinMetro
         registerItem.accept("psd_door_tianjin_jinjing", ItemList.PSD_DOOR_TIANJIN_JINJING, GATES);
         registerBlock.accept("psd_glass_tianjin_jinjing", BlockList.PSD_GLASS_TIANJIN_JINJING);
         registerItem.accept("psd_glass_tianjin_jinjing", ItemList.PSD_GLASS_TIANJIN_JINJING, GATES);
+        registerBlock.accept("psd_glass_screen_tianjin", BlockList.PSD_GLASS_SCREEN_TIANJIN);
+        registerItem.accept("psd_glass_screen_tianjin", ItemList.PSD_GLASS_SCREEN_TIANJIN, GATES);
         registerBlock.accept("psd_glass_end_tianjin_jinjing", BlockList.PSD_GLASS_END_TIANJIN_JINJING);
         registerItem.accept("psd_glass_end_tianjin_jinjing", ItemList.PSD_GLASS_END_TIANJIN_JINJING, GATES);
         registerBlock.accept("psd_top_tianjin_jinjing", BlockList.PSD_TOP_TIANJIN_JINJING);
@@ -430,6 +432,7 @@ public class TianjinMetro
         registerBlockEntityType.accept("station_name_projector", BlockEntityTypes.STATION_NAME_PROJECTOR);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockEntityType.accept("pids_tianjin", BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY);
+        registerBlockEntityType.accept("psd_glass_screen_tianjin", BlockEntityTypes.PSD_GLASS_SCREEN_TIANJIN_TILE_ENTITY);
         registerBlockEntityType.accept("pids_tianjin_single", BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY);
 
         /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */

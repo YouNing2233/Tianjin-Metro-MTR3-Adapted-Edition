@@ -196,6 +196,7 @@ public interface BlockList
     RegistryObject<Block> PSD_GLASS_TIANJIN = new RegistryObject<>(BlockPSDGlassTianjin::new);
     RegistryObject<Block> PSD_GLASS_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassTianjinBMT::new);
     RegistryObject<Block> PSD_GLASS_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassTianjinJinjing::new);
+    RegistryObject<Block> PSD_GLASS_SCREEN_TIANJIN = new RegistryObject<>(BlockPSDGlassScreenTianjin::new);
     RegistryObject<Block> PSD_GLASS_END_TIANJIN = new RegistryObject<>(BlockPSDGlassEndTianjin::new);
     RegistryObject<Block> PSD_GLASS_END_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassEndTianjinBMT::new);
     RegistryObject<Block> PSD_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassEndTianjinJinjing::new);
@@ -209,6 +210,8 @@ public interface BlockList
     /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
     RegistryObject<Block> PIDS_TIANJIN = new RegistryObject<>(BlockPIDSTianjin::new);
     RegistryObject<Block> PIDS_TIANJIN_SINGLE = new RegistryObject<>(BlockPIDSTianjinSingle::new);
+RegistryObject<Block> PIDS_TIANJIN_2 = new RegistryObject<>(BlockPIDSTianjin2::new);
+RegistryObject<Block> PIDS_TIANJIN_2_SINGLE = new RegistryObject<>(BlockPIDSTianjin2Single::new);
 
     /* 1.1.8 - Ported from 4.0 - Smoke alarm */
     RegistryObject<Block> SMOKE_ALARM = new RegistryObject<>(BlockSmokeAlarm::new);

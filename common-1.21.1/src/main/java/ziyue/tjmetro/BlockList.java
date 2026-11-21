@@ -196,6 +196,7 @@ public interface BlockList
     RegistryObject<Block> PSD_GLASS_TIANJIN = new RegistryObject<>(BlockPSDGlassTianjin::new);
     RegistryObject<Block> PSD_GLASS_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassTianjinBMT::new);
     RegistryObject<Block> PSD_GLASS_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassTianjinJinjing::new);
+    RegistryObject<Block> PSD_GLASS_SCREEN_TIANJIN = new RegistryObject<>(BlockPSDGlassScreenTianjin::new);
     RegistryObject<Block> PSD_GLASS_END_TIANJIN = new RegistryObject<>(BlockPSDGlassEndTianjin::new);
     RegistryObject<Block> PSD_GLASS_END_TIANJIN_BMT = new RegistryObject<>(BlockPSDGlassEndTianjinBMT::new);
     RegistryObject<Block> PSD_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(BlockPSDGlassEndTianjinJinjing::new);

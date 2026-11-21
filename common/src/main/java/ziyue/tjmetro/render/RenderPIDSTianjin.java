@@ -189,11 +189,11 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         }
     }
 
-    private float getStringWidth(Font textRenderer, String text, float scale) {
+    protected float getStringWidth(Font textRenderer, String text, float scale) {
         return IDrawingExtension.stringWidthWithFont(text, scale, 1, false);
     }
 
-    private void renderText(PoseStack matrices, MultiBufferSource.BufferSource immediate, String text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, float x, float y, float availableWidth, float scale, int color) {
+    protected void renderText(PoseStack matrices, MultiBufferSource.BufferSource immediate, String text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, float x, float y, float availableWidth, float scale, int color) {
         matrices.pushPose();
         IDrawingExtends.drawStringWithFont(matrices, Minecraft.getInstance().font, immediate, text, horizontalAlignment, verticalAlignment, horizontalAlignment, x, y, availableWidth, -1, scale, color, color, 1, false, MAX_LIGHT_GLOWING, null);
         matrices.popPose();

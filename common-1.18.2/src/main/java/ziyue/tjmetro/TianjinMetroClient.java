@@ -246,6 +246,7 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_PROJECTOR.get(), RenderStationNameProjector::new);
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), RenderPIDSTianjin::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PSD_GLASS_SCREEN_TIANJIN_TILE_ENTITY.get(), RenderPSDGlassScreenTianjin::new);
         /* 1.1.8 - Ported from 4.0 - PIDS Tianjin (single) */
         RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_SINGLE.get());
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get(), RenderPIDSTianjinSingle::new);

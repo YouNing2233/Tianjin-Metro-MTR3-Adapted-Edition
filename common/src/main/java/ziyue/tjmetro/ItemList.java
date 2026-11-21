@@ -38,6 +38,7 @@ public interface ItemList
     RegistryObject<Item> PSD_GLASS_TIANJIN = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_TIANJIN));
     RegistryObject<Item> PSD_GLASS_TIANJIN_BMT = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_TIANJIN_BMT));
     RegistryObject<Item> PSD_GLASS_TIANJIN_JINJING = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_TIANJIN_JINJING));
+    RegistryObject<Item> PSD_GLASS_SCREEN_TIANJIN = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_SCREEN_TIANJIN));
     RegistryObject<Item> PSD_GLASS_END_TIANJIN = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_END_TIANJIN));
     RegistryObject<Item> PSD_GLASS_END_TIANJIN_BMT = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_END_TIANJIN_BMT));
     RegistryObject<Item> PSD_GLASS_END_TIANJIN_JINJING = new RegistryObject<>(() -> new ItemPSDAPGTianjinBase(BlockList.PSD_GLASS_END_TIANJIN_JINJING));

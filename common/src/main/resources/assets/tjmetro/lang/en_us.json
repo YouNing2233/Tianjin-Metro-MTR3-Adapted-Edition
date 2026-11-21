@@ -373,9 +373,18 @@
     "block.tjmetro.station_name_plate": "Station Name Plate (Line 9)",
     "tooltip.tjmetro.station_name_plate": "Use wrench to select a platform to display, and use brush to change its arrow direction.",
     "block.tjmetro.pids_tianjin_single": "Passenger Information Display System (Tianjin, Single)",
+    "block.tjmetro.pids_tianjin_2": "Passenger Information Display (Tianjin, Line 2)",
+    "block.tjmetro.pids_tianjin_2_single": "Passenger Information Display (Tianjin, Line 2, Single-sided)",
+    "tooltip.tjmetro.pids_tianjin_2": "A PIDS that supports custom advertisements. Use the Station Name Pole (Tianjin) to extend the pole.",
+    "tooltip.tjmetro.pids_tianjin_2_single": "A single-sided PIDS, place it against a wall or a pole.",
     "sign.tjmetro.security_check": "安全检查|Security Check",
     "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
     "tooltip.tjmetro.disable_train_rendering": "Skip rendering trains to improve performance. Trains will become invisible.",
     "config.tjmetro.cloth_config_hint": "Press ESC to go back.",
-    "gui.tjmetro.select_advertisements": "Select Advertisements"
+    "gui.tjmetro.select_advertisements": "Select Advertisements",
+    "gui.tjmetro.following_train": "Following Train",
+    "gui.tjmetro.following_train_cjk": "后续列车",
+    "block.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客咨询显示屏）",
+    "item.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客咨询显示屏）",
+    "tooltip.tjmetro.psd_glass_screen_tianjin": "Place three panels side by side (3 wide, 2 tall) to show the full passenger information board"
 }

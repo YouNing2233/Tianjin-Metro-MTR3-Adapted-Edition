@@ -62,7 +62,7 @@
     "block.minecraft.mosaic_tile_slab":  "马赛克瓷砖台阶",
     "block.minecraft.mosaic_tile_stairs":  "马赛克瓷砖楼梯",
     "tooltip.tjmetro.station_navigator_pole":  "将此方块放在“站外导向标志”下。",
-    "tooltip.tjmetro.railway_sign_tianjin_pole":  "必须放在指示牌或乘客咨询显示屏上",
+    "tooltip.tjmetro.railway_sign_tianjin_pole":  "必须放在指示牌或乘客资讯显示屏上",
     "gui.tjmetro.service_corridor_sign":  "暖行服务连廊",
     "gui.tjmetro.contact_station_for_help_cjk":  "如需帮助请联系车站",
     "gui.tjmetro.contact_station_for_help":  "Please contact the station for help.",
@@ -368,9 +368,18 @@
     "block.tjmetro.security_check_sign": "“安全检查”标志",
     "tooltip.tjmetro.station_name_plate": "用扳手选择显示的站台，并用刷子改变箭头的方向。",
     "block.tjmetro.pids_tianjin_single": "乘客资讯显示屏（天津、单向）",
+    "block.tjmetro.pids_tianjin_2": "乘客资讯显示屏（天津、2号线）",
+    "block.tjmetro.pids_tianjin_2_single": "乘客资讯显示屏（天津、2号线、单向）",
+    "tooltip.tjmetro.pids_tianjin_2": "一个支持自定义广告的PIDS。使用“指示牌柱（天津）”可以加长柱子。",
+    "tooltip.tjmetro.pids_tianjin_2_single": "单面显示的PIDS，需要贴着墙或柱子放置。",
     "sign.tjmetro.security_check": "安全检查|Security Check",
     "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
     "tooltip.tjmetro.disable_train_rendering": "跳过列车渲染以提升性能，列车将不可见。",
     "config.tjmetro.cloth_config_hint": "按 ESC 返回。",
-    "gui.tjmetro.select_advertisements": "选择广告"
+    "gui.tjmetro.select_advertisements": "选择广告",
+    "gui.tjmetro.following_train": "Following Train",
+    "gui.tjmetro.following_train_cjk": "后续列车",
+    "block.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客资讯显示屏）",
+    "item.tjmetro.psd_glass_screen_tianjin": "高屏蔽门（乘客资讯显示屏）",
+    "tooltip.tjmetro.psd_glass_screen_tianjin": "将三扇并排放置（三格宽、两格高），即可显示完整的乘客信息"
 }

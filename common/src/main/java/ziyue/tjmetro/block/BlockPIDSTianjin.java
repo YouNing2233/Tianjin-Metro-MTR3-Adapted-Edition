@@ -133,6 +133,12 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         protected int advertisementIndex;
         public BlockPIDSTianjin.Advertisement advertisement;
         public final ScrollingText scrollingText;
+        /**
+         * Slim ticker bar used by the Line 2 layout ({@code pids_tianjin_2}).
+         * The original {@link #scrollingText} is sized for a 158 x 47 box, which is far too
+         * tall for the 172 x 8 ticker on the Line 2 board.
+         */
+        public final ScrollingText marqueeText;
         protected boolean useRealTime = true;
 
         public static final String CATEGORIES_ID = "categories";
@@ -152,6 +158,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             super(type, pos, state);
             categories.add("tjmetro".hashCode());
             this.scrollingText = new ScrollingText(158F, 47F, 4, true);
+            this.marqueeText = new ScrollingText(172F, 32F, 4, true);
         }
 
         @Override

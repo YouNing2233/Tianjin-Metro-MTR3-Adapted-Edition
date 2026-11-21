@@ -1,5 +1,6 @@
 package ziyue.tjmetro;
-
+
+
 import mtr.Registry;
 import mtr.RegistryObject;
 import mtr.mappings.RegistryUtilities;
@@ -139,6 +140,7 @@ public interface BlockEntityTypes
 
     /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
     RegistryObject<BlockEntityType<BlockPIDSTianjin.TileEntityBlockPIDSTianjin>> PIDS_TIANJIN_TILE_ENTITY = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockPIDSTianjin.TileEntityBlockPIDSTianjin::new, BlockList.PIDS_TIANJIN.get()));
+    RegistryObject<BlockEntityType<BlockPSDGlassScreenTianjin.TileEntityPSDGlassScreenTianjin>> PSD_GLASS_SCREEN_TIANJIN_TILE_ENTITY = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockPSDGlassScreenTianjin.TileEntityPSDGlassScreenTianjin::new, BlockList.PSD_GLASS_SCREEN_TIANJIN.get()));
     RegistryObject<BlockEntityType<BlockPIDSTianjinSingle.TileEntityBlockPIDSTianjinSingle>> PIDS_TIANJIN_SINGLE_TILE_ENTITY = new RegistryObject<>(() -> Registry.getBlockEntityType(BlockPIDSTianjinSingle.TileEntityBlockPIDSTianjinSingle::new, BlockList.PIDS_TIANJIN_SINGLE.get()));
 
     /* 1.1.8 - Ported from 4.0 - Smoke alarm */

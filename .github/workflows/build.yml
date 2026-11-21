@@ -99,7 +99,20 @@ jobs:
           cat settings.gradle
 
       - name: Build
-        run: ./gradlew ":${MOD}:build" -PmtrJarDir="$PWD/mtr-jars" --stacktrace --console=plain
+        run: |
+          set -o pipefail
+          for attempt in 1 2 3; do
+            echo "=== build attempt ${attempt} ==="
+            if ./gradlew ":${MOD}:build" -PmtrJarDir="$PWD/mtr-jars" --stacktrace --console=plain; then
+              echo "build ok on attempt ${attempt}"
+              exit 0
+            fi
+            echo "attempt ${attempt} failed; clearing stale loom locks and retrying"
+            rm -f "$HOME/.gradle/caches/fabric-loom/"*.lock 2>/dev/null || true
+            sleep 20
+          done
+          echo "build failed after 3 attempts"
+          exit 1
         env:
           MOD: ${{ matrix.mod }}
 
