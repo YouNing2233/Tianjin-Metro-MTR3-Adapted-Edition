@@ -4,6 +4,8 @@ import mtr.RegistryObject;
 import mtr.item.ItemWithCreativeTabBase;
 import net.minecraft.world.item.Item;
 import ziyue.tjmetro.item.ItemPSDAPGTianjinBase;
+import ziyue.tjmetro.item.ItemPSDDoorTianjinWide;
+import ziyue.tjmetro.item.ItemAPGDoorTianjinWide;
 
 /**
  * @since beta-1

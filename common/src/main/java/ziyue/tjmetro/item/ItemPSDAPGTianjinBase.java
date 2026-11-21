@@ -101,7 +101,7 @@ public class ItemPSDAPGTianjinBase extends ItemWithCreativeTabBase implements IB
                 if (block instanceof BlockFlagPSDTianjinBMT) {
                     world.setBlockAndUpdate(newPos.above(2), BlockPSDTopTianjinBMT.getActualState(world, newPos.above(2)).setValue(BlockPSDTopTianjinBMT.STYLE, BlockPSDTopTianjinBMT.EnumPSDType.BMT));
                 } else if (block instanceof BlockFlagDoorWide) {
-                    // 三扇宽的门：吊板换成专门的宽版方块，三块合起来画成一整块牌子
+                    // 三扇宽门：吊板换成专用宽版方块，三块合起来画成一整块牌子
                     final BlockPos topPos = newPos.above(2);
                     world.setBlockAndUpdate(topPos, ziyue.tjmetro.BlockList.PSD_TOP_TIANJIN_WIDE.get().defaultBlockState());
                     world.setBlockAndUpdate(topPos, BlockPSDTopTianjin.getActualState(world, topPos, true).setValue(BlockPSDTopTianjin.STYLE, BlockPSDTopTianjin.EnumPSDType.STATION_NAME));

@@ -375,5 +375,7 @@
     "block.tjmetro.psd_top_tianjin_wide": "PSD Header (Wide, 3 leaves)",
     "item.tjmetro.psd_door_tianjin_wide": "Platform Screen Door (Wide, 3 leaves)",
     "item.tjmetro.apg_door_tianjin_wide": "Half-height Platform Gate (Wide, 3 leaves)",
-    "item.tjmetro.psd_top_tianjin_wide": "PSD Header (Wide, 3 leaves)"
+    "item.tjmetro.psd_top_tianjin_wide": "PSD Header (Wide, 3 leaves)",
+    "message.tjmetro.psd_door_wide.open_left": "Opening side: two leaves to the left",
+    "message.tjmetro.psd_door_wide.open_right": "Opening side: two leaves to the right"
 }

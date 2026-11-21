@@ -143,7 +143,7 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
                     currentPos = currentPos.relative(sideDirection);
                 }
 
-                player.displayClientMessage(Component.translatable(openLeft ? "message.tjmetro.psd_door_wide.open_left" : "message.tjmetro.psd_door_wide.open_right"), true);
+                player.displayClientMessage(Text.translatable(openLeft ? "message.tjmetro.psd_door_wide.open_left" : "message.tjmetro.psd_door_wide.open_right"), true);
             }
             return InteractionResult.SUCCESS;
         }

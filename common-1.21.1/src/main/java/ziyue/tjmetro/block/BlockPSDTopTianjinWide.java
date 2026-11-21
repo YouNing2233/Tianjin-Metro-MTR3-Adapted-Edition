@@ -4,7 +4,6 @@ import mtr.block.BlockPSDTop;
 import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -40,7 +39,7 @@ public class BlockPSDTopTianjinWide extends BlockPSDTopTianjin implements BlockF
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         return IBlock.checkHoldingItem(world, player, item -> {
             if (item == ItemList.WRENCH.get()) {
                 // 扳手：整组吊板在「站名 / 下一站」之间切换

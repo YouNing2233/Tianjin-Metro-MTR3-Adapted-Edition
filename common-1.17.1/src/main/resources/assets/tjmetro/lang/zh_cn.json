@@ -374,5 +374,7 @@
     "block.tjmetro.psd_top_tianjin_wide": "高屏蔽门顶部（三扇）",
     "item.tjmetro.psd_door_tianjin_wide": "高屏蔽门（三扇）",
     "item.tjmetro.apg_door_tianjin_wide": "半高屏蔽门（三扇）",
-    "item.tjmetro.psd_top_tianjin_wide": "高屏蔽门顶部（三扇）"
+    "item.tjmetro.psd_top_tianjin_wide": "高屏蔽门顶部（三扇）",
+    "message.tjmetro.psd_door_wide.open_left": "开门方向：左侧两扇开",
+    "message.tjmetro.psd_door_wide.open_right": "开门方向：右侧两扇开"
 }

@@ -88,7 +88,7 @@ public class RenderTianjinPSDDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
         final StoredMatrixTransformations storedMatrixTransformationsLight = storedMatrixTransformations.copy();
 
         if (half && side == BlockPSDDoorTianjinWide.WideSide.MIDDLE) {
-            final ResourceLocation lightTexture = new ResourceLocation(String.format("tjmetro:textures/block/light_%s.png", open > 0 ? "on" : "off"));
+            final ResourceLocation lightTexture = ResourceLocation.parse(String.format("tjmetro:textures/block/light_%s.png", open > 0 ? "on" : "off"));
             RenderTrains.scheduleRender(lightTexture, false, open > 0 ? RenderTrains.QueuedRenderLayer.LIGHT : RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformationsLight.transform(matricesNew);
                 MODEL_PSD_LIGHT_CENTER.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
@@ -99,7 +99,7 @@ public class RenderTianjinPSDDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
 
         storedMatrixTransformations.add(matricesNew -> matricesNew.translate(offset, 0, stackOffset));
 
-        final ResourceLocation doorTexture = new ResourceLocation(String.format("tjmetro:textures/block/psd_door_tianjin_%s_%s.png", half ? "top" : "bottom", sideName));
+        final ResourceLocation doorTexture = ResourceLocation.parse(String.format("tjmetro:textures/block/psd_door_tianjin_%s_%s.png", half ? "top" : "bottom", sideName));
         RenderTrains.scheduleRender(doorTexture, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
             storedMatrixTransformations.transform(matricesNew);
             MODEL_PSD.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
@@ -107,7 +107,7 @@ public class RenderTianjinPSDDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
         });
 
         if (half && !unlocked) {
-            RenderTrains.scheduleRender(new ResourceLocation("mtr:textures/block/sign/door_not_in_use.png"), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+            RenderTrains.scheduleRender(ResourceLocation.parse("mtr:textures/block/sign/door_not_in_use.png"), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
                 storedMatrixTransformations.transform(matricesNew);
                 MODEL_PSD_DOOR_LOCKED.renderToBuffer(matricesNew, vertexConsumer, light, overlay, 1, 1, 1, 1);
                 matricesNew.popPose();

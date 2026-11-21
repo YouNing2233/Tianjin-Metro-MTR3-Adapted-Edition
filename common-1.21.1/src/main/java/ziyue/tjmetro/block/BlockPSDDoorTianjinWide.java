@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -116,9 +115,9 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public InteractionResult useWithoutItem(BlockState blockState, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         // 扳手：整组（上下两半 × 三扇）一起切换开门方向，并给操作者一行提示
-        if (player.getItemInHand(interactionHand).is(ItemList.WRENCH.get())) {
+        if (player.getMainHandItem().is(ItemList.WRENCH.get())) {
             if (!world.isClientSide) {
                 final Direction sideDirection = IBlock.getSideDirection(blockState);
 
@@ -143,11 +142,11 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
                     currentPos = currentPos.relative(sideDirection);
                 }
 
-                player.displayClientMessage(Component.translatable(openLeft ? "message.tjmetro.psd_door_wide.open_left" : "message.tjmetro.psd_door_wide.open_right"), true);
+                player.displayClientMessage(Text.translatable(openLeft ? "message.tjmetro.psd_door_wide.open_left" : "message.tjmetro.psd_door_wide.open_right"), true);
             }
             return InteractionResult.SUCCESS;
         }
-        return super.use(blockState, world, pos, player, interactionHand, blockHitResult);
+        return super.useWithoutItem(blockState, world, pos, player, blockHitResult);
     }
 
     /** 从方块实体读“左侧开门”状态（方块状态会被 MTR 的状态刷新重置，不能用） */
