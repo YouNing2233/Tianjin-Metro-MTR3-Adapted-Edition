@@ -78,6 +78,7 @@ public class TianjinMetro
         registerBlockItem.accept("mosaic_tile_gray", BlockList.MOSAIC_TILE_GRAY, BUILDING);
         /* 1.1.1 - Ported from 4.0 */
         registerEnchantedBlockItem.accept("metal_pole_bmt", BlockList.METAL_POLE_BMT, BUILDING);
+        registerEnchantedBlockItem.accept("metal_pole_original", BlockList.METAL_POLE_ORIGINAL, BUILDING);
         registerBlockItem.accept("metal_detection_door", BlockList.METAL_DETECTION_DOOR, BUILDING);
         registerBlockItem.accept("roadblock", BlockList.ROADBLOCK, BUILDING);
         registerBlockItem.accept("roadblock_sign", BlockList.ROADBLOCK_SIGN, BUILDING);
@@ -399,6 +400,7 @@ registerBlockItem.accept("pids_tianjin_2_single", BlockList.PIDS_TIANJIN_2_SINGL
         registerBlockEntityType.accept("custom_color_mosaic_tile_slab", BlockEntityTypes.CUSTOM_COLOR_MOSAIC_TILE_SLAB_TILE_ENTITY);
         /* 1.1.1 - Ported from 4.0 */
         registerBlockEntityType.accept("metal_pole_bmt", BlockEntityTypes.METAL_POLE_BMT);
+        registerBlockEntityType.accept("metal_pole_original", BlockEntityTypes.METAL_POLE_ORIGINAL);
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_2_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_2_ODD);
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_3_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_3_ODD);
         registerBlockEntityType.accept("railway_sign_tianjin_bmt_4_odd", BlockEntityTypes.RAILWAY_SIGN_TIANJIN_BMT_4_ODD);

@@ -73,6 +73,7 @@
     "gui.tjmetro.options": "Tianjin Metro-Einstellungen",
     "block.tjmetro.apg_tianjin_bmt": "Bahnsteigtüren (Tianjin, Linie 9)",
     "block.tjmetro.metal_pole_bmt": "Metallpfosten (Linie 9)",
+    "block.tjmetro.metal_pole_original": "Metallpfosten (Originalfarbe)",
     "block.tjmetro.psd_tianjin_bmt": "Hohe Bahnsteigtüren (Tianjin, Linie 9)",
     "block.tjmetro.apg_tianjin_trt": "Bahnsteigtüren (Tianjin, Linie 1)",
     "gui.tjmetro.service_corridor_sign_cjk": "Beheizter Servicegang",

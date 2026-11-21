@@ -52,7 +52,7 @@ public class BlockMetalPoleBMT extends BlockCustomColorBase
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor world, BlockPos pos, BlockPos posFrom) {
-        final boolean isPole = newState.is(BlockList.METAL_POLE_BMT.get());
+        final boolean isPole = newState.is(BlockList.METAL_POLE_BMT.get()) || newState.is(BlockList.METAL_POLE_ORIGINAL.get());
         switch (direction) {
             case NORTH: return state.setValue(NORTH, isPole);
             case EAST: return state.setValue(EAST, isPole);

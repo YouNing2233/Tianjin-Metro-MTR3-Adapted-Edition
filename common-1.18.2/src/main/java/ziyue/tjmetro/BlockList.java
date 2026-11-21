@@ -147,6 +147,7 @@ public interface BlockList
     RegistryObject<Block> CEILING_TIANJIN_NOT_LIT = new RegistryObject<>(() -> new BlockCeilingTianjin(0));
     RegistryObject<Block> TRASH_CAN = new RegistryObject<>(BlockTrashCan::new);
     RegistryObject<Block> METAL_POLE_BMT = new RegistryObject<>(BlockMetalPoleBMT::new);
+    RegistryObject<Block> METAL_POLE_ORIGINAL = new RegistryObject<>(BlockMetalPoleOriginal::new);
     RegistryObject<Block> TICKET_BARRIER_TIANJIN_ENTRANCE = new RegistryObject<>(() -> new mtr.block.BlockTicketBarrier(true));
     RegistryObject<Block> TICKET_BARRIER_TIANJIN_EXIT = new RegistryObject<>(() -> new mtr.block.BlockTicketBarrier(false));
     /* 1.1.3 - Ported from 1.1.3 - Ticket barrier for outbound transfer */

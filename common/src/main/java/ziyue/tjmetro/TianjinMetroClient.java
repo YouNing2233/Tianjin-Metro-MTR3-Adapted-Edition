@@ -60,6 +60,7 @@ public class TianjinMetroClient
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.CEILING_TIANJIN_NOT_LIT.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TRASH_CAN.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.METAL_POLE_BMT.get());
+        RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.METAL_POLE_ORIGINAL.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_TIANJIN_ENTRANCE.get());
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.TICKET_BARRIER_TIANJIN_EXIT.get());
         /* 1.1.3 - Ported from 1.1.3 - Ticket barrier for outbound transfer */
@@ -113,6 +114,7 @@ public class TianjinMetroClient
         Registry.registerFixedColorBlock(BlockList.MOSAIC_TILE_GRAY.get(), 0xC8C8C8);
         /* 1.1.1 - Ported from 4.0 */
         Registry.registerCustomColorBlock(BlockList.METAL_POLE_BMT.get());
+        Registry.registerCustomColorBlock(BlockList.METAL_POLE_ORIGINAL.get());
 
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_SIGN_ENTITY_1.get(), RenderStationNameSign::new);
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.STATION_NAME_SIGN_ENTITY_2.get(), RenderStationNameSign::new);

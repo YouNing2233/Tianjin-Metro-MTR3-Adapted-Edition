@@ -1,0 +1,40 @@
+{
+    "multipart": [
+        {
+            "when": { "axis": "y" },
+            "apply": { "model": "tjmetro:block/metal_pole_original_vertical" }
+        },
+        {
+            "when": { "axis": "z" },
+            "apply": { "model": "tjmetro:block/metal_pole_original_horizontal" }
+        },
+        {
+            "when": { "axis": "x" },
+            "apply": { "model": "tjmetro:block/metal_pole_original_horizontal", "y": 90 }
+        },
+        {
+            "when": { "north": true },
+            "apply": { "model": "tjmetro:block/metal_pole_original_connect" }
+        },
+        {
+            "when": { "east": true },
+            "apply": { "model": "tjmetro:block/metal_pole_original_connect", "y": 90 }
+        },
+        {
+            "when": { "south": true },
+            "apply": { "model": "tjmetro:block/metal_pole_original_connect", "y": 180 }
+        },
+        {
+            "when": { "west": true },
+            "apply": { "model": "tjmetro:block/metal_pole_original_connect", "y": 270 }
+        },
+        {
+            "when": { "up": true },
+            "apply": { "model": "tjmetro:block/metal_pole_original_connect_vertical" }
+        },
+        {
+            "when": { "down": true },
+            "apply": { "model": "tjmetro:block/metal_pole_original_connect_vertical", "x": 180 }
+        }
+    ]
+}
