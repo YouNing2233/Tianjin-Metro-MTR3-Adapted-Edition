@@ -48,6 +48,7 @@ public class TianjinMetro
         registerBlockItem.accept("player_detector", BlockList.PLAYER_DETECTOR, MISCELLANEOUS);
         /* BUILDING - platforms, marbles, custom color blocks, then functional blocks */
         registerBlockItem.accept("rolling", BlockList.ROLLING, BUILDING);
+        registerBlockItem.accept("rolling_corner", BlockList.ROLLING_CORNER, BUILDING);
         registerBlockItem.accept("platform_tj_1", BlockList.PLATFORM_TJ_1, BUILDING);
         registerBlockItem.accept("platform_tj_1_indented", BlockList.PLATFORM_TJ_1_INDENTED, BUILDING);
         registerBlockItem.accept("platform_tj_1_slab", BlockList.PLATFORM_TJ_1_SLAB, BUILDING);
@@ -193,6 +194,8 @@ public class TianjinMetro
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockItem.accept("pids_tianjin", BlockList.PIDS_TIANJIN, DECORATION);
         registerBlockItem.accept("pids_tianjin_single", BlockList.PIDS_TIANJIN_SINGLE, DECORATION);
+        registerBlockItem.accept("pids_tianjin_2", BlockList.PIDS_TIANJIN_2, DECORATION);
+        registerBlockItem.accept("pids_tianjin_2_single", BlockList.PIDS_TIANJIN_2_SINGLE, DECORATION);
         /* DECORATION - logo, furniture, signs, barriers, misc */
         registerBlockItem.accept("logo", BlockList.LOGO, DECORATION);
         registerBlockItem.accept("bench", BlockList.BENCH, DECORATION);
@@ -431,6 +434,8 @@ public class TianjinMetro
         /* 1.1.7 - Ported from 4.0 - PIDS (Passenger Information Display System) */
         registerBlockEntityType.accept("pids_tianjin", BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY);
         registerBlockEntityType.accept("pids_tianjin_single", BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY);
+        registerBlockEntityType.accept("pids_tianjin_2", BlockEntityTypes.PIDS_TIANJIN_2_TILE_ENTITY);
+        registerBlockEntityType.accept("pids_tianjin_2_single", BlockEntityTypes.PIDS_TIANJIN_2_SINGLE_TILE_ENTITY);
 
         /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
         registerBlockEntityType.accept("smoke_alarm", BlockEntityTypes.SMOKE_ALARM_TILE_ENTITY);

@@ -246,7 +246,11 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), RenderPIDSTianjin::new);
         /* 1.1.8 - Ported from 4.0 - PIDS Tianjin (single) */
         RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_SINGLE.get());
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_2.get());
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_2_SINGLE.get());
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get(), RenderPIDSTianjinSingle::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_2_TILE_ENTITY.get(), RenderPIDSTianjin2::new);
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_2_SINGLE_TILE_ENTITY.get(), RenderPIDSTianjin2Single::new);
 
         /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SMOKE_ALARM.get());

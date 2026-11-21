@@ -106,5 +106,13 @@ public class BlockPIDSTianjinSingle extends BlockPIDSTianjin {
         public TileEntityBlockPIDSTianjinSingle(BlockPos pos, BlockState state) {
             super(BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get(), pos, state);
         }
+
+        /**
+         * Constructor for subclasses that register their own block entity type
+         * (for example the Line 2 single-faced variant).
+         */
+        protected TileEntityBlockPIDSTianjinSingle(net.minecraft.world.level.block.entity.BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
+        }
     }
 }

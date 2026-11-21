@@ -103,8 +103,12 @@ public class BlockPIDSTianjinSingle extends BlockPIDSTianjin {
      */
     public static class TileEntityBlockPIDSTianjinSingle extends TileEntityBlockPIDSTianjin {
 
+        protected TileEntityBlockPIDSTianjinSingle(net.minecraft.world.level.block.entity.BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
+        }
+
         public TileEntityBlockPIDSTianjinSingle(BlockPos pos, BlockState state) {
-            super(BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get(), pos, state);
+            this(BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY.get(), pos, state);
         }
     }
 }

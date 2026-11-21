@@ -376,5 +376,11 @@
     "gui.tjmetro.accept_security_check_cjk": "请您接受安检",
     "tooltip.tjmetro.disable_train_rendering": "Skip rendering trains to improve performance. Trains will become invisible.",
     "config.tjmetro.cloth_config_hint": "Press ESC to go back.",
-    "gui.tjmetro.select_advertisements": "Select Advertisements"
+    "gui.tjmetro.select_advertisements": "Select Advertisements",
+    "block.tjmetro.pids_tianjin_2": "Passenger information display (Tianjin Line 2)",
+    "block.tjmetro.pids_tianjin_2_single": "Passenger information display (Tianjin Line 2, single)",
+    "tooltip.tjmetro.pids_tianjin_2": "Use the wrench or brush to open the config screen",
+    "tooltip.tjmetro.pids_tianjin_2_single": "Single sided; place two side by side for double sided",
+    "block.tjmetro.rolling_corner": "Rolling shutter (corner)",
+    "tooltip.tjmetro.rolling_corner": "Use the wrench or brush to switch between the upper and bottom section"
 }
