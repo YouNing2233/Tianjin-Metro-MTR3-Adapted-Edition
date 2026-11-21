@@ -24,7 +24,7 @@ import ziyue.tjmetro.block.IBlockExtends;
 public abstract class BlockPSDAPGDoorBaseMixin
 {
     @Redirect(method = "useWithoutItem", at = @At(value = "INVOKE", target = "Lmtr/block/IBlock;checkHoldingBrush(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Ljava/lang/Runnable;)Lnet/minecraft/world/InteractionResult;"))
-    private static InteractionResult tjmetro$checkHoldingBrushOrWrench(Level world, Player player, Runnable callback) {
+    private InteractionResult tjmetro$checkHoldingBrushOrWrench(Level world, Player player, Runnable callback) {
         return IBlockExtends.checkHoldingBrushOrWrench(world, player, callback);
     }
 }
