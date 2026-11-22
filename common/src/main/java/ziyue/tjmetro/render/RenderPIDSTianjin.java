@@ -72,8 +72,13 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         renderFace(matrices, vertexConsumers, facing.getOpposite(), scale, entity, pos, facing.getStepX(), facing.getStepZ());
     }
 
-    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
-        matrices.pushPose();
+    /**
+     * Places the drawing space of one screen face: anchored at the block centre, turned so that
+     * the canvas faces {@code facing}, then switched to canvas pixels (1 block = {@code scale} px).
+     * Subclasses override this to change how the panel hangs on the wall.
+     */
+    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
+        // Free-standing sign: leans back 22.5 degrees.
         matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ);
         matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees((rotate90 ? 90 : 0) - facing.toYRot()));
         matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
@@ -81,6 +86,11 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         matrices.scale(1F / scale, 1F / scale, 1F / scale);
         matrices.mulPose(com.mojang.math.Axis.XP.rotationDegrees(22.5F));
         matrices.translate(0, 0.05, 0);
+    }
+
+    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
+        matrices.pushPose();
+        applyDisplayTransform(matrices, facing, scale, offsetX, offsetZ);
 
         final RenderType bgRenderType = MoreRenderLayers.getLight(new ResourceLocation(Reference.MOD_ID, "textures/block/pids_tianjin.png"), false);
         final VertexConsumer bgConsumer = vertexConsumers.getBuffer(bgRenderType);
@@ -94,7 +104,11 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
 
         final Map<Long, String> platformIdToName = new HashMap<>();
         final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, platformIdToName);
-        renderArrivals(matrices, immediate, scheduleList, entity.getDisplayPage());
+        if (entity.isOnlyFirstLastTrain()) {
+            renderFirstLastTrain(matrices, immediate, entity, pos, scheduleList);
+        } else {
+            renderArrivals(matrices, immediate, scheduleList, entity.getDisplayPage());
+        }
 
         renderAdvertisement(matrices, vertexConsumers, entity, facing);
 
@@ -118,6 +132,200 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
             final long minutes = totalSeconds / 60 % 60;
             return String.format("%02d:%02d", hours, minutes);
         }
+    }
+
+    /**
+     * "First and last train" mode: the live arrivals are replaced by the first and the last
+     * departure of the day. The times come straight from MTR's own timetable (the depot that
+     * serves the routes of this screen's platforms), so a 05:30-16:30 service shows exactly that.
+     */
+    protected void renderFirstLastTrain(PoseStack matrices, MultiBufferSource.BufferSource immediate, T entity, BlockPos pos, List<ScheduleEntry> scheduleList) {
+        final String[] values = getFirstLastDepartures(entity, pos, scheduleList);
+        if (values == null) return;
+
+        drawFirstLastRow(matrices, immediate, "gui.tjmetro.first_train", values[0], values[2], LEFT_TEXT_X_CENTER, LEFT_TEXT_MAX_WIDTH, FIRST_LAST_LABEL_Y, FIRST_LAST_TIME_Y, FIRST_LAST_DEST_Y);
+        drawFirstLastRow(matrices, immediate, "gui.tjmetro.last_train", values[1], values[2], LEFT_TEXT_X_CENTER, LEFT_TEXT_MAX_WIDTH, FIRST_LAST_LABEL_Y_2, FIRST_LAST_TIME_Y_2, FIRST_LAST_DEST_Y_2);
+    }
+
+    protected void drawFirstLastRow(PoseStack matrices, MultiBufferSource.BufferSource immediate, String labelKey, String time, String destination, float centerX, float availableWidth, float labelY, float timeY, float destinationY) {
+        final boolean useChinese = IGui.isCjk(destination);
+
+        renderText(matrices, immediate, Text.translatable(labelKey + (useChinese ? "_cjk" : "")).getString(),
+                HorizontalAlignment.CENTER, VerticalAlignment.CENTER, centerX, labelY, availableWidth, FIRST_LAST_LABEL_SCALE, ARGB_WHITE);
+        renderText(matrices, immediate, time,
+                HorizontalAlignment.CENTER, VerticalAlignment.CENTER, centerX, timeY, availableWidth, FIRST_LAST_TIME_SCALE, 0xFFEFEF00);
+        if (!destination.isEmpty()) {
+            renderText(matrices, immediate, Text.translatable(useChinese ? "gui.tjmetro.bound_for_pids_cjk" : "gui.tjmetro.bound_for_pids", destination).getString(),
+                    HorizontalAlignment.CENTER, VerticalAlignment.CENTER, centerX, destinationY, availableWidth, FIRST_LAST_DEST_SCALE, ARGB_WHITE);
+        }
+    }
+
+    /**
+     * {first, last, destination} of the day for this screen, or {@code null} when nothing is known.
+     * MTR's depot keeps the whole day of departures, unlike {@code SCHEDULES_FOR_PLATFORM}, which
+     * only holds the departures that are still ahead of the player.
+     */
+    protected String[] getFirstLastDepartures(T entity, BlockPos pos, List<ScheduleEntry> scheduleList) {
+        final Set<Long> platformIds = getEffectivePlatformIds(entity, pos);
+        final long[] range = getDepotDepartureRange(platformIds);
+        if (range != null) {
+            return new String[]{formatMillisOfDay(range[0]), formatMillisOfDay(range[1]), getDestinationForPlatforms(platformIds)};
+        }
+
+        final ScheduleEntry[] firstAndLast = getFirstAndLastTrain(scheduleList);
+        if (firstAndLast == null) return null;
+        return new String[]{formatScheduleTime(firstAndLast[0].arrivalMillis), formatScheduleTime(firstAndLast[1].arrivalMillis), getPidsDestination(firstAndLast[0])};
+    }
+
+    protected Set<Long> getEffectivePlatformIds(T entity, BlockPos pos) {
+        final Set<Long> platformIds = entity.getPlatformIds();
+        if (!platformIds.isEmpty()) return platformIds;
+
+        final Station station = RailwayData.getStation(ClientData.STATIONS, ClientData.DATA_CACHE, pos);
+        if (station == null) return Collections.emptySet();
+        final Map<Long, Platform> platforms = ClientData.DATA_CACHE.requestStationIdToPlatforms(station.id);
+        if (platforms.isEmpty()) return Collections.emptySet();
+
+        final long nearestPlatformId = RailwayData.getClosePlatformId(new HashSet<>(platforms.values()), ClientData.DATA_CACHE, pos);
+        return nearestPlatformId != 0 ? Collections.singleton(nearestPlatformId) : Collections.emptySet();
+    }
+
+    /**
+     * {first, last} departure of the day in milliseconds since midnight. MTR stores these values
+     * as UTC milliseconds of the day, so formatting them with the local zone gives the clock time
+     * the player configured in the depot.
+     */
+    protected static long[] getDepotDepartureRange(Set<Long> platformIds) {
+        if (platformIds == null || platformIds.isEmpty()) return null;
+
+        long first = Long.MAX_VALUE;
+        long last = Long.MIN_VALUE;
+
+        for (final Route route : ClientData.ROUTES) {
+            boolean servesPlatform = false;
+            for (final long platformId : platformIds) {
+                if (route.containsPlatformId(platformId)) {
+                    servesPlatform = true;
+                    break;
+                }
+            }
+            if (!servesPlatform) continue;
+
+            final Depot depot = ClientData.DATA_CACHE.routeIdToOneDepot.get(route.id);
+            if (depot == null) continue;
+
+            final long[] depotRange = getDepotDepartureRange(depot);
+            if (depotRange == null) continue;
+
+            first = Math.min(first, depotRange[0]);
+            last = Math.max(last, depotRange[1]);
+        }
+
+        return first == Long.MAX_VALUE ? null : new long[]{first, last};
+    }
+
+    protected static long[] getDepotDepartureRange(Depot depot) {
+        if (depot.departures != null && !depot.departures.isEmpty()) {
+            long first = Long.MAX_VALUE;
+            long last = Long.MIN_VALUE;
+            for (final int departure : depot.departures) {
+                final long localMillis = toLocalMillisOfDay(departure);
+                first = Math.min(first, localMillis);
+                last = Math.max(last, localMillis);
+            }
+            return new long[]{first, last};
+        }
+
+        int firstHour = -1;
+        int lastHour = -1;
+        for (int hour = 0; hour < Depot.HOURS_IN_DAY; hour++) {
+            if (depot.getFrequency(hour) > 0) {
+                if (firstHour < 0) firstHour = hour;
+                lastHour = hour;
+            }
+        }
+        if (firstHour < 0) return null;
+        return new long[]{(long) firstHour * 3600000L, ((long) lastHour + 1) * 3600000L - 1L};
+    }
+
+    /**
+     * MTR keeps the depot departures as UTC milliseconds of the day while the depot screen shows the
+     * clock time the player configured, so the local offset has to be applied before the first and
+     * the last departure are picked (a 05:30-16:30 service otherwise comes out as 16:30-05:30).
+     */
+    protected static long toLocalMillisOfDay(long utcMillisOfDay) {
+        final long offset = java.util.TimeZone.getDefault().getOffset(System.currentTimeMillis());
+        final long value = (utcMillisOfDay + offset) % 86400000L;
+        return value < 0 ? value + 86400000L : value;
+    }
+
+    protected static String formatMillisOfDay(long millisOfDay) {
+        final java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("HH:mm", Locale.ROOT);
+        format.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+        return format.format(new java.util.Date(millisOfDay));
+    }
+
+    protected static String getDestinationForPlatforms(Set<Long> platformIds) {
+        if (platformIds == null || platformIds.isEmpty()) return "";
+
+        for (final Route route : ClientData.ROUTES) {
+            for (final long platformId : platformIds) {
+                if (!route.containsPlatformId(platformId)) continue;
+                final String[] destinationSplit = ClientData.DATA_CACHE.getFormattedRouteDestination(route, route.getPlatformIdIndex(platformId), "").split("\\|");
+                for (final String destination : destinationSplit) {
+                    if (!destination.isEmpty()) return destination;
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * First and last schedule entry of today. When no entry belongs to today at all the whole list
+     * is used, so the board never goes blank because of daylight saving or a skewed clock.
+     */
+    protected static ScheduleEntry[] getFirstAndLastTrain(List<ScheduleEntry> scheduleList) {
+        if (scheduleList == null || scheduleList.isEmpty()) return null;
+
+        final Calendar today = Calendar.getInstance();
+        ScheduleEntry first = null;
+        ScheduleEntry last = null;
+
+        for (final ScheduleEntry scheduleEntry : scheduleList) {
+            final Calendar entryDay = Calendar.getInstance();
+            entryDay.setTimeInMillis(scheduleEntry.arrivalMillis);
+            if (entryDay.get(Calendar.YEAR) != today.get(Calendar.YEAR) || entryDay.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR)) {
+                continue;
+            }
+            if (first == null || scheduleEntry.arrivalMillis < first.arrivalMillis) first = scheduleEntry;
+            if (last == null || scheduleEntry.arrivalMillis > last.arrivalMillis) last = scheduleEntry;
+        }
+
+        if (first == null) {
+            for (final ScheduleEntry scheduleEntry : scheduleList) {
+                if (first == null || scheduleEntry.arrivalMillis < first.arrivalMillis) first = scheduleEntry;
+                if (last == null || scheduleEntry.arrivalMillis > last.arrivalMillis) last = scheduleEntry;
+            }
+        }
+
+        return new ScheduleEntry[]{first, last};
+    }
+
+    protected static String formatScheduleTime(long millis) {
+        return new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date(millis));
+    }
+
+    /**
+     * Destination of a schedule entry: the first non-empty segment of MTR's formatted destination.
+     */
+    protected static String getPidsDestination(ScheduleEntry scheduleEntry) {
+        final Route route = ClientData.DATA_CACHE.routeIdMap.get(scheduleEntry.routeId);
+        if (route == null) return "";
+        final String[] destinationSplit = ClientData.DATA_CACHE.getFormattedRouteDestination(route, scheduleEntry.currentStationIndex, "").split("\\|");
+        for (final String destination : destinationSplit) {
+            if (!destination.isEmpty()) return destination;
+        }
+        return "";
     }
 
     private void renderArrivals(PoseStack matrices, MultiBufferSource.BufferSource immediate, List<ScheduleEntry> scheduleList, int displayPage) {
@@ -188,6 +396,20 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
             }
         }
     }
+
+    /**
+     * Layout of the "first and last train" cards: the two slots the live arrivals use, with the
+     * tighter line spacing of the approved mock-up.
+     */
+    protected static final float FIRST_LAST_LABEL_Y = 15.5F;
+    protected static final float FIRST_LAST_TIME_Y = 26.5F;
+    protected static final float FIRST_LAST_DEST_Y = 35.5F;
+    protected static final float FIRST_LAST_LABEL_Y_2 = 62F;
+    protected static final float FIRST_LAST_TIME_Y_2 = 73F;
+    protected static final float FIRST_LAST_DEST_Y_2 = 82F;
+    protected static final float FIRST_LAST_LABEL_SCALE = 1.35F;
+    protected static final float FIRST_LAST_TIME_SCALE = 0.62F;
+    protected static final float FIRST_LAST_DEST_SCALE = 1.35F;
 
     protected float getStringWidth(Font textRenderer, String text, float scale) {
         return IDrawingExtension.stringWidthWithFont(text, scale, 1, false);

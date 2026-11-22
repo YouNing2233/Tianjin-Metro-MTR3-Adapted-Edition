@@ -140,11 +140,17 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
          */
         public final ScrollingText marqueeText;
         protected boolean useRealTime = true;
+        /**
+         * When set, the board hides the live arrivals and only shows the first and the last
+         * departure of the day, taken from MTR's own schedule data.
+         */
+        protected boolean onlyFirstLastTrain = false;
 
         public static final String CATEGORIES_ID = "categories";
         public static final String CATEGORY_INDEX_ID = "category_index";
         public static final String ADVERTISEMENT_INDEX_ID = "advertisement_index";
         public static final String USE_REAL_TIME_ID = "use_real_time";
+        public static final String ONLY_FIRST_LAST_TRAIN_ID = "only_first_last_train";
 
         public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state) {
             this(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
@@ -191,6 +197,9 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             if (compoundTag.contains(USE_REAL_TIME_ID)) {
                 useRealTime = compoundTag.getBoolean(USE_REAL_TIME_ID);
             }
+            if (compoundTag.contains(ONLY_FIRST_LAST_TRAIN_ID)) {
+                onlyFirstLastTrain = compoundTag.getBoolean(ONLY_FIRST_LAST_TRAIN_ID);
+            }
         }
 
         @Override
@@ -200,6 +209,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             compoundTag.putInt(CATEGORY_INDEX_ID, categoryIndex);
             compoundTag.putInt(ADVERTISEMENT_INDEX_ID, advertisementIndex);
             compoundTag.putBoolean(USE_REAL_TIME_ID, useRealTime);
+            compoundTag.putBoolean(ONLY_FIRST_LAST_TRAIN_ID, onlyFirstLastTrain);
         }
 
         public LongAdderList getCategories() {
@@ -243,9 +253,24 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             syncData();
         }
 
+        public boolean isOnlyFirstLastTrain() {
+            return onlyFirstLastTrain;
+        }
+
+        public void setOnlyFirstLastTrain(boolean onlyFirstLastTrain) {
+            this.onlyFirstLastTrain = onlyFirstLastTrain;
+            setChanged();
+            syncData();
+        }
+
         public void setData(String[] messages, boolean[] hideArrival, java.util.Set<Long> platformIds, int displayPage, boolean useRealTime) {
+            setData(messages, hideArrival, platformIds, displayPage, useRealTime, false);
+        }
+
+        public void setData(String[] messages, boolean[] hideArrival, java.util.Set<Long> platformIds, int displayPage, boolean useRealTime, boolean onlyFirstLastTrain) {
             super.setData(messages, hideArrival, platformIds, displayPage);
             this.useRealTime = useRealTime;
+            this.onlyFirstLastTrain = onlyFirstLastTrain;
             setChanged();
             syncData();
         }

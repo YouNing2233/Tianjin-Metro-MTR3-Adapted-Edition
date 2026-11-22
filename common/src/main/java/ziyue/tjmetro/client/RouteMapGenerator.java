@@ -36,6 +36,10 @@ import static mtr.client.ClientCache.LINE_HEIGHT_MULTIPLIER;
 
 public class RouteMapGenerator implements IGui
 {
+
+    /** 吊板显示屏用：站名不要黑底白字（在白底上看会像一圈描边）。 */
+    public static boolean PLAIN_STATION_NAME = false;
+
     protected static int scale;
     protected static int lineSize;
     protected static int lineSpacing;
@@ -524,7 +528,8 @@ public class RouteMapGenerator implements IGui
                         drawString(nativeImage, text, x - lineSize * 3 / 2, y - lineSize, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM, 0, passed ? ARGB_LIGHT_GRAY : ARGB_BLACK, vertical);
                     } else {
                         // temporary
-                        drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, currentStation ? ARGB_BLACK : 0, passed ? ARGB_LIGHT_GRAY : currentStation ? ARGB_WHITE : ARGB_BLACK, vertical);
+                        final boolean plain = PLAIN_STATION_NAME;
+                        drawString(nativeImage, text, x, y + (textBelow ? lines * lineSpacing : -1) + (textBelow ? 1 : -1) * lineSize * 5 / 4, HorizontalAlignment.CENTER, textBelow ? VerticalAlignment.TOP : VerticalAlignment.BOTTOM, plain ? 0 : (currentStation ? ARGB_BLACK : 0), passed ? (plain ? 0xFF666666 : ARGB_LIGHT_GRAY) : plain || !currentStation ? ARGB_BLACK : ARGB_WHITE, vertical);
                     }
                 }));
 

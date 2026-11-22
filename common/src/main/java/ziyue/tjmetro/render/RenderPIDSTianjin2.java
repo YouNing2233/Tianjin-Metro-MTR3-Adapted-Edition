@@ -133,8 +133,13 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
     }
 
     @Override
-    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
-        matrices.pushPose();
+    /**
+     * Places the drawing space of one screen face: anchored at the block centre, turned so that
+     * the canvas faces {@code facing}, then switched to canvas pixels (1 block = {@code scale} px).
+     * Subclasses override this to change how the panel hangs on the wall.
+     */
+    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
+        // Free-standing sign: leans back 22.5 degrees.
         matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ);
         matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees((rotate90 ? 90 : 0) - facing.toYRot()));
         matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
@@ -142,6 +147,11 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
         matrices.scale(1F / scale, 1F / scale, 1F / scale);
         matrices.mulPose(com.mojang.math.Axis.XP.rotationDegrees(22.5F));
         matrices.translate(0, 0.05, 0);
+    }
+
+    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
+        matrices.pushPose();
+        applyDisplayTransform(matrices, facing, scale, offsetX, offsetZ);
 
         final RenderType boardRenderType = MoreRenderLayers.getLight(TEXTURE_BOARD, false);
         IDrawing.drawTexture(matrices, vertexConsumers.getBuffer(boardRenderType), 0, 0, BOARD_WIDTH, BOARD_HEIGHT, facing, MAX_LIGHT_GLOWING);
@@ -157,7 +167,9 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
         renderClock(matrices, immediate, entity);
         renderDate(matrices, immediate, entity);
 
-        if (route != null) {
+        if (entity.isOnlyFirstLastTrain()) {
+            renderFirstLastTrain(matrices, immediate, entity, pos, scheduleList);
+        } else if (route != null) {
             final String lineName = toChineseName(route.name);
             if (!lineName.isEmpty()) {
                 renderText(matrices, immediate, lineName, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, COLUMN_CENTER_X, LINE_NAME_Y, LINE_NAME_WIDTH, LINE_NAME_SCALE, ARGB_WHITE);
@@ -208,6 +220,15 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
         final RenderType whiteRenderType = MoreRenderLayers.getLight(TEXTURE_WHITE, false);
         IDrawing.drawTexture(matrices, vertexConsumers.getBuffer(whiteRenderType),
                 SEPARATOR_X0, SEPARATOR_Y, SEPARATOR_X1 - SEPARATOR_X0, SEPARATOR_THICKNESS, facing, MAX_LIGHT_GLOWING);
+    }
+
+    @Override
+    protected void renderFirstLastTrain(PoseStack matrices, MultiBufferSource.BufferSource immediate, T entity, BlockPos pos, List<ScheduleEntry> scheduleList) {
+        final String[] values = getFirstLastDepartures(entity, pos, scheduleList);
+        if (values == null) return;
+
+        drawFirstLastRow(matrices, immediate, "gui.tjmetro.first_train", values[0], values[2], COLUMN_CENTER_X, LABEL_WIDTH, 11F, 22F, 33F);
+        drawFirstLastRow(matrices, immediate, "gui.tjmetro.last_train", values[1], values[2], COLUMN_CENTER_X, LABEL_WIDTH, 44F, 55F, 66F);
     }
 
     private void renderArrival(PoseStack matrices, MultiBufferSource.BufferSource immediate, ScheduleEntry scheduleEntry, boolean useChinese) {

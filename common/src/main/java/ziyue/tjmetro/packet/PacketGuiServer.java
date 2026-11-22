@@ -218,11 +218,12 @@ public class PacketGuiServer
         }
         final int displayPage = packet.readInt();
         final boolean useRealTime = packet.readBoolean();
+        final boolean onlyFirstLastTrain = packet.readBoolean();
 
         minecraftServer.execute(() -> {
             final BlockEntity entity = player.level().getBlockEntity(pos);
             if (entity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
-                pidsEntity.setData(new String[0], new boolean[0], platformIds, displayPage, useRealTime);
+                pidsEntity.setData(new String[0], new boolean[0], platformIds, displayPage, useRealTime, onlyFirstLastTrain);
             }
         });
     }
