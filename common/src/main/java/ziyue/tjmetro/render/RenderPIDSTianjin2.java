@@ -134,20 +134,10 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
 
     @Override
     /**
-     * Places the drawing space of one screen face: anchored at the block centre, turned so that
-     * the canvas faces {@code facing}, then switched to canvas pixels (1 block = {@code scale} px).
-     * Subclasses override this to change how the panel hangs on the wall.
+     * 屏幕相对方块的局部变换。默认实现即原来的立牌摆放（离地 0.85 格、前倾 22.5°）；
+     * 墙上版/吊板版覆写它即可改成贴墙正立的位置与缩放，画面内容无需改动。
      */
     protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
-        // Free-standing sign: leans back 22.5 degrees.
-        applyDisplayTransform(matrices, facing, scale, offsetX, offsetZ);
-    }
-
-    /**
-     * 应用显示屏相对方块的局部变换。默认实现就是原先的立牌摆放（离地 0.85 格、前倾 22.5°）；
-     * 墙上版覆写它即可改成贴墙正立的位置与缩放，而完整复用下面的绘制内容。
-     */
-    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {{
         matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ); // 立牌默认摆放
         matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees((rotate90 ? 90 : 0) - facing.toYRot()));
         matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));

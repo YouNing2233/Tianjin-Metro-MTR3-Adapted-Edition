@@ -73,20 +73,10 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
     }
 
     /**
-     * Places the drawing space of one screen face: anchored at the block centre, turned so that
-     * the canvas faces {@code facing}, then switched to canvas pixels (1 block = {@code scale} px).
-     * Subclasses override this to change how the panel hangs on the wall.
-     */
-    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
-        // Free-standing sign: leans back 22.5 degrees.
-        applyDisplayTransform(matrices, facing, scale, offsetX, offsetZ);
-    }
-
-    /**
      * 应用显示屏相对方块的局部变换。默认实现就是原先的立牌摆放（离地 0.85 格、前倾 22.5°）；
      * 墙上版覆写它即可改成贴墙正立的位置与缩放，而完整复用下面的绘制内容。
      */
-    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {{
+    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
         matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ); // 立牌默认摆放
         matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees((rotate90 ? 90 : 0) - facing.toYRot()));
         matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
@@ -115,11 +105,7 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
         if (entity.isOnlyFirstLastTrain()) {
             renderFirstLastTrain(matrices, immediate, entity, pos, scheduleList);
         } else {
-            if (entity.isOnlyFirstLastTrain()) {
-            renderFirstLastTrain(matrices, immediate, scheduleList);
-        } else {
             renderArrivals(matrices, immediate, scheduleList, entity.getDisplayPage());
-        }
         }
 
         renderAdvertisement(matrices, vertexConsumers, entity, facing);
@@ -290,81 +276,6 @@ public class RenderPIDSTianjin<T extends BlockPIDSTianjin.TileEntityBlockPIDSTia
             }
         }
         return "";
-    }
-
-    /**
-     * First and last schedule entry of today. When no entry belongs to today at all the whole list
-     * is used, so the board never goes blank because of daylight saving or a skewed clock.
-     */
-    protected static ScheduleEntry[] getFirstAndLastTrain(List<ScheduleEntry> scheduleList) {
-        if (scheduleList == null || scheduleList.isEmpty()) return null;
-
-        final Calendar today = Calendar.getInstance();
-        ScheduleEntry first = null;
-        ScheduleEntry last = null;
-
-        for (final ScheduleEntry scheduleEntry : scheduleList) {
-            final Calendar entryDay = Calendar.getInstance();
-            entryDay.setTimeInMillis(scheduleEntry.arrivalMillis);
-            if (entryDay.get(Calendar.YEAR) != today.get(Calendar.YEAR) || entryDay.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR)) {
-                continue;
-            }
-            if (first == null || scheduleEntry.arrivalMillis < first.arrivalMillis) first = scheduleEntry;
-            if (last == null || scheduleEntry.arrivalMillis > last.arrivalMillis) last = scheduleEntry;
-        }
-
-        if (first == null) {
-            for (final ScheduleEntry scheduleEntry : scheduleList) {
-                if (first == null || scheduleEntry.arrivalMillis < first.arrivalMillis) first = scheduleEntry;
-                if (last == null || scheduleEntry.arrivalMillis > last.arrivalMillis) last = scheduleEntry;
-            }
-        }
-
-        return new ScheduleEntry[]{first, last};
-    }
-
-    protected static String formatScheduleTime(long millis) {
-        return new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date(millis));
-    }
-
-    /**
-     * Destination of a schedule entry: the first non-empty segment of MTR's formatted destination.
-     */
-    protected static String getPidsDestination(ScheduleEntry scheduleEntry) {
-        final Route route = ClientData.DATA_CACHE.routeIdMap.get(scheduleEntry.routeId);
-        if (route == null) return "";
-        final String[] destinationSplit = ClientData.DATA_CACHE.getFormattedRouteDestination(route, scheduleEntry.currentStationIndex, "").split("\\|");
-        for (final String destination : destinationSplit) {
-            if (!destination.isEmpty()) return destination;
-        }
-        return "";
-    }
-
-    /**
-     * "First and last train" mode: the live arrivals are replaced by the first and the last
-     * departure of the day. Both come straight from MTR's schedule data (the {@code arrivalMillis}
-     * of the entries bound to this screen's platforms), nothing is computed or invented here.
-     */
-    protected void renderFirstLastTrain(PoseStack matrices, MultiBufferSource.BufferSource immediate, List<ScheduleEntry> scheduleList) {
-        final ScheduleEntry[] firstAndLast = getFirstAndLastTrain(scheduleList);
-        if (firstAndLast == null) return;
-
-        drawFirstLastRow(matrices, immediate, firstAndLast[0], "gui.tjmetro.first_train", LEFT_TEXT_X_CENTER, LEFT_TEXT_MAX_WIDTH, FIRST_LAST_LABEL_Y, FIRST_LAST_TIME_Y, FIRST_LAST_DEST_Y);
-        drawFirstLastRow(matrices, immediate, firstAndLast[1], "gui.tjmetro.last_train", LEFT_TEXT_X_CENTER, LEFT_TEXT_MAX_WIDTH, FIRST_LAST_LABEL_Y_2, FIRST_LAST_TIME_Y_2, FIRST_LAST_DEST_Y_2);
-    }
-
-    protected void drawFirstLastRow(PoseStack matrices, MultiBufferSource.BufferSource immediate, ScheduleEntry scheduleEntry, String labelKey, float centerX, float availableWidth, float labelY, float timeY, float destinationY) {
-        if (scheduleEntry == null) return;
-
-        final String destination = getPidsDestination(scheduleEntry);
-        final boolean useChinese = IGui.isCjk(destination);
-
-        renderText(matrices, immediate, Text.translatable(labelKey + (useChinese ? "_cjk" : "")).getString(),
-                HorizontalAlignment.CENTER, VerticalAlignment.CENTER, centerX, labelY, availableWidth, FIRST_LAST_LABEL_SCALE, ARGB_WHITE);
-        renderText(matrices, immediate, formatScheduleTime(scheduleEntry.arrivalMillis),
-                HorizontalAlignment.CENTER, VerticalAlignment.CENTER, centerX, timeY, availableWidth, FIRST_LAST_TIME_SCALE, 0xFFEFEF00);
-        renderText(matrices, immediate, Text.translatable(useChinese ? "gui.tjmetro.bound_for_pids_cjk" : "gui.tjmetro.bound_for_pids", destination).getString(),
-                HorizontalAlignment.CENTER, VerticalAlignment.CENTER, centerX, destinationY, availableWidth, FIRST_LAST_DEST_SCALE, ARGB_WHITE);
     }
 
     /**
