@@ -179,6 +179,7 @@
   "gui.tjmetro.train_to_cjk": "Sektor %s",
   "item.tjmetro.wrench": "Klucz",
   "itemGroup.tjmetro.tianjin_metro": "Metro Tiencin",
+  "message.tjmetro.psd_door_wide.open_all": "Otwórz wszystkie trzy (2 lewe, 1 prawe)",
   "modmenu.descriptionTranslation.tjmetro": "Mały mod dla Minecraft Transit Railway.",
   "modmenu.nameTranslation.tjmetro": "Metro Tiencin",
   "sign.tjmetro.accessible_elevator": "无障碍电梯|Winda dla osób z niepełnosprawnościami",

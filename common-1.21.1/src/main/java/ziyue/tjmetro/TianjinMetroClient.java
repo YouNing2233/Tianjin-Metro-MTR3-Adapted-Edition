@@ -258,6 +258,14 @@ public class TianjinMetroClient
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_2_TILE_ENTITY.get(), RenderPIDSTianjin2::new);
         RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_2_SINGLE.get());
         RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_2_SINGLE_TILE_ENTITY.get(), RenderPIDSTianjin2Single::new);
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_WALL.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_WALL_TILE_ENTITY.get(), RenderPIDSTianjinWall::new);
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_2_WALL.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_2_WALL_TILE_ENTITY.get(), RenderPIDSTianjin2Wall::new);
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_PSD_TOP.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_PSD_TOP_TILE_ENTITY.get(), RenderPIDSTianjinPsdTop::new);
+        RegistryClient.registerBlockRenderType(RenderType.translucent(), BlockList.PIDS_TIANJIN_2_PSD_TOP.get());
+        RegistryClient.registerTileEntityRenderer(BlockEntityTypes.PIDS_TIANJIN_2_PSD_TOP_TILE_ENTITY.get(), RenderPIDSTianjin2PsdTop::new);
 
         /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
         RegistryClient.registerBlockRenderType(RenderType.cutout(), BlockList.SMOKE_ALARM.get());

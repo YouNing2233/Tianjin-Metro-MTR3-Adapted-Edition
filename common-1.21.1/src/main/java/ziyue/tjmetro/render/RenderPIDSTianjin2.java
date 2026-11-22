@@ -133,15 +133,23 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
     }
 
     @Override
-    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
-        matrices.pushPose();
-        matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ);
+    /**
+     * 屏幕相对方块本体的摆放变换。默认实现即原来的立牌摆放（离地 0.85 格、前倾 22.5 度）；
+     * 墙上版与吊板版覆盖它，改成贴墙正立的位置与缩放。
+     */
+    protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
+        matrices.translate(0.5 + offsetX, 0.85, 0.5 + offsetZ); // 立牌默认摆放
         matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees((rotate90 ? 90 : 0) - facing.toYRot()));
         matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
         matrices.translate(-0.48, 0, -0.48);
         matrices.scale(1F / scale, 1F / scale, 1F / scale);
         matrices.mulPose(com.mojang.math.Axis.XP.rotationDegrees(22.5F));
         matrices.translate(0, 0.05, 0);
+    }
+
+    protected void renderFace(PoseStack matrices, MultiBufferSource vertexConsumers, Direction facing, float scale, T entity, BlockPos pos, float offsetX, float offsetZ) {
+        matrices.pushPose();
+        applyDisplayTransform(matrices, facing, scale, offsetX, offsetZ);
 
         final RenderType boardRenderType = MoreRenderLayers.getLight(TEXTURE_BOARD, false);
         IDrawing.drawTexture(matrices, vertexConsumers.getBuffer(boardRenderType), 0, 0, BOARD_WIDTH, BOARD_HEIGHT, facing, MAX_LIGHT_GLOWING);
@@ -153,6 +161,15 @@ public class RenderPIDSTianjin2<T extends BlockPIDSTianjin.TileEntityBlockPIDSTi
         final List<ScheduleEntry> scheduleList = getSchedules(entity, pos, new HashMap<>());
         final ScheduleEntry scheduleEntry = scheduleList.isEmpty() ? null : scheduleList.get(0);
         final Route route = scheduleEntry == null ? null : ClientData.DATA_CACHE.routeIdMap.get(scheduleEntry.routeId);
+
+        if (entity.isOnlyFirstLastTrain()) {
+            renderFirstLastTrain(matrices, immediate, entity, pos, scheduleList);
+            renderClock(matrices, immediate, entity);
+            renderAdvertisement(matrices, vertexConsumers, immediate, entity, facing);
+            matrices.popPose();
+            immediate.endBatch();
+            return;
+        }
 
         renderClock(matrices, immediate, entity);
         renderDate(matrices, immediate, entity);

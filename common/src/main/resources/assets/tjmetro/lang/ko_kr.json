@@ -121,6 +121,7 @@
   "gui.tjmetro.train_to_cjk": "%s행",
   "item.tjmetro.wrench": "렌치",
   "itemGroup.tjmetro.tianjin_metro": "텐진 지하철",
+  "message.tjmetro.psd_door_wide.open_all": "3짝 모두 열기 (좌 2, 우 1)",
   "modmenu.descriptionTranslation.tjmetro": "마인크래프트 트랜짓 레일웨이(MTR)용 소규모 모드입니다.",
   "modmenu.nameTranslation.tjmetro": "텐진 지하철"
 }

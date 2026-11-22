@@ -300,6 +300,7 @@
   "itemGroup.tjmetro.tab": "天津地铁",
   "itemGroup.tjmetro.tianjin_metro": "天津地铁",
   "itemGroup.tjmetro.tjmetro_tab": "天津地铁",
+  "message.tjmetro.psd_door_wide.open_all": "三扇全开（左二右一）",
   "message.tjmetro.psd_door_wide.open_left": "开门方向：左侧两扇开",
   "message.tjmetro.psd_door_wide.open_right": "开门方向：右侧两扇开",
   "modmenu.descriptionTranslation.tjmetro": "一个 Minecraft Transit Railway 的附属模组",

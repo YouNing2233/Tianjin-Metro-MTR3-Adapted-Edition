@@ -294,6 +294,7 @@
   "itemGroup.tjmetro.tab": "Métro de Tianjin",
   "itemGroup.tjmetro.tianjin_metro": "Métro de Tianjin",
   "itemGroup.tjmetro.tjmetro_tab": "Métro de Tianjin",
+  "message.tjmetro.psd_door_wide.open_all": "Ouverture complète (2 gauche, 1 droite)",
   "modmenu.descriptionTranslation.tjmetro": "Un module complémentaire pour Minecraft Transit Railway",
   "modmenu.nameTranslation.tjmetro": "Métro de Tianjin",
   "sign.tjmetro.accessible_elevator": "Ascenseur accessible",

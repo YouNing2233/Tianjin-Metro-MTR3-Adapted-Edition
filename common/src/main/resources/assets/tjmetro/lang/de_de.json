@@ -188,6 +188,7 @@
   "gui.tjmetro.train_to_cjk": "Richtung %s",
   "item.tjmetro.wrench": "Schraubenschlüssel",
   "itemGroup.tjmetro.tianjin_metro": "Tianjin Metro",
+  "message.tjmetro.psd_door_wide.open_all": "Alle drei öffnen (2 links, 1 rechts)",
   "modmenu.descriptionTranslation.tjmetro": "Eine kleine Mod für Minecraft Transit Railway.",
   "modmenu.nameTranslation.tjmetro": "Tianjin Metro",
   "sign.tjmetro.accessible_elevator": "无障碍电梯|Barrierefreier Aufzug",

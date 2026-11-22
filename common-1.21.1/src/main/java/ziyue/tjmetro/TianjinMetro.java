@@ -208,6 +208,10 @@ public class TianjinMetro
         registerBlockItem.accept("pids_tianjin_single", BlockList.PIDS_TIANJIN_SINGLE, DECORATION);
         registerBlockItem.accept("pids_tianjin_2", BlockList.PIDS_TIANJIN_2, DECORATION);
         registerBlockItem.accept("pids_tianjin_2_single", BlockList.PIDS_TIANJIN_2_SINGLE, DECORATION);
+            registerBlockItem.accept("pids_tianjin_wall", BlockList.PIDS_TIANJIN_WALL, DECORATION);
+            registerBlockItem.accept("pids_tianjin_2_wall", BlockList.PIDS_TIANJIN_2_WALL, DECORATION);
+            registerBlockItem.accept("pids_tianjin_psd_top", BlockList.PIDS_TIANJIN_PSD_TOP, DECORATION);
+            registerBlockItem.accept("pids_tianjin_2_psd_top", BlockList.PIDS_TIANJIN_2_PSD_TOP, DECORATION);
         /* DECORATION - logo, furniture, signs, barriers, misc */
         registerBlockItem.accept("logo", BlockList.LOGO, DECORATION);
         registerBlockItem.accept("bench", BlockList.BENCH, DECORATION);
@@ -450,6 +454,10 @@ public class TianjinMetro
         registerBlockEntityType.accept("pids_tianjin_single", BlockEntityTypes.PIDS_TIANJIN_SINGLE_TILE_ENTITY);
         registerBlockEntityType.accept("pids_tianjin_2", BlockEntityTypes.PIDS_TIANJIN_2_TILE_ENTITY);
         registerBlockEntityType.accept("pids_tianjin_2_single", BlockEntityTypes.PIDS_TIANJIN_2_SINGLE_TILE_ENTITY);
+            registerBlockEntityType.accept("pids_tianjin_wall", BlockEntityTypes.PIDS_TIANJIN_WALL_TILE_ENTITY);
+            registerBlockEntityType.accept("pids_tianjin_2_wall", BlockEntityTypes.PIDS_TIANJIN_2_WALL_TILE_ENTITY);
+            registerBlockEntityType.accept("pids_tianjin_psd_top", BlockEntityTypes.PIDS_TIANJIN_PSD_TOP_TILE_ENTITY);
+            registerBlockEntityType.accept("pids_tianjin_2_psd_top", BlockEntityTypes.PIDS_TIANJIN_2_PSD_TOP_TILE_ENTITY);
 
         /* 1.1.8 - Ported from 4.0 - Smoke alarm & Time display (even) */
         registerBlockEntityType.accept("smoke_alarm", BlockEntityTypes.SMOKE_ALARM_TILE_ENTITY);

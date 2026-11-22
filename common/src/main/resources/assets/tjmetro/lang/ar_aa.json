@@ -121,6 +121,7 @@
   "gui.tjmetro.train_to_cjk": "开往%s",
   "item.tjmetro.wrench": "مفتاح ربط",
   "itemGroup.tjmetro.tianjin_metro": "مترو تيانجين",
+  "message.tjmetro.psd_door_wide.open_all": "فتح الثلاثة (اثنان يسار، واحد يمين)",
   "modmenu.descriptionTranslation.tjmetro": "تعديل صغير لسكك حديد ماينكرافت للنقل.",
   "modmenu.nameTranslation.tjmetro": "مترو تيانجين",
   "sign.tjmetro.bound_for": "إلى|To",

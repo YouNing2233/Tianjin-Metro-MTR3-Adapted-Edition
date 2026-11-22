@@ -59,6 +59,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
     private final BlockPos blockPos;
     private final WidgetBetterCheckbox selectAllCheckbox;
     private final WidgetBetterCheckbox useRealTimeCheckbox;
+    private final WidgetBetterCheckbox onlyFirstLastTrainCheckbox;
     private final WidgetBetterTextField displayPageInput;
     private Button filterButton;
     private Button categoryButton;
@@ -66,6 +67,8 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
     private final int displayPage;
     private final int filteredAdsCount;
     private boolean useRealTime;
+    private boolean onlyFirstLastTrain;
+    private boolean psdTopScreen;
 
     public PIDSTianjinConfigScreen(BlockPos blockPos) {
         super(Text.literal(""));
@@ -78,6 +81,8 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         if (blockEntity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity) {
             filterPlatformIds.addAll(pidsEntity.getPlatformIds());
             useRealTime = pidsEntity.isUseRealTime();
+        psdTopScreen = blockEntity instanceof ziyue.tjmetro.block.BlockPIDSTianjinPsdTop.TileEntityBlockPIDSTianjinPsdTop;
+        onlyFirstLastTrain = pidsEntity.isOnlyFirstLastTrain();
             displayPage = pidsEntity.getDisplayPage();
             filteredAdsCount = pidsEntity.getCategories().size();
         }
@@ -92,6 +97,10 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
 
         useRealTimeCheckbox = new WidgetBetterCheckbox(0, 0, PANEL_WIDTH, SQUARE_SIZE, Text.translatable("gui.tjmetro.use_real_time"), selected -> {
             useRealTime = selected;
+        });
+
+        onlyFirstLastTrainCheckbox = new WidgetBetterCheckbox(0, 0, PANEL_WIDTH, SQUARE_SIZE, Text.translatable("gui.tjmetro.only_first_last_train"), selected -> {
+            onlyFirstLastTrain = selected;
         });
 
         displayPageInput = new WidgetBetterTextField(WidgetBetterTextField.TextFieldFilter.POSITIVE_INTEGER, "1", 3);
@@ -120,6 +129,12 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         useRealTimeCheckbox.setChecked(useRealTime);
         IDrawing.setPositionAndWidth(useRealTimeCheckbox, SQUARE_SIZE, SQUARE_SIZE * 8 + TEXT_FIELD_PADDING * 2, PANEL_WIDTH);
         addDrawableChild(useRealTimeCheckbox);
+
+        if (!psdTopScreen) {
+            onlyFirstLastTrainCheckbox.setChecked(onlyFirstLastTrain);
+            IDrawing.setPositionAndWidth(onlyFirstLastTrainCheckbox, SQUARE_SIZE, SQUARE_SIZE * 9 + TEXT_FIELD_PADDING * 2, PANEL_WIDTH);
+            addDrawableChild(onlyFirstLastTrainCheckbox);
+        }
     }
 
     @Override
@@ -142,7 +157,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         } catch (Exception e) {
             TianjinMetro.LOGGER.error("", e);
         }
-        sendConfigToServer(filterPlatformIds, displayPage, useRealTime);
+        sendConfigToServer(filterPlatformIds, displayPage, useRealTime, onlyFirstLastTrain);
         super.onClose();
     }
 
@@ -176,7 +191,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         }
     }
 
-    private void sendConfigToServer(Set<Long> platformIds, int displayPage, boolean useRealTime) {
+    private void sendConfigToServer(Set<Long> platformIds, int displayPage, boolean useRealTime, boolean onlyFirstLastTrain) {
         final net.minecraft.network.FriendlyByteBuf packet = new net.minecraft.network.FriendlyByteBuf(Unpooled.buffer());
         packet.writeBlockPos(blockPos);
         packet.writeVarInt(platformIds.size());
@@ -185,6 +200,7 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         }
         packet.writeInt(displayPage);
         packet.writeBoolean(useRealTime);
+        packet.writeBoolean(onlyFirstLastTrain);
         RegistryClient.sendToServer(PACKET_UPDATE_PIDS_TIANJIN_CONFIG, packet);
     }
 }

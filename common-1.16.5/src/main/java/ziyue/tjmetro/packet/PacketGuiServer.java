@@ -231,7 +231,8 @@ public class PacketGuiServer
             final BlockEntity entity = player.level.getBlockEntity(pos);
             if (entity instanceof BlockPIDSTianjin.TileEntityBlockPIDSTianjin) {
                 BlockPIDSTianjin.TileEntityBlockPIDSTianjin pidsEntity = (BlockPIDSTianjin.TileEntityBlockPIDSTianjin) entity;
-                pidsEntity.setData(new String[0], new boolean[0], platformIds, displayPage, useRealTime);
+                final boolean onlyFirstLastTrain = packet.readBoolean();
+                pidsEntity.setData(new String[0], new boolean[0], platformIds, displayPage, useRealTime, onlyFirstLastTrain);
             }
         });
     }

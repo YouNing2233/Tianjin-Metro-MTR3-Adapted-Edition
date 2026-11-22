@@ -66,6 +66,7 @@
   "gui.tjmetro.terminus_bmt": "TERMİNAL",
   "item.tjmetro.wrench": "İngiliz Anahtarı",
   "itemGroup.tjmetro.tianjin_metro": "Tientsin Metrosu",
+  "message.tjmetro.psd_door_wide.open_all": "Üçünü de aç (2 sol, 1 sağ)",
   "modmenu.descriptionTranslation.tjmetro": "Minecraft Transit Railway için küçük mod.",
   "modmenu.nameTranslation.tjmetro": "Tientsin Metrosu"
 }

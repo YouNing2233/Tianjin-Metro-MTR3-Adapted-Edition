@@ -59,7 +59,7 @@ public class RenderTianjinPSDDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
                 : leafIndex == 1 ? BlockPSDDoorTianjinWide.WideSide.MIDDLE : BlockPSDDoorTianjinWide.WideSide.RIGHT;
         final boolean half = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.HALF) == DoubleBlockHalf.UPPER;
         final boolean unlocked = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.UNLOCKED);
-        final boolean openLeft = BlockPSDDoorTianjinWide.isOpenLeft(world, pos);
+        final int openMode = BlockPSDDoorTianjinWide.getOpenMode(world, pos);
         // MTR 的列车脚本只会驱动它认定的那一扇门，这里取整组的最大开度，保证三扇同步
         final float open = Math.min(entity.getOpen(MTRClient.getLastFrameDuration()), 1F);
 
@@ -68,7 +68,10 @@ public class RenderTianjinPSDDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
         //   openLeft  : 第 0、1 扇往左滑 1 格；第 2 扇往右滑 1 格
         //   openRight : 第 1、2 扇往右滑 1 格；第 0 扇往左滑 1 格
         final float slideBlocks;
-        if (openLeft) {
+        if (openMode == BlockPSDDoorTianjinWide.OPEN_MODE_ALL) {
+            // 三扇全开：前两扇一起叠进左侧玻璃袋，第三扇进右侧玻璃袋
+            slideBlocks = leafIndex == 0 ? 1F : leafIndex == 1 ? 2F : -1F;
+        } else if (openMode == BlockPSDDoorTianjinWide.OPEN_MODE_LEFT) {
             slideBlocks = leafIndex <= 1 ? 1F : -1F;
         } else {
             slideBlocks = leafIndex >= 1 ? -1F : 1F;

@@ -301,6 +301,7 @@
   "itemGroup.tjmetro.tab": "Tianjin Metro",
   "itemGroup.tjmetro.tianjin_metro": "Tianjin Metro",
   "itemGroup.tjmetro.tjmetro_tab": "Tianjin Metro",
+  "message.tjmetro.psd_door_wide.open_all": "Open all three (2 left, 1 right)",
   "message.tjmetro.psd_door_wide.open_left": "Opening side: two leaves to the left",
   "message.tjmetro.psd_door_wide.open_right": "Opening side: two leaves to the right",
   "modmenu.descriptionTranslation.tjmetro": "一个 Minecraft Transit Railway 的附属模组",

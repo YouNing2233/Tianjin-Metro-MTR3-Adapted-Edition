@@ -213,6 +213,10 @@ public interface BlockList
     RegistryObject<Block> PIDS_TIANJIN_SINGLE = new RegistryObject<>(BlockPIDSTianjinSingle::new);
     RegistryObject<Block> PIDS_TIANJIN_2 = new RegistryObject<>(BlockPIDSTianjin2::new);
     RegistryObject<Block> PIDS_TIANJIN_2_SINGLE = new RegistryObject<>(BlockPIDSTianjin2Single::new);
+    RegistryObject<Block> PIDS_TIANJIN_WALL = new RegistryObject<>(BlockPIDSTianjinWall::new);
+    RegistryObject<Block> PIDS_TIANJIN_2_WALL = new RegistryObject<>(BlockPIDSTianjin2Wall::new);
+    RegistryObject<Block> PIDS_TIANJIN_PSD_TOP = new RegistryObject<>(BlockPIDSTianjinPsdTop::new);
+    RegistryObject<Block> PIDS_TIANJIN_2_PSD_TOP = new RegistryObject<>(BlockPIDSTianjin2PsdTop::new);
 
     /* 1.1.8 - Ported from 4.0 - Smoke alarm */
     RegistryObject<Block> SMOKE_ALARM = new RegistryObject<>(BlockSmokeAlarm::new);

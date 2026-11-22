@@ -46,6 +46,11 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
      */
     public static final BooleanProperty OPEN_LEFT = BooleanProperty.create("open_left");
 
+    /** 0 = 左两扇开；1 = 右两扇开；2 = 三扇全开（左二右一） */
+    public static final int OPEN_MODE_LEFT = 0;
+    public static final int OPEN_MODE_RIGHT = 1;
+    public static final int OPEN_MODE_ALL = 2;
+
     /** 三扇中的位置（MTR 的 SIDE 只有 LEFT/RIGHT，这里单独用一个属性表达中间扇） */
     public static final EnumProperty<WideSide> WIDE_SIDE = EnumProperty.create("wide_side", WideSide.class);
 
@@ -136,34 +141,45 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
                     }
                 }
 
-                // 以组头当前值取反，再写到三扇（上下两块）的方块实体上
-                final boolean openLeft = !isOpenLeft(world, currentPos);
+                // 循环切换：开左 -> 开右 -> 三扇全开
+                final int openMode = (getOpenMode(world, currentPos) + 1) % 3;
                 for (int i = 0; i < 3; i++) {
-                    setOpenLeft(world, currentPos, openLeft);
-                    setOpenLeft(world, currentPos.above(), openLeft);
+                    setOpenMode(world, currentPos, openMode);
+                    setOpenMode(world, currentPos.above(), openMode);
                     currentPos = currentPos.relative(sideDirection);
                 }
 
-                player.displayClientMessage(Text.translatable(openLeft ? "message.tjmetro.psd_door_wide.open_left" : "message.tjmetro.psd_door_wide.open_right"), true);
+                player.displayClientMessage(Text.translatable(openMode == OPEN_MODE_LEFT
+                        ? "message.tjmetro.psd_door_wide.open_left"
+                        : openMode == OPEN_MODE_RIGHT
+                        ? "message.tjmetro.psd_door_wide.open_right"
+                        : "message.tjmetro.psd_door_wide.open_all"), true);
             }
             return InteractionResult.SUCCESS;
         }
         return super.use(blockState, world, pos, player, interactionHand, blockHitResult);
     }
 
-    /** 从方块实体读“左侧开门”状态（方块状态会被 MTR 的状态刷新重置，不能用） */
-    public static boolean isOpenLeft(Level world, BlockPos pos) {
+    /** 从方块实体读开门模式（方块状态会被 MTR 的状态刷新重置，不能用） */
+    public static int getOpenMode(Level world, BlockPos pos) {
         final BlockState state = world.getBlockState(pos);
-        return state.getBlock() instanceof BlockPSDDoorTianjinWide
-                && world.getBlockEntity(pos) instanceof TileEntityPSDDoorTianjinWide te
-                && te.openLeft;
+        if (state.getBlock() instanceof BlockPSDDoorTianjinWide
+                && world.getBlockEntity(pos) instanceof TileEntityPSDDoorTianjinWide te) {
+            return te.openMode;
+        }
+        return OPEN_MODE_LEFT;
     }
 
-    private static void setOpenLeft(Level world, BlockPos pos, boolean openLeft) {
+    /** 兼容旧调用：true 表示“左两扇开”这一档 */
+    public static boolean isOpenLeft(Level world, BlockPos pos) {
+        return getOpenMode(world, pos) == OPEN_MODE_LEFT;
+    }
+
+    private static void setOpenMode(Level world, BlockPos pos, int openMode) {
         if (world.getBlockState(pos).getBlock() instanceof BlockPSDDoorTianjinWide
                 && world.getBlockEntity(pos) instanceof TileEntityPSDDoorTianjinWide te) {
-            te.openLeft = openLeft;
-            world.setBlock(pos, world.getBlockState(pos).setValue(OPEN_LEFT, openLeft), 2);
+            te.openMode = openMode;
+            world.setBlock(pos, world.getBlockState(pos).setValue(OPEN_LEFT, openMode == OPEN_MODE_LEFT), 2);
             te.setChanged();
             te.syncData();
         }
@@ -171,8 +187,8 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
 
     public static class TileEntityPSDDoorTianjinWide extends BlockPSDAPGDoorBase.TileEntityPSDAPGDoorBase
     {
-        /** true = 左侧两扇开；false = 右侧两扇开 */
-        public boolean openLeft = false;
+        /** 0 = 左两扇开；1 = 右两扇开；2 = 三扇全开 */
+        public int openMode = OPEN_MODE_LEFT;
 
         public TileEntityPSDDoorTianjinWide(BlockPos pos, BlockState state) {
             this(BlockEntityTypes.PSD_DOOR_TIANJIN_WIDE_TILE_ENTITY.get(), pos, state);
@@ -180,18 +196,20 @@ public class BlockPSDDoorTianjinWide extends BlockPSDAPGDoorBase implements Bloc
 
         protected TileEntityPSDDoorTianjinWide(net.minecraft.world.level.block.entity.BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
-            this.openLeft = IBlock.getStatePropertySafe(state, OPEN_LEFT);
+            this.openMode = IBlock.getStatePropertySafe(state, OPEN_LEFT) ? OPEN_MODE_LEFT : OPEN_MODE_RIGHT;
         }
 
         @Override
         public void readCompoundTag(CompoundTag compoundTag) {
-            openLeft = compoundTag.getBoolean("open_left");
+            openMode = compoundTag.contains("open_mode")
+                    ? compoundTag.getInt("open_mode")
+                    : (compoundTag.getBoolean("open_left") ? OPEN_MODE_LEFT : OPEN_MODE_RIGHT);
             super.readCompoundTag(compoundTag);
         }
 
         @Override
         public void writeCompoundTag(CompoundTag compoundTag) {
-            compoundTag.putBoolean("open_left", openLeft);
+            compoundTag.putInt("open_mode", openMode);
             super.writeCompoundTag(compoundTag);
         }
     }

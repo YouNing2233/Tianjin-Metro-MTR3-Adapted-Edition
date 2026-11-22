@@ -133,7 +133,7 @@ public class RenderPIDSTianjinPsdTop<T extends BlockPIDSTianjinPsdTop.TileEntity
     @Override
     protected void applyDisplayTransform(PoseStack matrices, Direction facing, float scale, float offsetX, float offsetZ) {
         // Flat screen: no lean back, canvas top 0.975 blocks above the block floor, 0.9 blocks tall.
-        matrices.translate(0.5 + offsetX, 0.975, 0.5 + offsetZ);
+        matrices.translate(0.5 + offsetX, 0.975 - 1F / 12F, 0.5 + offsetZ);
         matrices.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-facing.toYRot()));
         matrices.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
         matrices.translate(-CANVAS_W / 2F / FRAME_SCALE, 0, SCREEN_Z);

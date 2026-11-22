@@ -129,6 +129,10 @@ public class PIDSTianjinConfigScreen extends ScreenMapper implements IGui {
         IDrawing.setPositionAndWidth(useRealTimeCheckbox, SQUARE_SIZE, SQUARE_SIZE * 8 + TEXT_FIELD_PADDING * 2, PANEL_WIDTH);
         addDrawableChild(useRealTimeCheckbox);
 
+        onlyFirstLastTrainCheckbox.setChecked(onlyFirstLastTrain);
+        IDrawing.setPositionAndWidth(onlyFirstLastTrainCheckbox, SQUARE_SIZE, SQUARE_SIZE * 9 + TEXT_FIELD_PADDING * 2, PANEL_WIDTH);
+        addDrawableChild(onlyFirstLastTrainCheckbox);
+
         // 吊板版 PIDS 没有「仅显示首末车时间」这个功能，直接不显示该复选框。
         if (!psdTopScreen) {
             onlyFirstLastTrainCheckbox.setChecked(onlyFirstLastTrain);

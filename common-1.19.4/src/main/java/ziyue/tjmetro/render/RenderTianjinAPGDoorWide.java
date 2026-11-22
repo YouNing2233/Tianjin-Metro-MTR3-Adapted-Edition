@@ -48,12 +48,13 @@ public class RenderTianjinAPGDoorWide<T extends BlockPSDAPGDoorBase.TileEntityPS
         final boolean half = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.HALF) == DoubleBlockHalf.UPPER;
         final boolean unlocked = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.UNLOCKED);
         final int leafIndex = getLeafIndex(world, pos, facing);
-        final boolean openLeft = BlockPSDDoorTianjinWide.isOpenLeft(world, pos);
+        final int openMode = BlockPSDDoorTianjinWide.getOpenMode(world, pos);
+        // 三档：全开（第 0 扇左 1、第 1 扇左 2 叠进左侧玻璃袋、第 2 扇右 1）/ 左二开 / 右二开
         final float open = Math.min(entity.getOpen(MTRClient.getLastFrameDuration()), 1F);
-
-        // 本渲染坐标里 +X 指向"左"；三扇全开：两扇去一侧、单独那扇去另一侧
         final float slideBlocks;
-        if (openLeft) {
+        if (openMode == BlockPSDDoorTianjinWide.OPEN_MODE_ALL) {
+            slideBlocks = leafIndex == 0 ? 1F : leafIndex == 1 ? 2F : -1F;
+        } else if (openMode == BlockPSDDoorTianjinWide.OPEN_MODE_LEFT) {
             slideBlocks = leafIndex <= 1 ? 1F : -1F;
         } else {
             slideBlocks = leafIndex >= 1 ? -1F : 1F;

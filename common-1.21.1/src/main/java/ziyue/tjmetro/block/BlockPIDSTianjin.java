@@ -141,11 +141,13 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
          */
         public final ScrollingText marqueeText;
         protected boolean useRealTime = true;
+        protected boolean onlyFirstLastTrain = false;
 
         public static final String CATEGORIES_ID = "categories";
         public static final String CATEGORY_INDEX_ID = "category_index";
         public static final String ADVERTISEMENT_INDEX_ID = "advertisement_index";
         public static final String USE_REAL_TIME_ID = "use_real_time";
+        public static final String ONLY_FIRST_LAST_TRAIN_ID = "only_first_last_train";
 
         public TileEntityBlockPIDSTianjin(BlockPos pos, BlockState state) {
             this(BlockEntityTypes.PIDS_TIANJIN_TILE_ENTITY.get(), pos, state);
@@ -172,6 +174,16 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             return 1;
         }
 
+        public boolean isOnlyFirstLastTrain() {
+            return onlyFirstLastTrain;
+        }
+
+        public void setOnlyFirstLastTrain(boolean onlyFirstLastTrain) {
+            this.onlyFirstLastTrain = onlyFirstLastTrain;
+            setChanged();
+            syncData();
+        }
+
         @Override
         public void setData(String[] messages, boolean[] hideArrival, java.util.Set<Long> platformIds, int displayPage) {
             super.setData(messages, hideArrival, platformIds, displayPage);
@@ -189,6 +201,10 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             }
             categoryIndex = compoundTag.getInt(CATEGORY_INDEX_ID);
             advertisementIndex = compoundTag.getInt(ADVERTISEMENT_INDEX_ID);
+            if (compoundTag.contains(ONLY_FIRST_LAST_TRAIN_ID)) {
+                onlyFirstLastTrain = compoundTag.getBoolean(ONLY_FIRST_LAST_TRAIN_ID);
+            }
+
             if (compoundTag.contains(USE_REAL_TIME_ID)) {
                 useRealTime = compoundTag.getBoolean(USE_REAL_TIME_ID);
             }
@@ -201,6 +217,7 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
             compoundTag.putInt(CATEGORY_INDEX_ID, categoryIndex);
             compoundTag.putInt(ADVERTISEMENT_INDEX_ID, advertisementIndex);
             compoundTag.putBoolean(USE_REAL_TIME_ID, useRealTime);
+            compoundTag.putBoolean(ONLY_FIRST_LAST_TRAIN_ID, onlyFirstLastTrain);
         }
 
         public LongAdderList getCategories() {
@@ -247,6 +264,13 @@ public class BlockPIDSTianjin extends BlockPIDSBaseHorizontal {
         public void setData(String[] messages, boolean[] hideArrival, java.util.Set<Long> platformIds, int displayPage, boolean useRealTime) {
             super.setData(messages, hideArrival, platformIds, displayPage);
             this.useRealTime = useRealTime;
+            setChanged();
+            syncData();
+        }
+
+        public void setData(String[] messages, boolean[] hideArrival, java.util.Set<Long> platformIds, int displayPage, boolean useRealTime, boolean onlyFirstLastTrain) {
+            setData(messages, hideArrival, platformIds, displayPage, useRealTime);
+            this.onlyFirstLastTrain = onlyFirstLastTrain;
             setChanged();
             syncData();
         }
